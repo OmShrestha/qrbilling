@@ -1,64 +1,158 @@
-import React, { useState, useEffect, useParams } from 'react';
-import { ListGroup, ListGroupItem, Badge, Card, CardTitle, CardSubtitle, CardBody, Button } from 'reactstrap';
-import { Accordion } from 'bootstrap';
-import { PlusSquare, DashSquare } from 'react-bootstrap-icons';
+import React, {useState, useEffect} from 'react';
 import RedeemForm from './RedeemForm';
-import { API_BASE } from '../Constant';
+import {API_BASE} from '../Constant';
+import {useHistory} from 'react-router-dom';
 
-const ItemDetails = props => {
+// material
+import PropTypes from 'prop-types';
+import {Tabs, Tab, Collapse, Grid} from '@material-ui/core';
+import {makeStyles} from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import {Button} from '@material-ui/core';
+import ProductList from './ItemDetail/component/ProductList';
+import LogoInfo from './LogoInfo';
+
+function TabPanel(props) {
+  const {children, value, index, ...other} = props;
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`scrollable-prevent-tabpanel-${index}`}
+      aria-labelledby={`scrollable-prevent-tab-${index}`}
+      {...other}
+    >
+      {value === index && <>{children}</>}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `scrollable-prevent-tab-${index}`,
+    'aria-controls': `scrollable-prevent-tabpanel-${index}`,
+  };
+}
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundImage: `url("https://www.scandichotels.com/imagevault/publishedmedia/qn6infvg30381stkubky/scandic-sundsvall-city-restaurant-verket-10.jpg")`,
+  },
+  checkoutContainer: {
+    width: '100%',
+    backgroundColor: '#4EA23A',
+    display: 'flex',
+    justifyContent: 'space-between',
+    position: 'absolute',
+    padding: '8px 16px',
+  },
+  checkout: {
+    border: '1px solid black',
+    borderRadius: '10px',
+    fontSize: '14px',
+    backgroundColor: '#ECECEC !important',
+  },
+  tabs: {
+    backgroundColor: '#ECECEC',
+    marginTop: '50px',
+    borderRadius: '20px 20px 0px 0px',
+  },
+  product: {
+    padding: 'none',
+  },
+  panel: {
+    '&.MuiBox-root-15': {
+      padding: '0',
+    },
+  },
+  orderBtn: {
+    color: 'white',
+    backgroundColor: '#A62A22',
+    borderRadius: '10px',
+    padding: '8px 16px',
+  },
+  orderBtnContainer: {
+    position: 'fixed',
+    justifyContent: 'center',
+    bottom: 42,
+  },
+  total: {
+    color: 'white',
+  },
+}));
+
+const ItemDetails = (props) => {
+  const classes = useStyles();
+  const [value, setValue] = React.useState(0);
   const [hasError, setErrors] = useState(false);
   const [orderSaved, setOrderSaved] = useState(false);
   const [menuList, setMenuList] = useState({});
   const [itemTotal, setItemTotal] = useState({});
   const [redeem, setRedeem] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const proceedToRedeem = () => {};
+
+  const history = useHistory();
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   async function saveOrder() {
     const requestOptions = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(itemTotal),
     };
     fetch(API_BASE + 'company/asset/order/create', requestOptions)
-      .then(response => response.json())
-      .then(data => setOrderSaved({ postId: data.id }));
+      .then((response) => response.json())
+      .then((data) => setOrderSaved({postId: data.id}));
     console.log(orderSaved, 'hehe');
   }
 
-  const addItem = (highIndex, index, price, itemName) => {
+  const addItem = (menuIndex, index, price, itemName) => {
     let newData = {
       ...itemTotal,
-      [highIndex + index]: {
+      [menuIndex + index]: {
         name: itemName,
         perPlate: price,
         number:
-          itemTotal[highIndex + index] && itemTotal[highIndex + index].number
-            ? itemTotal[highIndex + index].number + 1
+          itemTotal[menuIndex + index] && itemTotal[menuIndex + index].number
+            ? itemTotal[menuIndex + index].number + 1
             : 0 + 1,
         total:
-          itemTotal[highIndex + index] && itemTotal[highIndex + index].number
-            ? (itemTotal[highIndex + index].number + 1) * price
+          itemTotal[menuIndex + index] && itemTotal[menuIndex + index].number
+            ? (itemTotal[menuIndex + index].number + 1) * price
             : (0 + 1) * price,
       },
     };
     setItemTotal(newData);
   };
 
-  const removeItem = (highIndex, index, price, itemName) => {
-    if (itemTotal[highIndex + index] && itemTotal[highIndex + index].number > 0) {
+  const removeItem = (menuIndex, index, price, itemName) => {
+    if (
+      itemTotal[menuIndex + index] &&
+      itemTotal[menuIndex + index].number > 0
+    ) {
       let newData = {
         ...itemTotal,
-        [highIndex + index]: {
+        [menuIndex + index]: {
           name: itemName,
           perPlate: price,
           number:
-            itemTotal[highIndex + index] && itemTotal[highIndex + index].number
-              ? itemTotal[highIndex + index].number - 1
+            itemTotal[menuIndex + index] && itemTotal[menuIndex + index].number
+              ? itemTotal[menuIndex + index].number - 1
               : 0 - 1,
           total:
-            itemTotal[highIndex + index] && itemTotal[highIndex + index].number
-              ? (itemTotal[highIndex + index].number - 1) * price
+            itemTotal[menuIndex + index] && itemTotal[menuIndex + index].number
+              ? (itemTotal[menuIndex + index].number - 1) * price
               : (0 - 1) * price,
         },
       };
@@ -66,88 +160,81 @@ const ItemDetails = props => {
     }
   };
   async function fetchData() {
-    const res = await fetch(API_BASE + 'company/af174b04-b495-47c1-bc32-c0dff7170c34/menu');
+    const res = await fetch(
+      API_BASE + 'company/af174b04-b495-47c1-bc32-c0dff7170c34/menu'
+    );
     res
       .json()
-      .then(res => setMenuList(res))
-      .catch(err => setErrors(err));
+      .then((res) => setMenuList(res))
+      .catch((err) => setErrors(err));
   }
 
   useEffect(() => {
     fetchData();
   }, []);
-  const query = new URLSearchParams(props.location.search);
 
   return (
     <div>
       {redeem ? (
         <RedeemForm></RedeemForm>
       ) : (
-        <div>
-          <Card>
-            <CardBody>
-              <CardTitle>
-                <strong>Hotel Om Palace</strong>
-              </CardTitle>
-              <CardSubtitle>Table No {query.get('table_no')}</CardSubtitle>
-            </CardBody>
-          </Card>
+        <div className={classes.root}>
+          <LogoInfo menuList={menuList} props={props} />
+          <Tabs
+            className={classes.tabs}
+            value={value}
+            onChange={handleChange}
+            variant="scrollable"
+            scrollButtons="off"
+            aria-label="scrollable prevent tabs example"
+          >
+            {menuList &&
+              menuList.data &&
+              menuList.data.menu.map((menuData, index) => (
+                <Tab label={menuData.category_name} {...a11yProps(index)} />
+              ))}
+          </Tabs>
           {menuList &&
             menuList.data &&
-            menuList.data.menu.map((menuData, highIndex) => (
-              <ul className="list-group" key={highIndex}>
-                <li className="list-group-item float-left active ">{menuData.category_name}</li>
-                {menuData.products.map((menuItem, index) => (
-                  <li className="list-group-item" key={index}>
-                    {`${menuItem.name} (Rs ${menuItem.price})`}
-                    {itemTotal[highIndex.toString() + index.toString()] ? (
-                      <span>
-                        <Badge
-                          color="success"
-                          className="ml-4"
-                          type="button"
-                          onClick={() => addItem(highIndex.toString(), index.toString(), menuItem.price, menuItem.name)}
-                        >
-                          <PlusSquare />
-                        </Badge>
-                        <span style={{ marginLeft: 20 }}>
-                          {(itemTotal[highIndex.toString() + index.toString()] &&
-                            itemTotal[highIndex.toString() + index.toString()].number) ||
-                            0}
-                        </span>
-                        <Badge
-                          color="danger"
-                          className="ml-4"
-                          type="button"
-                          onClick={() =>
-                            removeItem(highIndex.toString(), index.toString(), menuItem.price, menuItem.name)
-                          }
-                        >
-                          <DashSquare />
-                        </Badge>
-                        <span style={{ marginLeft: 20 }}>
-                          Rs{' '}
-                          {(itemTotal[highIndex.toString() + index.toString()] &&
-                            itemTotal[highIndex.toString() + index.toString()].total) ||
-                            0}{' '}
-                        </span>
-                      </span>
-                    ) : (
-                      <Button
-                        color="primary"
-                        size="sm"
-                        onClick={() => addItem(highIndex.toString(), index.toString(), menuItem.price, menuItem.name)}
-                      >
-                        Add Order
-                      </Button>
-                    )}
-                  </li>
+            menuList.data.menu.map((menuData, menuIndex) => (
+              <TabPanel
+                className={classes.panel}
+                key={menuIndex}
+                value={value}
+                index={menuIndex}
+              >
+                {menuData.products.map((product, index) => (
+                  <ProductList
+                    className={classes.product}
+                    product={product}
+                    menuIndex={menuIndex}
+                    index={index}
+                    itemTotal={itemTotal}
+                    addItem={addItem}
+                    removeItem={removeItem}
+                  />
                 ))}
-              </ul>
+                <Collapse in={!open}>
+                  <div className={classes.checkoutContainer}>
+                    <Typography className={classes.total}>Total</Typography>
+                    <Button
+                      className={classes.checkout}
+                      onClick={() => saveOrder()}
+                    >
+                      Check out
+                    </Button>{' '}
+                  </div>
+                </Collapse>
+              </TabPanel>
             ))}
-          <Button color="primary" size="lg" onClick={() => saveOrder()}>
-            Proceed
-          </Button>{' '}
+          <Grid container className={classes.orderBtnContainer}>
+            <Button
+              className={classes.orderBtn}
+              onClick={() => history.push('/:id/billing')}
+            >
+              View Order
+            </Button>
+          </Grid>
         </div>
       )}
     </div>

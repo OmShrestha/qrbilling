@@ -5,6 +5,8 @@ import NotFound from '../component/NotFound';
 import Home from '../component/Home';
 import ItemDetail from '../component/ItemDetail';
 import Navbar from '../component/Navbar';
+import Billing from '../component/Billing';
+import Success from '../component/Success';
 
 export const history = createBrowserHistory();
 
@@ -14,6 +16,8 @@ const AppRouter = () => (
       <Switch>
         <Route path="/" exact component={Home} />
         <Route path="/:id" exact component={ItemDetail} />
+        <Route path="/:id/billing" exact component={Billing} />
+        <Route path="/:id/success" exact component={Success} />
         <Route component={NotFound} />
       </Switch>
     </Navbar>

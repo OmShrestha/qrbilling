@@ -165,39 +165,51 @@ const Billing = props => {
           </Typography>
         </div>
 
-        {Object.keys(props.itemTotal).map((menuData, menuIndex) => (
-          // props.itemTotal[menuData].total
-          <Grid container className={classes.item} key={menuIndex}>
-            <Grid>
-              <Typography className={classes.productName}>{props.itemTotal[menuData].name}</Typography>
-              <Divider />
-              <Grid>
-                {
-                  <div className={classes.buttons}>
-                    <Button
-                      onClick={() =>
-                        props.addItem(menuData, '', props.itemTotal[menuData].perPlate, props.itemTotal[menuData].name)
-                      }
-                    >
-                      <AddIcon />
-                    </Button>
-                    <span style={{ marginLeft: 20 }}>
-                      {(props.itemTotal[menuData] && props.itemTotal[menuData].number) || 0}
-                    </span>
-                    <Button
-                      onClick={() =>
-                        props.removeItem(menuData, '', props.itemTotal[menuData].price, props.itemTotal[menuData].name)
-                      }
-                    >
-                      <RemoveIcon />
-                    </Button>
-                  </div>
-                }
-                {props.itemTotal[menuData].total > 0 ? props.itemTotal[menuData].total : ''}
+        {Object.keys(props.itemTotal).map(
+          (menuData, menuIndex) =>
+            props.itemTotal[menuData].total > 0 && (
+              <Grid container className={classes.item} key={menuIndex}>
+                <Grid>
+                  <Typography className={classes.productName}>{props.itemTotal[menuData].name}</Typography>
+                  <Divider />
+                  <Grid>
+                    {
+                      <div className={classes.buttons}>
+                        <Button
+                          onClick={() =>
+                            props.addItem(
+                              menuData,
+                              '',
+                              props.itemTotal[menuData].perPlate,
+                              props.itemTotal[menuData].name,
+                            )
+                          }
+                        >
+                          <AddIcon />
+                        </Button>
+                        <span style={{ marginLeft: 20 }}>
+                          {(props.itemTotal[menuData] && props.itemTotal[menuData].number) || 0}
+                        </span>
+                        <Button
+                          onClick={() =>
+                            props.removeItem(
+                              menuData,
+                              '',
+                              props.itemTotal[menuData].perPlate,
+                              props.itemTotal[menuData].name,
+                            )
+                          }
+                        >
+                          <RemoveIcon />
+                        </Button>
+                      </div>
+                    }
+                    {props.itemTotal[menuData].total > 0 ? props.itemTotal[menuData].total : ''}
+                  </Grid>
+                </Grid>
               </Grid>
-            </Grid>
-          </Grid>
-        ))}
+            ),
+        )}
 
         <div className={classes.bill}>
           <Typography className={classes.billTxt}>Bill</Typography>

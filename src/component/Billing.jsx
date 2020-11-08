@@ -1,18 +1,18 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import LogoInfo from './LogoInfo';
 
-import {API_BASE} from '../Constant';
-import {makeStyles} from '@material-ui/core/styles';
-import {Button, Divider, Grid, TextField, Typography} from '@material-ui/core';
+import { API_BASE } from '../Constant';
+import { makeStyles } from '@material-ui/core/styles';
+import { Button, Divider, Grid, TextField, Typography } from '@material-ui/core';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
-import {useHistory} from 'react-router-dom/cjs/react-router-dom.min';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     backgroundImage: `url("https://www.scandichotels.com/imagevault/publishedmedia/qn6infvg30381stkubky/scandic-sundsvall-city-restaurant-verket-10.jpg")`,
   },
@@ -91,8 +91,8 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
 
     '& .MuiInputBase-input': {
-      padding: '10px 14px'
-    }
+      padding: '10px 14px',
+    },
   },
 }));
 
@@ -100,7 +100,7 @@ function getSteps() {
   return ['QR CODE', 'ORDER', 'CONFIRM', 'COMPLETE'];
 }
 
-const Billing = ({props, product}) => {
+const Billing = ({ props, product }) => {
   const classes = useStyles();
   const [menuList, setMenuList] = useState({});
   const [hasError, setErrors] = useState(false);
@@ -110,7 +110,7 @@ const Billing = ({props, product}) => {
   const steps = getSteps();
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setActiveStep(prevActiveStep => prevActiveStep + 1);
   };
 
   // const handleBack = () => {
@@ -153,10 +153,7 @@ const Billing = ({props, product}) => {
   };
 
   const removeItem = (menuIndex, index, price, itemName) => {
-    if (
-      itemTotal[menuIndex + index] &&
-      itemTotal[menuIndex + index].number > 0
-    ) {
+    if (itemTotal[menuIndex + index] && itemTotal[menuIndex + index].number > 0) {
       let newData = {
         ...itemTotal,
         [menuIndex + index]: {
@@ -177,13 +174,11 @@ const Billing = ({props, product}) => {
   };
 
   async function fetchData() {
-    const res = await fetch(
-      API_BASE + 'company/af174b04-b495-47c1-bc32-c0dff7170c34/menu'
-    );
+    const res = await fetch(API_BASE + 'company/af174b04-b495-47c1-bc32-c0dff7170c34/menu');
     res
       .json()
-      .then((res) => setMenuList(res))
-      .catch((err) => setErrors(err));
+      .then(res => setMenuList(res))
+      .catch(err => setErrors(err));
   }
 
   useEffect(() => {
@@ -198,7 +193,7 @@ const Billing = ({props, product}) => {
       <div className={classes.secondary}>
         <Grid className={classes.stepperContainer}>
           <Stepper activeStep={activeStep} className={classes.stepper}>
-            {steps.map((label) => (
+            {steps.map(label => (
               <Step key={label}>
                 <StepLabel>{label}</StepLabel>
               </Step>
@@ -207,9 +202,7 @@ const Billing = ({props, product}) => {
           <div>
             {activeStep === steps.length ? (
               <div>
-                <Typography className={classes.instructions}>
-                  All steps completed
-                </Typography>
+                <Typography className={classes.instructions}>All steps completed</Typography>
                 <Button onClick={handleReset}>Reset</Button>
               </div>
             ) : null}
@@ -217,9 +210,7 @@ const Billing = ({props, product}) => {
         </Grid>
         <div className={classes.itemCart}>
           <Typography className={classes.itemCartTxt}>Items In Cart</Typography>
-          <Typography className={classes.AddItemTxt}>
-            Add More Items +
-          </Typography>
+          <Typography className={classes.AddItemTxt}>Add More Items +</Typography>
         </div>
 
         {menuList &&
@@ -236,32 +227,17 @@ const Billing = ({props, product}) => {
                     /* {itemTotal[menuIndex.toString() + index.toString()] ? (*/
                     <div className={classes.buttons}>
                       <Button
-                        onClick={() =>
-                          addItem(
-                            menuIndex.toString(),
-                            index.toString(),
-                            product.price,
-                            product.name
-                          )
-                        }
+                        onClick={() => addItem(menuIndex.toString(), index.toString(), product.price, product.name)}
                       >
                         <AddIcon />
                       </Button>
-                      <span style={{marginLeft: 20}}>
+                      <span style={{ marginLeft: 20 }}>
                         {(itemTotal[menuIndex.toString() + index.toString()] &&
-                          itemTotal[menuIndex.toString() + index.toString()]
-                            .number) ||
+                          itemTotal[menuIndex.toString() + index.toString()].number) ||
                           0}
                       </span>
                       <Button
-                        onClick={() =>
-                          removeItem(
-                            menuIndex.toString(),
-                            index.toString(),
-                            product.price,
-                            product.name
-                          )
-                        }
+                        onClick={() => removeItem(menuIndex.toString(), index.toString(), product.price, product.name)}
                       >
                         <RemoveIcon />
                       </Button>
@@ -316,19 +292,11 @@ const Billing = ({props, product}) => {
         </div>
         <Grid className={classes.coupon}>
           <Typography>Coupon & Discount</Typography>
-          <TextField
-            variant="outlined"
-            placeholder='Phone No.'
-            className={classes.txtField}
-          />
+          <TextField variant="outlined" placeholder="Phone No." className={classes.txtField} />
           <Button variant="contained">Continue</Button>
         </Grid>
         <Grid className={classes.btnGrid}>
-          <Button
-            variant="contained"
-            className={classes.confirm}
-            onClick={() => history.push('/:id/Success')}
-          >
+          <Button variant="contained" className={classes.confirm} onClick={() => history.push('/:id/Success')}>
             {activeStep === steps.length - 1 ? 'Finish' : 'Confirm Order'}
           </Button>
         </Grid>

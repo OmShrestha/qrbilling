@@ -1,10 +1,10 @@
-import {Badge, Card, CardContent, Typography} from '@material-ui/core';
+import { Badge, Card, CardContent, Typography } from '@material-ui/core';
 import React from 'react';
-import {makeStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   logo: {
     backgroundColor: '#F8F9F9',
     borderRadius: '5px',
@@ -43,9 +43,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LogoInfo = ({menuList, props}) => {
+const LogoInfo = ({ menuList, tableNumber }) => {
   const classes = useStyles();
-  const query = new URLSearchParams(props/*.location.search*/);
 
   const circle = (
     <div className={clsx(classes.shape, classes.shapeCircle)}>
@@ -70,7 +69,7 @@ const LogoInfo = ({menuList, props}) => {
               <Typography>{menuList.data.name}</Typography>
             </CardContent>
             <CardContent>
-              <Typography>Table No {query.get('table_no')}</Typography>
+              <Typography>Table No {tableNumber}</Typography>
             </CardContent>
             <CardContent>
               <Typography>Description</Typography>

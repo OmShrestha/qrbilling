@@ -1,19 +1,19 @@
-import React, {useState, useEffect} from 'react';
-import RedeemForm from './RedeemForm';
-import {API_BASE} from '../Constant';
-import {useHistory} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import RedeemForm from './Billing';
+import { API_BASE } from '../Constant';
+import { useHistory } from 'react-router-dom';
 
 // material
 import PropTypes from 'prop-types';
-import {Tabs, Tab, Collapse, Grid} from '@material-ui/core';
-import {makeStyles} from '@material-ui/core/styles';
+import { Tabs, Tab, Collapse, Grid } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import {Button} from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import ProductList from './ItemDetail/component/ProductList';
 import LogoInfo from './LogoInfo';
 
 function TabPanel(props) {
-  const {children, value, index, ...other} = props;
+  const { children, value, index, ...other } = props;
   return (
     <div
       role="tabpanel"
@@ -40,7 +40,7 @@ function a11yProps(index) {
   };
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     backgroundImage: `url("https://www.scandichotels.com/imagevault/publishedmedia/qn6infvg30381stkubky/scandic-sundsvall-city-restaurant-verket-10.jpg")`,
   },
@@ -87,7 +87,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ItemDetails = (props) => {
+const ItemDetails = props => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [hasError, setErrors] = useState(false);
@@ -97,9 +97,12 @@ const ItemDetails = (props) => {
   const [redeem, setRedeem] = useState(false);
   const [open, setOpen] = useState(false);
 
-  const proceedToRedeem = () => {};
+  const proceedToRedeem = () => {
+    setRedeem(true);
+  };
 
   const history = useHistory();
+  const query = new URLSearchParams(props.location.search);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -108,12 +111,12 @@ const ItemDetails = (props) => {
   async function saveOrder() {
     const requestOptions = {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(itemTotal),
     };
     fetch(API_BASE + 'company/asset/order/create', requestOptions)
-      .then((response) => response.json())
-      .then((data) => setOrderSaved({postId: data.id}));
+      .then(response => response.json())
+      .then(data => setOrderSaved({ postId: data.id }));
     console.log(orderSaved, 'hehe');
   }
 
@@ -137,10 +140,7 @@ const ItemDetails = (props) => {
   };
 
   const removeItem = (menuIndex, index, price, itemName) => {
-    if (
-      itemTotal[menuIndex + index] &&
-      itemTotal[menuIndex + index].number > 0
-    ) {
+    if (itemTotal[menuIndex + index] && itemTotal[menuIndex + index].number > 0) {
       let newData = {
         ...itemTotal,
         [menuIndex + index]: {
@@ -160,26 +160,29 @@ const ItemDetails = (props) => {
     }
   };
   async function fetchData() {
-    const res = await fetch(
-      API_BASE + 'company/af174b04-b495-47c1-bc32-c0dff7170c34/menu'
-    );
+    const res = await fetch(API_BASE + 'company/af174b04-b495-47c1-bc32-c0dff7170c34/menu');
     res
       .json()
-      .then((res) => setMenuList(res))
-      .catch((err) => setErrors(err));
+      .then(res => setMenuList(res))
+      .catch(err => setErrors(err));
   }
 
   useEffect(() => {
     fetchData();
   }, []);
-
+  let totalPrice = 0;
+  for (var key in itemTotal) {
+    if (itemTotal.hasOwnProperty(key)) {
+      totalPrice += itemTotal[key].total;
+    }
+  }
   return (
     <div>
       {redeem ? (
-        <RedeemForm></RedeemForm>
+        <RedeemForm itemTotal></RedeemForm>
       ) : (
         <div className={classes.root}>
-          <LogoInfo menuList={menuList} props={props} />
+          <LogoInfo menuList={menuList} tableNumber={query.get('table_no')} />
           <Tabs
             className={classes.tabs}
             value={value}
@@ -190,19 +193,12 @@ const ItemDetails = (props) => {
           >
             {menuList &&
               menuList.data &&
-              menuList.data.menu.map((menuData, index) => (
-                <Tab label={menuData.category_name} {...a11yProps(index)} />
-              ))}
+              menuList.data.menu.map((menuData, index) => <Tab label={menuData.category_name} {...a11yProps(index)} />)}
           </Tabs>
           {menuList &&
             menuList.data &&
             menuList.data.menu.map((menuData, menuIndex) => (
-              <TabPanel
-                className={classes.panel}
-                key={menuIndex}
-                value={value}
-                index={menuIndex}
-              >
+              <TabPanel className={classes.panel} key={menuIndex} value={value} index={menuIndex}>
                 {menuData.products.map((product, index) => (
                   <ProductList
                     className={classes.product}
@@ -214,13 +210,11 @@ const ItemDetails = (props) => {
                     removeItem={removeItem}
                   />
                 ))}
-                <Collapse in={!open}>
+                <Collapse in={totalPrice > 0}>
                   <div className={classes.checkoutContainer}>
                     <Typography className={classes.total}>Total</Typography>
-                    <Button
-                      className={classes.checkout}
-                      onClick={() => saveOrder()}
-                    >
+                    <span>Rs {totalPrice}</span>
+                    <Button className={classes.checkout} onClick={() => proceedToRedeem()}>
                       Check out
                     </Button>{' '}
                   </div>
@@ -228,10 +222,7 @@ const ItemDetails = (props) => {
               </TabPanel>
             ))}
           <Grid container className={classes.orderBtnContainer}>
-            <Button
-              className={classes.orderBtn}
-              onClick={() => history.push('/:id/billing')}
-            >
+            <Button className={classes.orderBtn} onClick={() => history.push('/:id/billing')}>
               View Order
             </Button>
           </Grid>

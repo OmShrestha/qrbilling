@@ -1,6 +1,7 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import QrReader from 'react-qr-scanner';
 import './style/qrStyle.css';
+import { BASE_URL } from '../Constant';
 
 class ScannerQR extends Component {
   constructor(props) {
@@ -18,12 +19,7 @@ class ScannerQR extends Component {
         result: data,
       });
       const jsonData = JSON.parse(data);
-      window.location.assign(
-        'http://localhost:3000/' +
-          jsonData.company_id +
-          '?table_no=' +
-          jsonData.table_no
-      );
+      window.location.assign(BASE_URL + jsonData.company_id + '?table_no=' + jsonData.table_no);
     }
   }
   handleError(err) {

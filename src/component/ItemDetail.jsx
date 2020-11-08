@@ -98,7 +98,7 @@ const ItemDetails = props => {
   const [open, setOpen] = useState(false);
 
   const proceedToRedeem = () => {
-    setRedeem(true);
+    setRedeem(!redeem);
   };
 
   const history = useHistory();
@@ -179,7 +179,12 @@ const ItemDetails = props => {
   return (
     <div>
       {redeem ? (
-        <RedeemForm itemTotal></RedeemForm>
+        <RedeemForm
+          itemTotal={itemTotal}
+          addItem={addItem}
+          removeItem={removeItem}
+          proceedToRedeem={proceedToRedeem}
+        ></RedeemForm>
       ) : (
         <div className={classes.root}>
           <LogoInfo menuList={menuList} tableNumber={query.get('table_no')} />
@@ -222,7 +227,7 @@ const ItemDetails = props => {
               </TabPanel>
             ))}
           <Grid container className={classes.orderBtnContainer}>
-            <Button className={classes.orderBtn} onClick={() => history.push('/:id/billing')}>
+            <Button className={classes.orderBtn} onClick={() => proceedToRedeem()}>
               View Order
             </Button>
           </Grid>

@@ -11,6 +11,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { tsOptionalType } from '@babel/types';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -100,12 +101,12 @@ function getSteps() {
   return ['QR CODE', 'ORDER', 'CONFIRM', 'COMPLETE'];
 }
 
-const Billing = ({ props, product }) => {
+const Billing = props => {
+  const { itemTotal } = props;
   const classes = useStyles();
   const [menuList, setMenuList] = useState({});
   const [hasError, setErrors] = useState(false);
   // const [orderSaved, setOrderSaved] = useState(false);
-  const [itemTotal, setItemTotal] = useState({});
   const [activeStep, setActiveStep] = useState(+2);
   const steps = getSteps();
 
@@ -113,64 +114,8 @@ const Billing = ({ props, product }) => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
   };
 
-  // const handleBack = () => {
-  //   setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  // };
-
   const handleReset = () => {
     setActiveStep(0);
-  };
-
-  // async function saveOrder() {
-  //   const requestOptions = {
-  //     method: 'POST',
-  //     headers: {'Content-Type': 'application/json'},
-  //     body: JSON.stringify(itemTotal),
-  //   };
-  //   fetch(API_BASE + 'company/asset/order/create', requestOptions)
-  //     .then((response) => response.json())
-  //     .then((data) => setOrderSaved({postId: data.id}));
-  //   console.log(orderSaved, 'hehe');
-  // }
-
-  const addItem = (menuIndex, index, price, itemName) => {
-    let newData = {
-      ...itemTotal,
-      [menuIndex + index]: {
-        name: itemName,
-        perPlate: price,
-        number:
-          itemTotal[menuIndex + index] && itemTotal[menuIndex + index].number
-            ? itemTotal[menuIndex + index].number + 1
-            : 0 + 1,
-        total:
-          itemTotal[menuIndex + index] && itemTotal[menuIndex + index].number
-            ? (itemTotal[menuIndex + index].number + 1) * price
-            : (0 + 1) * price,
-      },
-    };
-    setItemTotal(newData);
-  };
-
-  const removeItem = (menuIndex, index, price, itemName) => {
-    if (itemTotal[menuIndex + index] && itemTotal[menuIndex + index].number > 0) {
-      let newData = {
-        ...itemTotal,
-        [menuIndex + index]: {
-          name: itemName,
-          perPlate: price,
-          number:
-            itemTotal[menuIndex + index] && itemTotal[menuIndex + index].number
-              ? itemTotal[menuIndex + index].number - 1
-              : 0 - 1,
-          total:
-            itemTotal[menuIndex + index] && itemTotal[menuIndex + index].number
-              ? (itemTotal[menuIndex + index].number - 1) * price
-              : (0 - 1) * price,
-        },
-      };
-      setItemTotal(newData);
-    }
   };
 
   async function fetchData() {
@@ -186,7 +131,12 @@ const Billing = ({ props, product }) => {
   }, []);
 
   const history = useHistory();
-
+  let totalPrice = 0;
+  for (var key in itemTotal) {
+    if (itemTotal.hasOwnProperty(key)) {
+      totalPrice += itemTotal[key].total;
+    }
+  }
   return (
     <div className={classes.root}>
       <LogoInfo menuList={menuList} props={props} />
@@ -210,71 +160,50 @@ const Billing = ({ props, product }) => {
         </Grid>
         <div className={classes.itemCart}>
           <Typography className={classes.itemCartTxt}>Items In Cart</Typography>
-          <Typography className={classes.AddItemTxt}>Add More Items +</Typography>
+          <Typography className={classes.AddItemTxt} onClick={() => props.proceedToRedeem()}>
+            Add More Items +
+          </Typography>
         </div>
 
-        {menuList &&
-          menuList.data &&
-          menuList.data.menu.map((menuData, menuIndex) => (
-            <Grid container className={classes.item}>
+        {Object.keys(props.itemTotal).map((menuData, menuIndex) => (
+          // props.itemTotal[menuData].total
+          <Grid container className={classes.item} key={menuIndex}>
+            <Grid>
+              <Typography className={classes.productName}>{props.itemTotal[menuData].name}</Typography>
+              <Divider />
               <Grid>
-                <Typography className={classes.productName}>Test</Typography>
-                <Divider />
-              </Grid>
-              {menuData.products.map((product, index) => (
-                <Grid>
-                  {
-                    /* {itemTotal[menuIndex.toString() + index.toString()] ? (*/
-                    <div className={classes.buttons}>
-                      <Button
-                        onClick={() => addItem(menuIndex.toString(), index.toString(), product.price, product.name)}
-                      >
-                        <AddIcon />
-                      </Button>
-                      <span style={{ marginLeft: 20 }}>
-                        {(itemTotal[menuIndex.toString() + index.toString()] &&
-                          itemTotal[menuIndex.toString() + index.toString()].number) ||
-                          0}
-                      </span>
-                      <Button
-                        onClick={() => removeItem(menuIndex.toString(), index.toString(), product.price, product.name)}
-                      >
-                        <RemoveIcon />
-                      </Button>
-                      {/* <span style={{marginLeft: 20}}>
-                        Rs{' '}
-                        {(itemTotal[menuIndex.toString() + index.toString()] &&
-                          itemTotal[menuIndex.toString() + index.toString()]
-                            .total) ||
-                          0}{' '}
-                      </span> */}
-                    </div>
-                    /*) : (
+                {
+                  <div className={classes.buttons}>
                     <Button
-                      className={classes.addOrder}
                       onClick={() =>
-                        addItem(
-                          menuIndex.toString(),
-                          index.toString(),
-                          product.price,
-                          product.name
-                        )
+                        props.addItem(menuData, '', props.itemTotal[menuData].perPlate, props.itemTotal[menuData].name)
                       }
                     >
-                      Add Order
+                      <AddIcon />
                     </Button>
-                  )} */
-                  }
-                </Grid>
-              ))}
+                    <span style={{ marginLeft: 20 }}>
+                      {(props.itemTotal[menuData] && props.itemTotal[menuData].number) || 0}
+                    </span>
+                    <Button
+                      onClick={() =>
+                        props.removeItem(menuData, '', props.itemTotal[menuData].price, props.itemTotal[menuData].name)
+                      }
+                    >
+                      <RemoveIcon />
+                    </Button>
+                  </div>
+                }
+                {props.itemTotal[menuData].total > 0 ? props.itemTotal[menuData].total : ''}
+              </Grid>
             </Grid>
-          ))}
+          </Grid>
+        ))}
 
         <div className={classes.bill}>
           <Typography className={classes.billTxt}>Bill</Typography>
           <div className={classes.billing}>
             <div>Sub Total</div>
-            <div className={classes.price}>Rs.3000</div>
+            <div className={classes.price}>Rs.{totalPrice}</div>
           </div>
           <div container className={classes.billing}>
             <div>Restaurant service charge</div>

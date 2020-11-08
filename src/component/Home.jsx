@@ -4,10 +4,12 @@ import QRScanner from './QRScanner';
 import {makeStyles} from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
-  home: {
+  root: {
+    display: 'flex',
     backgroundColor: 'black',
     justifyContent: 'center',
     height: '100vh',
+    flexDirection: 'column',
   },
   scanOrder: {
     justifyContent: 'center',
@@ -15,6 +17,7 @@ const useStyles = makeStyles({
     flexDirection: 'column',
   },
   scan: {
+    textAlign: 'center',
     color: 'white',
     fontSize: '29pt',
   },
@@ -24,7 +27,7 @@ const useStyles = makeStyles({
     textAlign: 'center',
   },
   qr: {
-    alignContent: 'center',
+    alignItems: 'center',
   },
 });
 
@@ -33,14 +36,14 @@ const Layout = (props) => {
   const classes = useStyles(props);
 
   return (
-    <Grid container className={classes.home}>
+    <Grid container className={classes.root}>
       <div className={classes.scanOrder}>
         <Typography className={classes.scan}> Scan The QR CODE</Typography>
         <Typography className={classes.order}>And Order Food</Typography>
       </div>
-      <Grid className={classes.qr}>
+      <Grid >
         {QRScannerSelected ? (
-          <QRScanner/>
+          <QRScanner className={classes.qr}/>
         ) : (
           <img
             src="https://i.pinimg.com/originals/9b/56/2c/9b562ca0be290e80f201486a4fbcf849.png"

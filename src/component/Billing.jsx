@@ -3,7 +3,7 @@ import LogoInfo from './LogoInfo';
 
 import { API_BASE } from '../Constant';
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, Divider, Grid, TextField, Typography } from '@material-ui/core';
+import { Button, Divider, Grid, TextField, Typography, Select, MenuItem } from '@material-ui/core';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
@@ -12,6 +12,7 @@ import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { tsOptionalType } from '@babel/types';
+import { verify } from 'crypto';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -105,10 +106,13 @@ const Billing = props => {
   const { itemTotal } = props;
   const classes = useStyles();
   const [menuList, setMenuList] = useState({});
+  const [couponeList, setCouponeList] = useState({});
+  const [billingInfo, setBillingInfo] = useState({});
   const [hasError, setErrors] = useState(false);
   // const [orderSaved, setOrderSaved] = useState(false);
   const [activeStep, setActiveStep] = useState(+2);
   const steps = getSteps();
+  const [userData, setUserData] = useState(null);
 
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -126,6 +130,54 @@ const Billing = props => {
       .catch(err => setErrors(err));
   }
 
+  async function fetchCouponeList() {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ phone_number: '987654323', email: '' }),
+    };
+    fetch(API_BASE + 'order-user-detail?company=af174b04-b495-47c1-bc32-c0dff7170c34', requestOptions)
+      .then(response => response.json())
+      .then(resCoupone => setCouponeList(resCoupone))
+      .catch(err => setErrors(err));
+  }
+
+  async function verifyOrder() {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        company: 'af174b04-b495-47c1-bc32-c0dff7170c34',
+        asset: '2d11f673-12f3-4df3-883e-6a3492a55aea',
+        user: null,
+        name: 'Shyam Shrestha',
+        phone_number: 987009802,
+        email: 'shyam@gmail.com',
+        voucher: '964bdedf-2a00-499e-8020-59197597228e',
+        tax: 13.0,
+        bill: null,
+        order_lines: [
+          {
+            id: null,
+            product: '056d497c-6dde-4874-935e-3f91c17a1a06',
+            product_name: 'chicken momo',
+            product_code: 'momo12',
+            rate: 150,
+            quantity: 4,
+            total: '600.00',
+            state: 'New',
+            company: 'af174b04-b495-47c1-bc32-c0dff7170c34',
+            order: '509b9e29-664f-44b8-a984-62235a8bbdca',
+          },
+        ],
+      }),
+    };
+    fetch(API_BASE + 'company/af174b04-b495-47c1-bc32-c0dff7170c34/order/verify', requestOptions)
+      .then(response => response.json())
+      .then(resCoupone => setBillingInfo(resCoupone))
+      .catch(err => setErrors(err));
+  }
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -137,6 +189,14 @@ const Billing = props => {
       totalPrice += itemTotal[key].total;
     }
   }
+
+  const handleChange = (event, userData) => {
+    userData = { ...userData, [event.target.name]: event.target.value };
+    setUserData(userData);
+  };
+
+  console.log(billingInfo);
+
   return (
     <div className={classes.root}>
       <LogoInfo menuList={menuList} props={props} />
@@ -210,32 +270,74 @@ const Billing = props => {
               </Grid>
             ),
         )}
-
-        <div className={classes.bill}>
-          <Typography className={classes.billTxt}>Bill</Typography>
-          <div className={classes.billing}>
-            <div>Sub Total</div>
-            <div className={classes.price}>Rs.{totalPrice}</div>
+        {Object.keys(billingInfo).length != 0 && (
+          <div className={classes.bill}>
+            <Typography className={classes.billTxt}>Bill</Typography>
+            <div className={classes.billing}>
+              <div>Sub Total</div>
+              <div className={classes.price}>Rs.{totalPrice}</div>
+            </div>
+            <div container className={classes.billing}>
+              <div>Restaurant service charge</div>
+              <div className={classes.price}>Rs.20</div>
+            </div>
+            <div className={classes.billing}>
+              <div>VAT</div>
+              <div className={classes.price}>Rs.10</div>
+            </div>
+            <div className={classes.dot} />
+            <div className={classes.total}>
+              <div>Total</div>
+              <div className={classes.price}>Rs.3030</div>
+            </div>
           </div>
-          <div container className={classes.billing}>
-            <div>Restaurant service charge</div>
-            <div className={classes.price}>Rs.20</div>
-          </div>
-          <div className={classes.billing}>
-            <div>VAT</div>
-            <div className={classes.price}>Rs.10</div>
-          </div>
-          <div className={classes.dot} />
-          <div className={classes.total}>
-            <div>Total</div>
-            <div className={classes.price}>Rs.3030</div>
-          </div>
-        </div>
-        <Grid className={classes.coupon}>
-          <Typography>Coupon & Discount</Typography>
-          <TextField variant="outlined" placeholder="Phone No." className={classes.txtField} />
-          <Button variant="contained">Continue</Button>
-        </Grid>
+        )}
+        {Object.keys(billingInfo).length == 0 && (
+          <Grid className={classes.coupon}>
+            {Object.keys(couponeList).length == 0 && (
+              <div>
+                <Typography>Coupon & Discount</Typography>
+                <TextField variant="outlined" placeholder="Phone No." className={classes.txtField} />
+              </div>
+            )}
+            {couponeList && couponeList.data && !couponeList.data.voucher && (
+              <div>
+                <Typography>Register For Coupon</Typography>
+                <TextField variant="outlined" placeholder="Full Name" className={classes.txtField} />
+                <TextField variant="outlined" placeholder="Email Address" className={classes.txtField} />
+              </div>
+            )}
+            {couponeList && couponeList.data && couponeList.data.voucher && (
+              <div>
+                <Typography>Coupon & Discount</Typography>
+                <Select
+                  name="couponeId"
+                  native
+                  value={(userData && userData.couponeId) || ''}
+                  onChange={e => handleChange(e, userData)}
+                  placeholder={'Select Coupone'}
+                >
+                  <option aria-label="None" value="" />
+                  {couponeList.data.voucher.map((data, index) => (
+                    <option value={data.id} key={index}>
+                      {data.description}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+            )}
+            {Object.keys(couponeList).length == 0 && (
+              <Button variant="contained" onClick={() => fetchCouponeList()}>
+                Continue
+              </Button>
+            )}
+            {Object.keys(couponeList).length != 0 && (
+              <Button variant="contained" onClick={() => verifyOrder()}>
+                Apply
+              </Button>
+            )}
+          </Grid>
+        )}
         <Grid className={classes.btnGrid}>
           <Button variant="contained" className={classes.confirm} onClick={() => history.push('/:id/Success')}>
             {activeStep === steps.length - 1 ? 'Finish' : 'Confirm Order'}

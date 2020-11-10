@@ -41,6 +41,9 @@ const useStyles = makeStyles(theme => ({
   shapeCircle: {
     borderRadius: '50%',
   },
+  txt: {
+    fontFamily: 'SF Pro Display',
+  },
 }));
 
 const LogoInfo = ({ menuList, tableNumber }) => {
@@ -66,13 +69,13 @@ const LogoInfo = ({ menuList, tableNumber }) => {
         {menuList && menuList.data && (
           <Card className={classes.info}>
             <CardContent>
-              <Typography>{menuList.data.name}</Typography>
+              <Typography className={classes.txt}>{menuList.data.name}</Typography>
             </CardContent>
             <CardContent>
-              <Typography>Table No {tableNumber}</Typography>
+              <Typography className={classes.txt}>Table No {tableNumber}</Typography>
             </CardContent>
             <CardContent>
-              <Typography>Description</Typography>
+              <Typography className={classes.txt}>Description</Typography>
             </CardContent>
           </Card>
         )}

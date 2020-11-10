@@ -13,10 +13,31 @@ const useStyles = makeStyles((theme) => ({
   secondRoot: {
     borderRadius: '20px 20px 0px 0px',
     backgroundColor: '#ECECEC',
+    height: '76vh',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
   },
   stepper: {
     backgroundColor: '#ECECEC',
     borderRadius: '20px 20px 0px 0px',
+    '& .MuiStepIcon-root.MuiStepIcon-completed': {
+      color: 'green',
+    },
+    '& .MuiStepIcon-root.MuiStepIcon-active': {
+      color: '#CECECE',
+    },
+  },
+  svg: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  svgs: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  svgCp: {
+    padding: '24px',
   },
   txt1: {
     color: '#000000',
@@ -57,7 +78,7 @@ const Success = ({props}) => {
   const classes = useStyles();
   const [menuList, setMenuList] = useState({});
   const [hasError, setErrors] = useState(false);
-  const [activeStep, setActiveStep] = useState(+3);
+  const [activeStep, setActiveStep] = useState(+4);
   const steps = getSteps();
 
   const handleNext = () => {
@@ -90,14 +111,25 @@ const Success = ({props}) => {
           ))}
         </Stepper>
         <div className={classes.txt}>
+          <div className={classes.svg}>
+            <img src="/complete.svg" alt="complete" className={classes.img} />
+          </div>
           <Typography className={classes.txt1}>Order Success</Typography>
           <Typography className={classes.txt2}>
             Your food will arrive shortly
           </Typography>
         </div>
-        <div className={classes.btns} >
-          <Button variant="contained" className={classes.cpBtn} >Go To Cupponpro</Button>
-          <Button variant="contained" className={classes.doneBtn} >Done</Button>
+        <div className={classes.svgs}>
+          <img className={classes.svgCp} src="/Cp.svg" alt="Cp" />
+          <img src="/Discount.svg" alt="Cp" className={classes.svgs} />
+        </div>
+        <div className={classes.btns}>
+          <Button variant="contained" className={classes.cpBtn}>
+            Go To Cupponpro
+          </Button>
+          <Button variant="contained" className={classes.doneBtn}>
+            Done
+          </Button>
         </div>
       </div>
     </div>

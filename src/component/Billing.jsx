@@ -2,8 +2,7 @@ import React, {useState, useEffect} from 'react';
 import LogoInfo from './LogoInfo';
 
 import {API_BASE} from '../Constant';
-import clsx from 'clsx';
-import {makeStyles, withStyles} from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import {
   Accordion,
   AccordionDetails,
@@ -11,10 +10,10 @@ import {
   Button,
   Divider,
   Grid,
-  StepConnector,
   TextField,
   Typography,
 } from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
@@ -234,10 +233,12 @@ const Billing = (props) => {
             expanded={expanded === 'panel1'}
             onChange={handleChange('panel1')}
           >
-            <AccordionSummary >
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <div className={classes.processingTxt}>
                 <Typography>Previous Order</Typography>
-                <Typography>Processing</Typography>
+                <Typography>
+                  Processing
+                </Typography>
               </div>
             </AccordionSummary>
             <AccordionDetails>

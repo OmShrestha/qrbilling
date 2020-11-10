@@ -1,8 +1,8 @@
-import {Button, Typography} from '@material-ui/core';
-import React, {useState} from 'react';
+import { Button, Typography } from '@material-ui/core';
+import React, { useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
-import {makeStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
   root: {
@@ -58,15 +58,7 @@ const useStyles = makeStyles({
   },
 });
 
-const ProductList = ({
-  open,
-  product,
-  menuIndex,
-  index,
-  itemTotal,
-  addItem,
-  removeItem,
-}) => {
+const ProductList = ({ open, product, menuIndex, index, itemTotal, addItem, removeItem }) => {
   const classes = useStyles();
   const [display, setDisplay] = useState(false);
 
@@ -76,51 +68,28 @@ const ProductList = ({
   return (
     <div className={classes.root}>
       <div>
-        <Typography
-          className={classes.productName}
-        >{`${product.name}`}</Typography>{' '}
-        <br />
+        <Typography className={classes.productName}>{`${product.name}`}</Typography> <br />
         <div className={classes.viewImg}>
-          <Typography
-            className={classes.productPrice}
-          >{`Rs ${product.price}`}</Typography>
+          <Typography className={classes.productPrice}>{`Rs ${product.price}`}</Typography>
 
-          <Typography className={classes.viewTxt} onClick={handleViewImage} >View Image</Typography>
-          {display ? 
-          <img src="/Cp" alt="smth" className={classes.imgView} />
-          : null}
+          <Typography className={classes.viewTxt} onClick={handleViewImage}>
+            View Image
+          </Typography>
+          {display ? <img src="/Cp" alt="smth" className={classes.imgView} /> : null}
         </div>
       </div>
       <div>
         {itemTotal[menuIndex.toString() + index.toString()] ? (
           <div className={classes.buttons}>
-            <Button
-              onClick={() =>
-                addItem(
-                  menuIndex.toString(),
-                  index.toString(),
-                  product.price,
-                  product.name
-                )
-              }
-            >
+            <Button onClick={() => addItem(menuIndex.toString(), index.toString(), product.price, product.name)}>
               <AddIcon />
             </Button>
-            <span style={{marginLeft: 20}}>
+            <span style={{ marginLeft: 20 }}>
               {(itemTotal[menuIndex.toString() + index.toString()] &&
                 itemTotal[menuIndex.toString() + index.toString()].number) ||
                 0}
             </span>
-            <Button
-              onClick={() =>
-                removeItem(
-                  menuIndex.toString(),
-                  index.toString(),
-                  product.price,
-                  product.name
-                )
-              }
-            >
+            <Button onClick={() => removeItem(menuIndex.toString(), index.toString(), product.price, product.name)}>
               <RemoveIcon />
             </Button>
             {/* <span style={{marginLeft: 20}}>
@@ -133,15 +102,7 @@ const ProductList = ({
         ) : (
           <Button
             className={classes.addOrder}
-            onClick={() =>
-              addItem(
-                menuIndex.toString(),
-                index.toString(),
-                product.price,
-                product.name,
-                {open}
-              )
-            }
+            onClick={() => addItem(menuIndex.toString(), index.toString(), product.price, product.name, { open })}
           >
             Add Order
           </Button>

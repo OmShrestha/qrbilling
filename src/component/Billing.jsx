@@ -270,28 +270,28 @@ const Billing = props => {
               </Grid>
             ),
         )}
-        {Object.keys(billingInfo).length != 0 && (
-          <div className={classes.bill}>
-            <Typography className={classes.billTxt}>Bill</Typography>
-            <div className={classes.billing}>
-              <div>Sub Total</div>
-              <div className={classes.price}>Rs.{totalPrice}</div>
-            </div>
-            <div container className={classes.billing}>
-              <div>Restaurant service charge</div>
-              <div className={classes.price}>Rs.20</div>
-            </div>
-            <div className={classes.billing}>
-              <div>VAT</div>
-              <div className={classes.price}>Rs.10</div>
-            </div>
-            <div className={classes.dot} />
-            <div className={classes.total}>
-              <div>Total</div>
-              <div className={classes.price}>Rs.3030</div>
-            </div>
+
+        <div className={classes.bill}>
+          <Typography className={classes.billTxt}>Bill</Typography>
+          <div className={classes.billing}>
+            <div>Sub Total</div>
+            <div className={classes.price}>Rs.{totalPrice}</div>
           </div>
-        )}
+          <div container className={classes.billing}>
+            <div>Restaurant service charge</div>
+            <div className={classes.price}>Rs.20</div>
+          </div>
+          <div className={classes.billing}>
+            <div>VAT</div>
+            <div className={classes.price}>Rs.10</div>
+          </div>
+          <div className={classes.dot} />
+          <div className={classes.total}>
+            <div>Total</div>
+            <div className={classes.price}>Rs.3030</div>
+          </div>
+        </div>
+
         {Object.keys(billingInfo).length == 0 && (
           <Grid className={classes.coupon}>
             {Object.keys(couponeList).length == 0 && (
@@ -338,11 +338,13 @@ const Billing = props => {
             )}
           </Grid>
         )}
-        <Grid className={classes.btnGrid}>
-          <Button variant="contained" className={classes.confirm} onClick={() => history.push('/:id/Success')}>
-            {activeStep === steps.length - 1 ? 'Finish' : 'Confirm Order'}
-          </Button>
-        </Grid>
+        {Object.keys(billingInfo).length != 0 && (
+          <Grid className={classes.btnGrid}>
+            <Button variant="contained" className={classes.confirm} onClick={() => history.push('/:id/Success')}>
+              {activeStep === steps.length - 1 ? 'Finish' : 'Confirm Order'}
+            </Button>
+          </Grid>
+        )}
       </div>
     </div>
   );

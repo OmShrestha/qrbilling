@@ -22,8 +22,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import {useHistory} from 'react-router-dom/cjs/react-router-dom.min';
-import {tsOptionalType} from '@babel/types';
-import {verify} from 'crypto';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -74,6 +72,7 @@ const useStyles = makeStyles((theme) => ({
   },
   steps: {
     flexDirection: 'column',
+    fontFamily: 'SF Pro Display Regular',
     '&.MuiStepLabel-iconContainer, &.MuiStepIcon-text': {
       display: 'none',
       color: 'currentColor',
@@ -107,9 +106,11 @@ const useStyles = makeStyles((theme) => ({
   },
   bill: {
     backgroundColor: '#FFFFFF',
+    fontFamily: 'SF Pro Display Regular',
   },
   billTxt: {
     fontWeight: 'bold',
+    fontFamily: 'SF Pro Display Regular',
     fontSize: '14px',
     padding: '16px',
   },
@@ -171,6 +172,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     width: '100%',
+    fontFamily: 'SF Pro Display Regular',
   },
   input: {
     display: 'flex',
@@ -185,6 +187,10 @@ const useStyles = makeStyles((theme) => ({
     border: '1px solid #D6D6D6',
     width: '327px',
     height: '0px',
+  },
+  cNd: {
+    fontFamily: 'SF Pro Display Semibold',
+    fontSize: '14px',
   },
 }));
 
@@ -354,7 +360,7 @@ const Billing = (props) => {
               </div>
             </AccordionSummary>
             <AccordionDetails>
-              <Typography>order</Typography>
+              <Typography className={classes.cNd}>order</Typography>
             </AccordionDetails>
           </Accordion>
 
@@ -464,7 +470,9 @@ const Billing = (props) => {
           <Grid className={classes.coupon}>
             {Object.keys(couponeList).length == 0 && (
               <div>
-                <Typography>Coupon & Discount</Typography>
+                <Typography className={classes.cNd}>
+                  Coupon & Discount
+                </Typography>
                 <div className={classes.input}>
                   <TextField
                     variant="outlined"

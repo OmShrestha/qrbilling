@@ -9,6 +9,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundImage: `url("https://www.scandichotels.com/imagevault/publishedmedia/qn6infvg30381stkubky/scandic-sundsvall-city-restaurant-verket-10.jpg")`,
+    fontFamily: 'SF Pro Display Regular',
   },
   secondRoot: {
     borderRadius: '20px 20px 0px 0px',
@@ -43,9 +44,11 @@ const useStyles = makeStyles((theme) => ({
     padding: '24px',
     fontSize: '24px',
     width: '40%',
+    fontFamily: 'SF Pro Display Regular',
   },
   svgDiscount: {
     width: '40%',
+    fontFamily: 'SF Pro Display Regular',
   },
   txt1: {
     color: '#000000',
@@ -54,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '28px',
     display: 'flex',
     justifyContent: 'center',
+    fontFamily: 'SF Pro Display Regular',
   },
   txt2: {
     color: '#000000',
@@ -61,20 +65,24 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '14px',
     display: 'flex',
     justifyContent: 'center',
+    fontFamily: 'SF Pro Display Regular',
   },
   btns: {
     display: 'flex',
     flexDirection: 'column',
     padding: '24px',
+    fontFamily: 'SF Pro Display Regular',
   },
   cpBtn: {
     marginBottom: '10px',
     backgroundColor: '#a62a22',
     color: 'white',
+    fontFamily: 'SF Pro Display Regular',
   },
   doneBtn: {
     backgroundColor: '#273238',
     color: 'white',
+    fontFamily: 'SF Pro Display Regular',
   },
 }));
 

@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '50%',
   },
   txt: {
-    fontFamily: 'SF Pro Display',
+    fontFamily: 'SF Pro Display Regular',
   },
 }));
 

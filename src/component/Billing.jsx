@@ -72,6 +72,14 @@ const useStyles = makeStyles((theme) => ({
       color: '#CECECE',
     },
   },
+  steps: {
+    flexDirection: 'column',
+    '&.MuiStepLabel-iconContainer, &.MuiStepIcon-text': {
+      display: 'none',
+      color: 'currentColor',
+      fontSize: '0',
+    },
+  },
   itemCart: {
     backgroundColor: '#a62a22',
     color: 'white',
@@ -185,9 +193,8 @@ function getSteps() {
 }
 
 const Billing = (props) => {
-  const {itemTotal} = props;
+  const {itemTotal, menuList, tableNumber} = props;
   const classes = useStyles();
-  const [menuList, setMenuList] = useState({});
   const [couponeList, setCouponeList] = useState({});
   const [billingInfo, setBillingInfo] = useState({});
   const [hasError, setErrors] = useState(false);
@@ -205,21 +212,22 @@ const Billing = (props) => {
     setActiveStep(0);
   };
 
-  async function fetchData() {
-    const res = await fetch(
-      API_BASE + 'company/af174b04-b495-47c1-bc32-c0dff7170c34/menu'
-    );
-    res
-      .json()
-      .then((res) => setMenuList(res))
-      .catch((err) => setErrors(err));
-  }
+  // async function fetchData() {
+  //   const res = await fetch(API_BASE + 'company/af174b04-b495-47c1-bc32-c0dff7170c34/menu');
+  //   res
+  //     .json()
+  //     .then(res => setMenuList(res))
+  //     .catch(err => setErrors(err));
+  // }
 
   async function fetchCouponeList() {
     const requestOptions = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({phone_number: '987654323', email: ''}),
+      body: JSON.stringify({
+        phone_number: userData && userData.phoneNumber,
+        email: (userData && userData.email) || '',
+      }),
     };
     fetch(
       API_BASE +
@@ -232,6 +240,22 @@ const Billing = (props) => {
   }
 
   async function verifyOrder() {
+    let orderLine = [];
+    Object.keys(itemTotal).map((data) => {
+      let newObj = {
+        id: null,
+        product: '056d497c-6dde-4874-935e-3f91c17a1a06',
+        product_name: itemTotal[data].name,
+        product_code: 'momo12',
+        rate: itemTotal[data].perPlate,
+        quantity: itemTotal[data].number,
+        total: itemTotal[data].total,
+        state: 'New',
+        company: 'af174b04-b495-47c1-bc32-c0dff7170c34',
+        order: '509b9e29-664f-44b8-a984-62235a8bbdca',
+      };
+      orderLine.push(newObj);
+    });
     const requestOptions = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
@@ -240,25 +264,12 @@ const Billing = (props) => {
         asset: '2d11f673-12f3-4df3-883e-6a3492a55aea',
         user: null,
         name: 'Shyam Shrestha',
-        phone_number: 987009802,
+        phone_number: userData && userData.phoneNumber,
         email: 'shyam@gmail.com',
         voucher: '964bdedf-2a00-499e-8020-59197597228e',
         tax: 13.0,
         bill: null,
-        order_lines: [
-          {
-            id: null,
-            product: '056d497c-6dde-4874-935e-3f91c17a1a06',
-            product_name: 'chicken momo',
-            product_code: 'momo12',
-            rate: 150,
-            quantity: 4,
-            total: '600.00',
-            state: 'New',
-            company: 'af174b04-b495-47c1-bc32-c0dff7170c34',
-            order: '509b9e29-664f-44b8-a984-62235a8bbdca',
-          },
-        ],
+        order_lines: orderLine,
       }),
     };
     fetch(
@@ -270,9 +281,9 @@ const Billing = (props) => {
       .catch((err) => setErrors(err));
   }
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
 
   const history = useHistory();
   let totalPrice = 0;
@@ -291,7 +302,10 @@ const Billing = (props) => {
     setUserData(userData);
   };
 
-  console.log(billingInfo);
+  console.log(billingInfo, 'rescopone');
+  const serviceCharge = totalPrice * (menuList.data.service_charge / 100) || 0;
+  const taxCharge = totalPrice * (menuList.data.tax / 100) || 0;
+  const grandTotal = totalPrice + serviceCharge + taxCharge;
 
   return (
     <div className={classes.root}>
@@ -302,7 +316,7 @@ const Billing = (props) => {
             <Stepper activeStep={activeStep} className={classes.stepper}>
               {steps.map((label) => (
                 <Step key={label}>
-                  <StepLabel>{label}</StepLabel>
+                  <StepLabel className={classes.steps}>{label}</StepLabel>
                 </Step>
               ))}
             </Stepper>
@@ -350,28 +364,12 @@ const Billing = (props) => {
                 <Grid container className={classes.item} key={menuIndex}>
                   <div className={classes.order}>
                     <Typography className={classes.productName}>
-                      {props.itemTotal[menuData].name}
+                      {props.itemTotal[menuData].name}{' '}
+                      {props.itemTotal[menuData].total}
                     </Typography>
                     <Grid>
                       {
                         <div className={classes.buttons}>
-                          <Button
-                            onClick={() =>
-                              props.addItem(
-                                menuData,
-                                '',
-                                props.itemTotal[menuData].perPlate,
-                                props.itemTotal[menuData].name
-                              )
-                            }
-                          >
-                            <AddIcon />
-                          </Button>
-                          <span style={{marginLeft: 20}}>
-                            {(props.itemTotal[menuData] &&
-                              props.itemTotal[menuData].number) ||
-                              0}
-                          </span>
                           <Button
                             onClick={() =>
                               props.removeItem(
@@ -383,6 +381,23 @@ const Billing = (props) => {
                             }
                           >
                             <RemoveIcon />
+                          </Button>
+                          <span>
+                            {(props.itemTotal[menuData] &&
+                              props.itemTotal[menuData].number) ||
+                              0}
+                          </span>
+                          <Button
+                            onClick={() =>
+                              props.addItem(
+                                menuData,
+                                '',
+                                props.itemTotal[menuData].perPlate,
+                                props.itemTotal[menuData].name
+                              )
+                            }
+                          >
+                            <AddIcon />
                           </Button>
                         </div>
                       }
@@ -398,20 +413,49 @@ const Billing = (props) => {
             <Typography className={classes.billTxt}>Bill</Typography>
             <div className={classes.billing}>
               <div>Sub Total</div>
-              <div className={classes.price}>Rs.{totalPrice}</div>
+              <div className={classes.price}>
+                Rs.
+                {(billingInfo.data && billingInfo.data.service_charge) ||
+                  totalPrice}
+              </div>
             </div>
             <div container className={classes.billing}>
               <div>Restaurant service charge</div>
-              <div className={classes.price}>Rs.20</div>
+              <div className={classes.price}>
+                Rs.
+                {(billingInfo.data && billingInfo.data.service_charge) ||
+                  serviceCharge}
+              </div>
             </div>
             <div className={classes.billing}>
               <div>VAT</div>
-              <div className={classes.price}>Rs.10</div>
+              <div className={classes.price}>
+                Rs.
+                {(billingInfo.data &&
+                  billingInfo.data.taxed_amount.toFixed(2)) ||
+                  taxCharge.toFixed(2)}
+              </div>
             </div>
+            {billingInfo.discount && (
+              <div className={classes.billing}>
+                <div>Discount</div>
+                <div className={classes.price}>
+                  Rs.
+                  {(billingInfo.data &&
+                    billingInfo.data.discount &&
+                    billingInfo.data.discount.toFixed(2)) ||
+                    0}
+                </div>
+              </div>
+            )}
             <div className={classes.dot} />
             <div className={classes.total}>
               <div>Total</div>
-              <div className={classes.price}>Rs.3030</div>
+              <div className={classes.price}>
+                Rs.
+                {(billingInfo.data && billingInfo.data.grand_total) ||
+                  grandTotal.toFixed(2)}
+              </div>
             </div>
           </div>
         </div>
@@ -426,6 +470,9 @@ const Billing = (props) => {
                     variant="outlined"
                     placeholder="Phone No."
                     className={classes.txtField}
+                    name="phoneNumber"
+                    value={(userData && userData.phoneNumber) || ''}
+                    onChange={(e) => handleChange(e, userData)}
                   />
                   {Object.keys(couponeList).length == 0 && (
                     <Button
@@ -446,20 +493,21 @@ const Billing = (props) => {
                   variant="outlined"
                   placeholder="Full Name"
                   className={classes.txtField}
+                  name="fullName"
+                  value={(userData && userData.fullName) || ''}
+                  onChange={(e) => handleChange(e, userData)}
                 />
                 <TextField
                   variant="outlined"
                   placeholder="Email Address"
                   className={classes.txtField}
+                  name="email"
+                  value={(userData && userData.email) || ''}
+                  onChange={(e) => handleChange(e, userData)}
                 />
-                {Object.keys(couponeList).length == 0 && (
-                  <Button
-                    variant="contained"
-                    onClick={() => fetchCouponeList()}
-                  >
-                    Continue
-                  </Button>
-                )}
+                <Button variant="contained" onClick={() => verifyOrder()}>
+                  Continue
+                </Button>
               </div>
             )}
             {couponeList && couponeList.data && couponeList.data.voucher && (
@@ -480,18 +528,17 @@ const Billing = (props) => {
                     </option>
                   ))}
                 </Select>
-
-                {Object.keys(couponeList).length != 0 && (
-                  <Button
-                    className={classes.apply}
-                    variant="contained"
-                    onClick={() => verifyOrder()}
-                  >
-                    Apply
-                  </Button>
-                )}
+                <Button variant="contained" onClick={() => verifyOrder()}>
+                  Apply
+                </Button>
               </div>
             )}
+
+            {/* {Object.keys(couponeList).length != 0 && (
+              <Button variant="contained" onClick={() => verifyOrder()}>
+                Apply
+              </Button>
+            )} */}
           </Grid>
         )}
         {Object.keys(billingInfo).length != 0 && (
@@ -499,7 +546,7 @@ const Billing = (props) => {
             <Button
               variant="contained"
               className={classes.confirm}
-              onClick={() => history.push('/:id/Success')}
+              onClick={() => history.push('/Success')}
             >
               {activeStep === steps.length - 1 ? 'Finish' : 'Confirm Order'}
             </Button>

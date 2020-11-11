@@ -15,9 +15,9 @@ const AppRouter = () => (
     <Navbar>
       <Switch>
         <Route path="/" exact component={Home} />
+        <Route path="/success" exact component={Success} />
         <Route path="/:id" exact component={ItemDetail} />
         <Route path="/:id/billing" exact component={Billing} />
-        <Route path="/:id/success" exact component={Success} />
         <Route component={NotFound} />
       </Switch>
     </Navbar>

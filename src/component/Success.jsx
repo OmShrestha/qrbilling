@@ -28,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
       color: '#CECECE',
     },
   },
+  steps: {
+    flexDirection: 'column',
+  },
   svg: {
     display: 'flex',
     justifyContent: 'center',
@@ -111,7 +114,7 @@ const Success = ({props}) => {
         <Stepper activeStep={activeStep} className={classes.stepper}>
           {steps.map((label) => (
             <Step key={label}>
-              <StepLabel>{label}</StepLabel>
+              <StepLabel className={classes.steps}>{label}</StepLabel>
             </Step>
           ))}
         </Stepper>

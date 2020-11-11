@@ -65,11 +65,16 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#ECECEC',
     marginTop: '50px',
     borderRadius: '20px 20px 0px 0px',
+    '&.MuiTab-textColorInherit.Mui-selected': {
+      color: '#a62a22',
+    },
   },
   product: {
     padding: 'none',
   },
   panel: {
+    backgroundColor: '#ECECEC !important',
+    height: '45rem',
     '&.MuiBox-root-15': {
       padding: '0',
     },
@@ -195,6 +200,8 @@ const ItemDetails = (props) => {
           addItem={addItem}
           removeItem={removeItem}
           proceedToRedeem={proceedToRedeem}
+          menuList={menuList}
+          tableNumber={query.get('table_no')}
         ></RedeemForm>
       ) : (
         <div className={classes.root}>
@@ -210,7 +217,11 @@ const ItemDetails = (props) => {
             {menuList &&
               menuList.data &&
               menuList.data.menu.map((menuData, index) => (
-                <Tab label={menuData.category_name} {...a11yProps(index)} />
+                <Tab
+                  label={menuData.category_name}
+                  {...a11yProps(index)}
+                  key={index}
+                />
               ))}
           </Tabs>
           {menuList &&
@@ -224,6 +235,7 @@ const ItemDetails = (props) => {
               >
                 {menuData.products.map((product, index) => (
                   <ProductList
+                    key={index}
                     className={classes.product}
                     product={product}
                     menuIndex={menuIndex}

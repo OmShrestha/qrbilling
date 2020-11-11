@@ -22,6 +22,7 @@ const useStyles = makeStyles({
     fontSize: '13px',
     backgroundColor: 'white',
     fontFamily: 'SF Pro Display',
+    color: '#8D8E94',
   },
   productName: {
     fontSize: '14px',
@@ -85,32 +86,17 @@ const ProductList = ({
             className={classes.productPrice}
           >{`Rs ${product.price}`}</Typography>
 
-          <Typography className={classes.viewTxt} onClick={handleViewImage} >View Image</Typography>
-          {display ? 
-          <img src="/Cp" alt="smth" className={classes.imgView} />
-          : null}
+          <Typography className={classes.viewTxt} onClick={handleViewImage}>
+            View Image
+          </Typography>
+          {display ? (
+            <img src="/Cp" alt="smth" className={classes.imgView} />
+          ) : null}
         </div>
       </div>
       <div>
         {itemTotal[menuIndex.toString() + index.toString()] ? (
           <div className={classes.buttons}>
-            <Button
-              onClick={() =>
-                addItem(
-                  menuIndex.toString(),
-                  index.toString(),
-                  product.price,
-                  product.name
-                )
-              }
-            >
-              <AddIcon />
-            </Button>
-            <span style={{marginLeft: 20}}>
-              {(itemTotal[menuIndex.toString() + index.toString()] &&
-                itemTotal[menuIndex.toString() + index.toString()].number) ||
-                0}
-            </span>
             <Button
               onClick={() =>
                 removeItem(
@@ -123,12 +109,23 @@ const ProductList = ({
             >
               <RemoveIcon />
             </Button>
-            {/* <span style={{marginLeft: 20}}>
-              Rs{' '}
+            <span>
               {(itemTotal[menuIndex.toString() + index.toString()] &&
-                itemTotal[menuIndex.toString() + index.toString()].total) ||
-                0}{' '}
-            </span> */}
+                itemTotal[menuIndex.toString() + index.toString()].number) ||
+                0}
+            </span>
+            <Button
+              onClick={() =>
+                addItem(
+                  menuIndex.toString(),
+                  index.toString(),
+                  product.price,
+                  product.name
+                )
+              }
+            >
+              <AddIcon />
+            </Button>
           </div>
         ) : (
           <Button

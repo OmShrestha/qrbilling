@@ -56,6 +56,12 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: '5px',
     width: '80%',
   },
+  apply: {
+    backgroundColor: '#a62a22',
+    color: 'white',
+    margin: '25px',
+    borderRadius: '5px',
+  },
   stepper: {
     backgroundColor: '#ECECEC',
     borderRadius: '20px 20px 0px 0px',
@@ -134,6 +140,14 @@ const useStyles = makeStyles((theme) => ({
 
     '& .MuiInputBase-input': {
       padding: '10px 14px',
+    },
+  },
+  select: {
+    width: '75%',
+    border: '1px solid #D0D3D5',
+    borderRadius: '10px',
+    '&.MuiInput-underline:after': {
+      borderBottom: 'none',
     },
   },
   textfield: {
@@ -454,6 +468,7 @@ const Billing = (props) => {
                 <Select
                   name="couponeId"
                   native
+                  className={classes.select}
                   value={(userData && userData.couponeId) || ''}
                   onChange={(e) => handleChange(e, userData)}
                   placeholder={'Select Coupone'}
@@ -465,13 +480,17 @@ const Billing = (props) => {
                     </option>
                   ))}
                 </Select>
-              </div>
-            )}
 
-            {Object.keys(couponeList).length != 0 && (
-              <Button variant="contained" onClick={() => verifyOrder()}>
-                Apply
-              </Button>
+                {Object.keys(couponeList).length != 0 && (
+                  <Button
+                    className={classes.apply}
+                    variant="contained"
+                    onClick={() => verifyOrder()}
+                  >
+                    Apply
+                  </Button>
+                )}
+              </div>
             )}
           </Grid>
         )}

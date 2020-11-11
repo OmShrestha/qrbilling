@@ -43,6 +43,7 @@ function a11yProps(index) {
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundImage: `url("https://www.scandichotels.com/imagevault/publishedmedia/qn6infvg30381stkubky/scandic-sundsvall-city-restaurant-verket-10.jpg")`,
+    backgroundColor: '#ECECEC',
   },
   checkoutContainer: {
     width: '100%',

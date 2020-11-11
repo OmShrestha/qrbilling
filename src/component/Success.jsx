@@ -38,6 +38,11 @@ const useStyles = makeStyles((theme) => ({
   },
   svgCp: {
     padding: '24px',
+    fontSize: '24px',
+    width: '40%',
+  },
+  svgDiscount: {
+    width: '40%',
   },
   txt1: {
     color: '#000000',
@@ -121,7 +126,7 @@ const Success = ({props}) => {
         </div>
         <div className={classes.svgs}>
           <img className={classes.svgCp} src="/Cp.svg" alt="Cp" />
-          <img src="/Discount.svg" alt="Cp" className={classes.svgs} />
+          <img src="/Discount.svg" alt="Cp" className={classes.svgDiscount} />
         </div>
         <div className={classes.btns}>
           <Button variant="contained" className={classes.cpBtn}>

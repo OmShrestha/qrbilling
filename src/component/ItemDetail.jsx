@@ -171,7 +171,9 @@ const ItemDetails = props => {
     }
   };
   async function fetchData() {
-    const res = await fetch(API_BASE + 'company/af174b04-b495-47c1-bc32-c0dff7170c34/menu');
+    const res = await fetch(
+      API_BASE + 'company/af174b04-b495-47c1-bc32-c0dff7170c34/menu?asset=' + query.get('table_no'),
+    );
     res
       .json()
       .then(res => setMenuList(res))

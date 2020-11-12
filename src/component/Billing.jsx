@@ -249,20 +249,37 @@ const Billing = props => {
   }
 
   async function createOrder() {
-    const billingData = billingInfo.data;
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...billingData,
-        company: companyId,
-        asset: tableNumber,
-      }),
-    };
-    fetch(API_BASE + `company/${companyId}/order`, requestOptions)
-      .then(response => response.json())
-      .then(resCoupone => (resCoupone.success ? history.push('/Success') : () => {}))
-      .catch(err => setErrors(err));
+    if (menuList.data.order && menuList.data.order.order_lines) {
+      const billingData = billingInfo.data;
+      const requestOptions = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...billingData,
+          company: companyId,
+          asset: tableNumber,
+        }),
+      };
+      fetch(API_BASE + `company/${companyId}/order/${menuList.data.order.id}`, requestOptions)
+        .then(response => response.json())
+        .then(resCoupone => (resCoupone.success ? history.push('/Success') : () => {}))
+        .catch(err => setErrors(err));
+    } else {
+      const billingData = billingInfo.data;
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...billingData,
+          company: companyId,
+          asset: tableNumber,
+        }),
+      };
+      fetch(API_BASE + `company/${companyId}/order`, requestOptions)
+        .then(response => response.json())
+        .then(resCoupone => (resCoupone.success ? history.push('/Success') : () => {}))
+        .catch(err => setErrors(err));
+    }
   }
 
   async function verifyOrder(skip) {
@@ -387,7 +404,17 @@ const Billing = props => {
               </div>
             </AccordionSummary>
             <AccordionDetails>
-              <Typography className={classes.cNd}>order</Typography>
+              <Typography className={classes.cNd}>
+                {menuList.data.order &&
+                  menuList.data.order.order_lines.map((item, index) => (
+                    <div>
+                      <Typography className={classes.productName} key={index}>
+                        {item.product_name}
+                      </Typography>
+                      <span>{item.state}</span>
+                    </div>
+                  ))}
+              </Typography>
             </AccordionDetails>
           </Accordion>
 
@@ -396,9 +423,7 @@ const Billing = props => {
               props.itemTotal[menuData].total > 0 && (
                 <Grid container className={classes.item} key={menuIndex}>
                   <div className={classes.order}>
-                    <Typography className={classes.productName}>
-                      {props.itemTotal[menuData].name} {props.itemTotal[menuData].total}
-                    </Typography>
+                    <Typography className={classes.productName}>{props.itemTotal[menuData].name}</Typography>
                     <Grid>
                       {
                         <div className={classes.buttons}>

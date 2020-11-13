@@ -10,7 +10,6 @@ import {
   TextField,
   Typography,
   Select,
-  MenuItem,
   Accordion,
   AccordionSummary,
   AccordionDetails,
@@ -22,7 +21,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import { isGenericTypeAnnotation } from '@babel/types';
+import Bill from '../component/ItemDetail/component/Bill';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -212,21 +211,9 @@ const Billing = props => {
   const [expanded, setExpanded] = useState('panel1');
   const [userData, setUserData] = useState(null);
 
-  // const handleNext = () => {
-  //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  // };
-
   const handleReset = () => {
     setActiveStep(0);
   };
-
-  // async function fetchData() {
-  //   const res = await fetch(API_BASE + 'company/af174b04-b495-47c1-bc32-c0dff7170c34/menu');
-  //   res
-  //     .json()
-  //     .then(res => setMenuList(res))
-  //     .catch(err => setErrors(err));
-  // }
 
   async function fetchCouponeList() {
     const error = validatePhoneNumber();
@@ -461,48 +448,14 @@ const Billing = props => {
                 </Grid>
               ),
           )}
-
-          <div className={classes.bill}>
-            <Typography className={classes.billTxt}>Bill</Typography>
-            <div className={classes.billing}>
-              <div>Sub Total</div>
-              <div className={classes.price}>
-                Rs.
-                {(billingInfo.data && billingInfo.data.service_charge) || totalPrice}
-              </div>
-            </div>
-            <div container className={classes.billing}>
-              <div>Restaurant service charge</div>
-              <div className={classes.price}>
-                Rs.
-                {(billingInfo.data && billingInfo.data.service_charge_amount.toFixed(2)) || serviceCharge.toFixed(2)}
-              </div>
-            </div>
-            <div className={classes.billing}>
-              <div>VAT</div>
-              <div className={classes.price}>
-                Rs.
-                {(billingInfo.data && billingInfo.data.taxed_amount.toFixed(2)) || taxCharge.toFixed(2)}
-              </div>
-            </div>
-            {billingInfo.discount && (
-              <div className={classes.billing}>
-                <div>Discount</div>
-                <div className={classes.price}>
-                  Rs.
-                  {(billingInfo.data && billingInfo.data.discount && billingInfo.data.discount.toFixed(2)) || 0}
-                </div>
-              </div>
-            )}
-            <div className={classes.dot} />
-            <div className={classes.total}>
-              <div>Total</div>
-              <div className={classes.price}>
-                Rs.
-                {(billingInfo.data && billingInfo.data.grand_total) || grandTotal.toFixed(2)}
-              </div>
-            </div>
-          </div>
+          <Bill
+            classes={classes}
+            billingInfo={billingInfo}
+            totalPrice={totalPrice}
+            serviceCharge={serviceCharge}
+            taxCharge={taxCharge}
+            grandTotal={grandTotal}
+          />
         </div>
 
         {Object.keys(billingInfo).length == 0 && (

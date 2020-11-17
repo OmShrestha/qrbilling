@@ -237,7 +237,8 @@ const Billing = props => {
 
   async function createOrder() {
     if (menuList.data.order && menuList.data.order.order_lines) {
-      const billingData = billingInfo.data;
+      let billingData = billingInfo.data;
+      billingData.order_lines = menuList.data.order.order_lines.concat(billingData.order_lines);
       const requestOptions = {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -245,6 +246,7 @@ const Billing = props => {
           ...billingData,
           company: companyId,
           asset: tableNumber,
+          id: menuList.data.order.id,
         }),
       };
       fetch(API_BASE + `company/${companyId}/order/${menuList.data.order.id}`, requestOptions)
@@ -286,7 +288,7 @@ const Billing = props => {
           total: itemTotal[data].total,
           state: 'New',
           company: companyId,
-          order: '509b9e29-664f-44b8-a984-62235a8bbdca',
+          order: (menuList.data.order && menuList.data.order.id) || null,
         };
         orderLine.push(newObj);
       });

@@ -339,7 +339,7 @@ const Billing = props => {
   const validatePhoneNumber = () => {
     const errors = {};
     if (!userData || !userData.phoneNumber) errors.phoneNumber = 'Phone is required';
-    else if (userData.phoneNumber.length < 8) errors.phoneNumber = 'Not valid';
+    else if (!userData.phoneNumber.match(/^[0-9]{8,15}$/)) errors.phoneNumber = 'Not valid';
     return errors;
   };
   const validateUserInfo = () => {
@@ -347,9 +347,10 @@ const Billing = props => {
     if (!userData || !userData.fullName) {
       errors.fullName = 'Name is required';
     }
+    if (userData.email && !userData.email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/))
+      errors.email = 'Not valid';
     return errors;
   };
-  console.log(userData, 'response', couponeList);
 
   const serviceCharge = totalPrice * (menuList.data.service_charge / 100) || 0;
   const taxCharge = totalPrice * (menuList.data.tax / 100) || 0;
@@ -509,6 +510,11 @@ const Billing = props => {
                   value={(userData && userData.email) || ''}
                   onChange={e => handleChange(e, userData)}
                 />
+                {userDataError && userDataError.email && (
+                  <p className="danger" style={{ color: 'red' }}>
+                    {userDataError.email}
+                  </p>
+                )}
                 <Button variant="contained" onClick={() => verifyOrder()}>
                   Continue
                 </Button>

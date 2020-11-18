@@ -6,7 +6,7 @@ import {makeStyles} from '@material-ui/core/styles';
 const useStyles = makeStyles({
   root: {
     display: 'flex',
-    backgroundColor: 'black',
+    backgroundColor: 'rgba(0,0,0,0.8)',
     justifyContent: 'center',
     height: '100vh',
     flexDirection: 'column',
@@ -15,20 +15,19 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     display: 'flex',
     flexDirection: 'column',
+    textAlign: 'center',
   },
   scan: {
-    textAlign: 'center',
     color: 'white',
-    fontSize: '29pt',
+    fontSize: '22pt',
   },
   order: {
     color: 'white',
-    fontSize: '20pt',
-    textAlign: 'center',
+    fontSize: '15pt',
   },
   qr: {
     alignItems: 'center',
-  },
+  }
 });
 
 const Layout = (props) => {

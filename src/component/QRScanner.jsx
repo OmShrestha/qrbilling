@@ -32,6 +32,7 @@ class ScannerQR extends Component {
       width: 300,
       position: 'relative',
     };
+    
 
     return (
       <div>
@@ -43,7 +44,12 @@ class ScannerQR extends Component {
           onError={this.handleError}
           onScan={this.handleScan}
         />
-        <p>{this.state.result}</p>
+        <p style={{textAlign: 'center', color: '#fff'}}>{this.state.result}</p>
+        <div style={{display: 'flex', flexDirection: 'column',padding: '25px'}}>
+          <button style={{background: '#FFFFFF 0% 0% no-repeat padding-box',border: '1px solid #707070',borderRadius: '25px',opacity: 1,padding: '7px 10px',margin: '5px 0', fontSize: '14px'}}>Normal Flow</button>
+          <button style={{background: '#FFFFFF 0% 0% no-repeat padding-box',border: '1px solid #707070',borderRadius: '25px',opacity: 1,padding: '7px 10px',margin: '5px 0', fontSize: '14px'}}>Apply Discount Flow</button>
+          <button style={{background: '#FFFFFF 0% 0% no-repeat padding-box',border: '1px solid #707070',borderRadius: '25px',opacity: 1,padding: '7px 10px',margin: '5px 0', fontSize: '14px'}}>Add item to existing order Flow</button>
+        </div>
       </div>
     );
   }

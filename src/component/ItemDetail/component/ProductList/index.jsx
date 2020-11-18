@@ -101,7 +101,18 @@ const ProductList = ({ open, product, menuIndex, index, itemTotal, addItem, remo
                 itemTotal[menuIndex.toString() + index.toString()].number) ||
                 0}
             </span>
-            <Button onClick={() => addItem(menuIndex.toString(), index.toString(), product.price, product.name)}>
+            <Button
+              onClick={() =>
+                addItem(
+                  menuIndex.toString(),
+                  index.toString(),
+                  product.price,
+                  product.name,
+                  product.id,
+                  product.product_code,
+                )
+              }
+            >
               <AddIcon />
             </Button>
           </div>

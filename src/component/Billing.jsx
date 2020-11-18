@@ -316,6 +316,50 @@ const Billing = props => {
     }
   }
 
+  async function verifyOrderApply(skip) {
+    const error = {};
+    setUserDataError(error);
+    if (!skip && Object.keys(error).length > 0) {
+    } else {
+      let orderLine = [];
+      Object.keys(itemTotal).map(data => {
+        let newObj = {
+          id: null,
+          product: itemTotal[data].id,
+          product_name: itemTotal[data].name,
+          product_code: itemTotal[data].productCode,
+          rate: itemTotal[data].perPlate,
+          quantity: itemTotal[data].number,
+          total: itemTotal[data].total,
+          state: 'New',
+          company: companyId,
+          order: (menuList.data.order && menuList.data.order.id) || null,
+        };
+        orderLine.push(newObj);
+      });
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          company: companyId,
+          asset: tableNumber,
+          user: couponeList.data.user || null,
+          name: (userData && userData.fullName) || couponeList.data.name || null,
+          phone_number: userData && userData.phoneNumber,
+          email: (userData && userData.email) || couponeList.data.email || null,
+          voucher: (userData && userData.couponeId) || null,
+          tax: 13.0,
+          bill: null,
+          order_lines: orderLine,
+        }),
+      };
+      fetch(API_BASE + 'company/af174b04-b495-47c1-bc32-c0dff7170c34/order/verify', requestOptions)
+        .then(response => response.json())
+        .then(resCoupone => setBillingInfo(resCoupone))
+        .catch(err => setErrors(err));
+    }
+  }
+
   useEffect(() => {
     if (couponeList && couponeList.data && couponeList.data.voucher && couponeList.data.voucher.length == 0) {
       verifyOrder(true);
@@ -545,7 +589,7 @@ const Billing = props => {
                     </option>
                   ))}
                 </Select>
-                <Button variant="contained" onClick={() => verifyOrder()}>
+                <Button variant="contained" onClick={() => verifyOrderApply()}>
                   Apply
                 </Button>
               </div>

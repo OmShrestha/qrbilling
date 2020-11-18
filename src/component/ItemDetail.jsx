@@ -170,7 +170,11 @@ const ItemDetails = props => {
               : (0 - 1) * price,
         },
       };
-      setItemTotal(newData);
+      if (itemTotal[menuIndex + index].number - 1 == 0) {
+        setItemTotal(newData);
+      } else {
+        setItemTotal(newData);
+      }
     }
   };
   async function fetchData() {

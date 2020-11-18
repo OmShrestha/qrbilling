@@ -280,9 +280,9 @@ const Billing = props => {
       Object.keys(itemTotal).map(data => {
         let newObj = {
           id: null,
-          product: '056d497c-6dde-4874-935e-3f91c17a1a06',
+          product: itemTotal[data].id,
           product_name: itemTotal[data].name,
-          product_code: null,
+          product_code: itemTotal[data].productCode,
           rate: itemTotal[data].perPlate,
           quantity: itemTotal[data].number,
           total: itemTotal[data].total,
@@ -424,6 +424,8 @@ const Billing = props => {
                                 '',
                                 props.itemTotal[menuData].perPlate,
                                 props.itemTotal[menuData].name,
+                                props.itemTotal[menuData].id,
+                                props.itemTotal[menuData].product_code,
                               )
                             }
                           >
@@ -437,6 +439,8 @@ const Billing = props => {
                                 '',
                                 props.itemTotal[menuData].perPlate,
                                 props.itemTotal[menuData].name,
+                                props.itemTotal[menuData].id,
+                                props.itemTotal[menuData].product_code,
                               )
                             }
                           >

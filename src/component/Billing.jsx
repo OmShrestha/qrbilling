@@ -200,6 +200,7 @@ function getSteps() {
 
 const Billing = props => {
   const { itemTotal, menuList, tableNumber, companyId } = props;
+  console.log(itemTotal, 'test');
   const classes = useStyles();
   const [couponeList, setCouponeList] = useState({});
   const [billingInfo, setBillingInfo] = useState({});

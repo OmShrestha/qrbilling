@@ -13,15 +13,16 @@ const useStyles = makeStyles((theme) => ({
   },
   secondRoot: {
     borderRadius: '20px 20px 0px 0px',
+    padding: '18px 0',
     backgroundColor: '#ECECEC',
-    height: '76vh',
+    height: '73vh',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-around',
   },
   stepper: {
     backgroundColor: '#ECECEC',
     borderRadius: '20px 20px 0px 0px',
+    padding: '0 24px',
     '& .MuiStepIcon-root.MuiStepIcon-completed': {
       color: 'green',
     },
@@ -32,57 +33,57 @@ const useStyles = makeStyles((theme) => ({
   steps: {
     flexDirection: 'column',
   },
+  showCase:{
+    flex: '1 0 auto',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around'
+  },
   svg: {
     display: 'flex',
     justifyContent: 'center',
   },
-  svgs: {
+  otherImages: {
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: '20px'
   },
-  svgCp: {
-    padding: '24px',
-    fontSize: '24px',
+  cupponproSVG: {
+    paddingLeft: '24px',
     width: '40%',
-    fontFamily: 'SF Pro Display Regular',
   },
-  svgDiscount: {
+  discountSVG: {
     width: '40%',
-    fontFamily: 'SF Pro Display Regular',
   },
-  txt1: {
+  successText: {
     color: '#000000',
     textTransform: 'uppercase',
     fontWeight: 'bold',
     fontSize: '28px',
     display: 'flex',
     justifyContent: 'center',
-    fontFamily: 'SF Pro Display Regular',
   },
-  txt2: {
+  successSubText: {
     color: '#000000',
     textTransform: 'uppercase',
     fontSize: '14px',
     display: 'flex',
     justifyContent: 'center',
-    fontFamily: 'SF Pro Display Regular',
   },
-  btns: {
+  btnGroups: {
     display: 'flex',
+    padding: '0 24px',
     flexDirection: 'column',
-    padding: '24px',
-    fontFamily: 'SF Pro Display Regular',
   },
-  cpBtn: {
+  btnCupponpro: {
     marginBottom: '10px',
     backgroundColor: '#a62a22',
     color: 'white',
-    fontFamily: 'SF Pro Display Regular',
   },
-  doneBtn: {
+  btnDone: {
     backgroundColor: '#273238',
     color: 'white',
-    fontFamily: 'SF Pro Display Regular',
   },
 }));
 
@@ -126,24 +127,26 @@ const Success = ({props}) => {
             </Step>
           ))}
         </Stepper>
-        <div className={classes.txt}>
+        <div className={classes.showCase}>
           <div className={classes.svg}>
             <img src="/complete.svg" alt="complete" className={classes.img} />
           </div>
-          <Typography className={classes.txt1}>Order Success</Typography>
-          <Typography className={classes.txt2}>
-            Your food will arrive shortly
-          </Typography>
+          <div>
+            <Typography className={classes.successText}>Order Success</Typography>
+            <Typography className={classes.successSubText}>
+              Your food will arrive shortly
+            </Typography>
+          </div>
+          <div className={classes.otherImages}>
+            <img className={classes.cupponproSVG} src="/Cp.svg" alt="Cp" />
+            <img src="/Discount.svg" alt="Cp" className={classes.discountSVG} />
+          </div>
         </div>
-        <div className={classes.svgs}>
-          <img className={classes.svgCp} src="/Cp.svg" alt="Cp" />
-          <img src="/Discount.svg" alt="Cp" className={classes.svgDiscount} />
-        </div>
-        <div className={classes.btns}>
-          <Button variant="contained" className={classes.cpBtn}>
+        <div className={classes.btnGroups}>
+          <Button variant="contained" className={classes.btnCupponpro}>
             Go To Cupponpro
           </Button>
-          <Button variant="contained" className={classes.doneBtn}>
+          <Button variant="contained" className={classes.btnDone}>
             Done
           </Button>
         </div>

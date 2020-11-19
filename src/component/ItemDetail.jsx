@@ -45,6 +45,22 @@ const useStyles = makeStyles(theme => ({
     backgroundImage: `url("https://www.scandichotels.com/imagevault/publishedmedia/qn6infvg30381stkubky/scandic-sundsvall-city-restaurant-verket-10.jpg")`,
     backgroundColor: '#ECECEC',
   },
+  secondRoot: {
+    borderRadius: '20px 20px 0px 0px',
+    padding: '18px 0',
+    backgroundColor: '#ECECEC',
+    height: '73vh',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  tabs: {
+    backgroundColor: '#ECECEC',
+    marginTop: -15,
+    borderRadius: '20px 20px 0px 0px',
+    '&.MuiTab-textColorInherit.Mui-selected': {
+      color: '#a62a22',
+    },
+  },
   checkoutContainer: {
     width: '100%',
     backgroundColor: '#4EA23A',
@@ -61,20 +77,12 @@ const useStyles = makeStyles(theme => ({
     fontSize: '14px',
     backgroundColor: '#ECECEC !important',
   },
-  tabs: {
-    backgroundColor: '#ECECEC',
-    marginTop: '50px',
-    borderRadius: '20px 20px 0px 0px',
-    '&.MuiTab-textColorInherit.Mui-selected': {
-      color: '#a62a22',
-    },
-  },
   product: {
     padding: 'none',
   },
   panel: {
     backgroundColor: '#ECECEC !important',
-    height: '45rem',
+    paddingBottom: '65px',
     '&.MuiBox-root-15': {
       padding: '0',
     },
@@ -88,7 +96,7 @@ const useStyles = makeStyles(theme => ({
   orderBtnContainer: {
     position: 'fixed',
     justifyContent: 'center',
-    bottom: 42,
+    bottom: 20,
   },
   total: {
     color: 'white',
@@ -202,59 +210,61 @@ const ItemDetails = props => {
           companyId={props.match.params.id}
         ></RedeemForm>
       ) : (
-        <div className={classes.root}>
-          <LogoInfo menuList={menuList} tableNumber={query.get('table_no')} />
-          <Tabs
-            className={classes.tabs}
-            value={value}
-            onChange={handleChange}
-            variant="scrollable"
-            scrollButtons="off"
-            aria-label="scrollable prevent tabs example"
-          >
-            {menuList &&
-              menuList.data &&
-              menuList.data.menu.map((menuData, index) => (
-                <Tab label={menuData.category_name} {...a11yProps(index)} key={index} />
-              ))}
-          </Tabs>
-          {menuList &&
-            menuList.data &&
-            menuList.data.menu.map((menuData, menuIndex) => (
-              <TabPanel className={classes.panel} key={menuIndex} value={value} index={menuIndex}>
-                {menuData.products.map((product, index) => (
-                  <ProductList
-                    key={index}
-                    className={classes.product}
-                    product={product}
-                    menuIndex={menuIndex}
-                    index={index}
-                    itemTotal={itemTotal}
-                    addItem={addItem}
-                    removeItem={removeItem}
-                  />
-                ))}
-                <Collapse in={totalPrice > 0} className={classes.Collapse}>
-                  <div className={classes.checkoutContainer}>
-                    <div>
-                      <Typography className={classes.total}>Total</Typography>
+          <div className={classes.root}>
+            <LogoInfo menuList={menuList} tableNumber={query.get('table_no')} />
+            <div className={classes.secondRoot}>
+              <Tabs
+                className={classes.tabs}
+                value={value}
+                onChange={handleChange}
+                variant="scrollable"
+                scrollButtons="off"
+                aria-label="scrollable prevent tabs example"
+              >
+                {menuList &&
+                  menuList.data &&
+                  menuList.data.menu.map((menuData, index) => (
+                    <Tab label={menuData.category_name} {...a11yProps(index)} key={index} />
+                  ))}
+              </Tabs>
+              {menuList &&
+                menuList.data &&
+                menuList.data.menu.map((menuData, menuIndex) => (
+                  <TabPanel className={classes.panel} key={menuIndex} value={value} index={menuIndex}>
+                    {menuData.products.map((product, index) => (
+                      <ProductList
+                        key={index}
+                        className={classes.product}
+                        product={product}
+                        menuIndex={menuIndex}
+                        index={index}
+                        itemTotal={itemTotal}
+                        addItem={addItem}
+                        removeItem={removeItem}
+                      />
+                    ))}
+                    <Collapse in={totalPrice > 0} className={classes.Collapse}>
+                      <div className={classes.checkoutContainer}>
+                        <div>
+                          <Typography className={classes.total}>Total</Typography>
 
-                      <span>Rs {totalPrice}</span>
-                    </div>
-                    <Button className={classes.checkout} onClick={() => proceedToRedeem()}>
-                      Check out
+                          <span>Rs {totalPrice}</span>
+                        </div>
+                        <Button className={classes.checkout} onClick={() => proceedToRedeem()}>
+                          Check out
                     </Button>{' '}
-                  </div>
-                </Collapse>
-              </TabPanel>
-            ))}
-          <Grid container className={classes.orderBtnContainer}>
-            <Button className={classes.orderBtn} onClick={() => proceedToRedeem()}>
-              View Order
+                      </div>
+                    </Collapse>
+                  </TabPanel>
+                ))}
+            </div>
+            <Grid container className={classes.orderBtnContainer}>
+              <Button className={classes.orderBtn} onClick={() => proceedToRedeem()}>
+                View Order
             </Button>
-          </Grid>
-        </div>
-      )}
+            </Grid>
+          </div>
+        )}
     </div>
   );
 };

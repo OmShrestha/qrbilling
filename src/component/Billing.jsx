@@ -42,11 +42,11 @@ const useStyles = makeStyles(theme => ({
   order: {
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'center',
     width: '100%',
     backgroundColor: 'white',
-    padding: '16px',
+    padding: '13px 16px',
   },
-
   confirm: {
     backgroundColor: '#a62a22',
     color: 'white',
@@ -91,15 +91,19 @@ const useStyles = makeStyles(theme => ({
   },
   AddItemTxt: {
     fontSize: '12px',
+    textTransform: 'uppercase'
   },
   productName: {
     fontWeight: 'bold',
     fontSize: '14px',
+    textTransform: 'capitalize'
   },
-
   buttons: {
     border: '1px solid black',
     borderRadius: '10px',
+    '& .MuiButton-root':{
+      minWidth: '45px'
+    }
   },
   second: {
     backgroundColor: '#FFFFFF',
@@ -112,17 +116,19 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 'bold',
     fontFamily: 'SF Pro Display Regular',
     fontSize: '14px',
-    padding: '16px',
+    padding: '16px 16px 8px',
+    textTransform: 'uppercase'
   },
   billing: {
     display: 'flex',
     justifyContent: 'space-between',
-    padding: '16px',
+    padding: '5px 16px',
     fontSize: '12px',
     textTransform: 'uppercase',
   },
   dot: {
     border: '1px dashed #707070',
+    margin: '5px 0 -5px'
   },
   coupon: {
     backgroundColor: '#FFFFFF',
@@ -185,13 +191,19 @@ const useStyles = makeStyles(theme => ({
   },
   divider: {
     border: '1px solid #D6D6D6',
-    width: '327px',
+    width: '99%',
     height: '0px',
   },
   cNd: {
     fontFamily: 'SF Pro Display Semibold',
     fontSize: '14px',
   },
+  orderList:{
+    // display: 'none',
+    '&.MuiAccordion-root.Mui-expanded':{
+      marginTop: 0
+    }
+  }
 }));
 
 function getSteps() {
@@ -383,7 +395,7 @@ const Billing = props => {
               Add More Items +
             </Typography>
           </div>
-          <Accordion square expanded={expanded === 'panel1'} onChange={handleAcordion('panel1')}>
+          <Accordion square expanded={expanded === 'panel1'} onChange={handleAcordion('panel1')} className={classes.orderList}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <div className={classes.processingTxt}>
                 <Typography>Previous Order</Typography>

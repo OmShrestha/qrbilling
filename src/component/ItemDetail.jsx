@@ -66,10 +66,15 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#4EA23A',
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'center',
     position: 'sticky',
-    padding: '8px 16px',
-    marginTop: '10px',
+    padding: '9px 20px',
     bottom: 0,
+  },
+  totalPrice:{
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 700
   },
   checkout: {
     border: '1px solid black',
@@ -100,6 +105,8 @@ const useStyles = makeStyles(theme => ({
   },
   total: {
     color: 'white',
+    fontSize: '14px',
+    lineHeight: '14px'
   },
   viewTxt: {
     color: '#273238',
@@ -247,8 +254,7 @@ const ItemDetails = props => {
                       <div className={classes.checkoutContainer}>
                         <div>
                           <Typography className={classes.total}>Total</Typography>
-
-                          <span>Rs {totalPrice}</span>
+                          <span className={classes.totalPrice}>Rs {totalPrice}</span>
                         </div>
                         <Button className={classes.checkout} onClick={() => proceedToRedeem()}>
                           Check out

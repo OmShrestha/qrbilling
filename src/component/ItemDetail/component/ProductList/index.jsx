@@ -16,6 +16,9 @@ const useStyles = makeStyles({
     border: '1px solid black',
     borderRadius: '10px',
     fontFamily: 'SF Pro Display',
+    '& .MuiButton-root':{
+      minWidth: '45px'
+    }
   },
   addOrder: {
     border: '1px solid #707070',

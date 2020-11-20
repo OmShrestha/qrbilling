@@ -11,9 +11,20 @@ const Bill = props => {
           <div>Sub Total</div>
           <div className={classes.price}>
             Rs.
-            {(billingInfo.data && billingInfo.data.service_charge) || totalPrice}
+            {(billingInfo.data && billingInfo.data.total) + (billingInfo.data && billingInfo.data.discount_amount) ||
+              totalPrice}
           </div>
         </div>
+        {billingInfo.data && billingInfo.data.discount_amount > 0 && (
+          <div className={classes.billing}>
+            <div>Discount</div>
+            <div className={classes.price}>
+              Rs.
+              {(billingInfo.data && billingInfo.data.discount_amount && billingInfo.data.discount_amount.toFixed(2)) ||
+                0}
+            </div>
+          </div>
+        )}
         <div container className={classes.billing}>
           <div>Restaurant service charge</div>
           <div className={classes.price}>
@@ -28,18 +39,10 @@ const Bill = props => {
             {(billingInfo.data && billingInfo.data.taxed_amount.toFixed(2)) || taxCharge.toFixed(2)}
           </div>
         </div>
-        {billingInfo.discount && (
-          <div className={classes.billing}>
-            <div>Discount</div>
-            <div className={classes.price}>
-              Rs.
-              {(billingInfo.data && billingInfo.data.discount && billingInfo.data.discount.toFixed(2)) || 0}
-            </div>
-          </div>
-        )}
+
         <div className={classes.dot} />
         <div className={classes.total}>
-          <div>Total</div>
+          <div>Grand Total</div>
           <div className={classes.price}>
             Rs.
             {(billingInfo.data && billingInfo.data.grand_total) || grandTotal.toFixed(2)}

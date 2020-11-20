@@ -143,13 +143,14 @@ const ItemDetails = props => {
     fetch(API_BASE + 'company/asset/order/create', requestOptions)
       .then(response => response.json())
       .then(data => setOrderSaved({ postId: data.id }));
-    console.log(orderSaved, 'hehe');
   }
 
-  const addItem = (menuIndex, index, price, itemName) => {
+  const addItem = (menuIndex, index, price, itemName, id, productCode) => {
     let newData = {
       ...itemTotal,
       [menuIndex + index]: {
+        id: id,
+        productCode: productCode,
         name: itemName,
         perPlate: price,
         number:
@@ -165,11 +166,13 @@ const ItemDetails = props => {
     setItemTotal(newData);
   };
 
-  const removeItem = (menuIndex, index, price, itemName) => {
+  const removeItem = (menuIndex, index, price, itemName, id, productCode) => {
     if (itemTotal[menuIndex + index] && itemTotal[menuIndex + index].number > 0) {
       let newData = {
         ...itemTotal,
         [menuIndex + index]: {
+          id: id,
+          productCode: productCode,
           name: itemName,
           perPlate: price,
           number:
@@ -182,7 +185,11 @@ const ItemDetails = props => {
               : (0 - 1) * price,
         },
       };
-      setItemTotal(newData);
+      if (itemTotal[menuIndex + index].number - 1 == 0) {
+        setItemTotal(newData);
+      } else {
+        setItemTotal(newData);
+      }
     }
   };
   async function fetchData() {

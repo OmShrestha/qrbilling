@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="187" height="51" viewBox="0 0 187 51">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #a62a22;
+      }
+
+      .cls-2 {
+        fill: #fff;
+        font-size: 12px;
+        font-family: SFProDisplay-Semibold, SF Pro Display;
+        font-weight: 600;
+      }
+    </style>
+  </defs>
+  <g id="Group_161" data-name="Group 161" transform="translate(-188 -623)">
+    <path id="Rectangle_1928" data-name="Rectangle 1928" class="cls-1" d="M11,0H187a0,0,0,0,1,0,0V51a0,0,0,0,1,0,0H11A11,11,0,0,1,0,40V11A11,11,0,0,1,11,0Z" transform="translate(188 623)"/>
+    <text id="Get_upto_30_discount_on_this_order" data-name="Get upto 30% discount
+on this order" class="cls-2" transform="translate(278 646)"><tspan x="-72.788" y="0">GET UPTO 30% DISCOUNT</tspan><tspan x="-43.717" y="14">ON THIS ORDER</tspan></text>
+  </g>
+</svg>

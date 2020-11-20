@@ -1,12 +1,12 @@
-import {Button, makeStyles, Typography} from '@material-ui/core';
-import React, {useEffect, useState} from 'react';
+import { Button, makeStyles, Typography } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
 import LogoInfo from './LogoInfo';
-import {API_BASE} from '../Constant';
+import { API_BASE } from '../Constant';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     backgroundImage: `url("https://www.scandichotels.com/imagevault/publishedmedia/qn6infvg30381stkubky/scandic-sundsvall-city-restaurant-verket-10.jpg")`,
     fontFamily: 'SF Pro Display Regular',
@@ -91,37 +91,19 @@ function getSteps() {
   return ['QR CODE', 'ORDER', 'CONFIRM', 'COMPLETE'];
 }
 
-const Success = ({props}) => {
+const Success = ({ props }) => {
   const classes = useStyles();
   const [menuList, setMenuList] = useState({});
   const [hasError, setErrors] = useState(false);
   const [activeStep, setActiveStep] = useState(+4);
   const steps = getSteps();
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  async function fetchData() {
-    const res = await fetch(
-      API_BASE + 'company/af174b04-b495-47c1-bc32-c0dff7170c34/menu'
-    );
-    res
-      .json()
-      .then((res) => setMenuList(res))
-      .catch((err) => setErrors(err));
-  }
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   return (
     <div className={classes.root}>
       <LogoInfo menuList={menuList} props={props} />
       <div className={classes.secondRoot}>
         <Stepper activeStep={activeStep} className={classes.stepper}>
-          {steps.map((label) => (
+          {steps.map(label => (
             <Step key={label}>
               <StepLabel className={classes.steps}>{label}</StepLabel>
             </Step>

@@ -18,6 +18,11 @@ const useStyles = makeStyles({
     fontFamily: 'SF Pro Display',
     '& .MuiButton-root':{
       minWidth: '45px'
+    },
+    '& button':{
+      '&:hover, &:focus':{
+        outline: 'none',
+      }
     }
   },
   addOrder: {
@@ -27,6 +32,10 @@ const useStyles = makeStyles({
     backgroundColor: '#fff',
     fontFamily: 'SF Pro Display',
     color: '#8D8E94',
+    '&:hover, &:focus':{
+      outline: 'none',
+      backgroundColor: '#fff',
+    }
   },
   productName: {
     fontSize: '16px',

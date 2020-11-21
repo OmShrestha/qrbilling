@@ -97,6 +97,10 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#A62A22',
     borderRadius: '10px',
     padding: '8px 16px',
+    '&:hover, &:focus':{
+      outline: 'none',
+      backgroundColor: '#A62A22',
+    }
   },
   orderBtnContainer: {
     position: 'fixed',

@@ -93,13 +93,11 @@ const useStyles = makeStyles(theme => ({
   detailListItem: {
     padding: '10px 0',
     display: 'flex',
-    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     lineHeight: '1',
     '&:first-child': {
       paddingTop: 0
-    },
-    '& span': {
-      fontSize: 12
     }
   },
   productName: {

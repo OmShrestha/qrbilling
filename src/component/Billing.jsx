@@ -39,27 +39,6 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '20px 20px 0px 0px',
     backgroundColor: '#ECECEC',
   },
-  order: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    backgroundColor: 'white',
-    padding: '13px 16px',
-  },
-  confirm: {
-    backgroundColor: '#a62a22',
-    color: 'white',
-    margin: '25px',
-    borderRadius: '5px',
-    width: '80%',
-  },
-  apply: {
-    backgroundColor: '#a62a22',
-    color: 'white',
-    margin: '25px',
-    borderRadius: '5px',
-  },
   stepper: {
     backgroundColor: '#ECECEC',
     borderRadius: '20px 20px 0px 0px',
@@ -93,10 +72,48 @@ const useStyles = makeStyles(theme => ({
     fontSize: '12px',
     textTransform: 'uppercase'
   },
+  orderList: {
+    '& .MuiAccordionSummary-content.Mui-expanded': {
+      margin: '10px 0'
+    },
+    '& .MuiIconButton-root': {
+      padding: 10
+    }
+  },
+  processingTxt: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+    fontFamily: 'SF Pro Display Regular',
+  },
+  detailList: {
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  detailListItem: {
+    padding: '10px 0',
+    display: 'flex',
+    flexDirection: 'column',
+    lineHeight: '1',
+    '&:first-child': {
+      paddingTop: 0
+    },
+    '& span': {
+      fontSize: 12
+    }
+  },
   productName: {
     fontWeight: 'bold',
     fontSize: '14px',
     textTransform: 'capitalize'
+  },
+  order: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    backgroundColor: 'white',
+    padding: '13px 16px',
   },
   buttons: {
     border: '1px solid black',
@@ -105,70 +122,44 @@ const useStyles = makeStyles(theme => ({
       minWidth: '45px'
     }
   },
-  second: {
-    backgroundColor: '#FFFFFF',
+  divider: {
+    border: '1px solid #D6D6D6',
+    width: '99%',
+    height: '0px',
   },
-  bill: {
-    backgroundColor: '#FFFFFF',
-    fontFamily: 'SF Pro Display Regular',
-  },
-  billTxt: {
-    fontWeight: 'bold',
-    fontFamily: 'SF Pro Display Regular',
-    fontSize: '14px',
-    padding: '16px 16px 8px',
-    textTransform: 'uppercase'
-  },
-  billing: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    padding: '5px 16px',
-    fontSize: '12px',
-    textTransform: 'uppercase',
-  },
-  dot: {
-    border: '1px dashed #707070',
-    margin: '5px 0 -5px'
-  },
-  coupon: {
+  bottomContainer: {
     backgroundColor: '#FFFFFF',
     padding: '16px',
     marginTop: '16px',
-  },
-  total: {
     display: 'flex',
-    justifyContent: 'space-between',
-    padding: '16px',
-    fontSize: '12px',
-    textTransform: 'uppercase',
-    color: '#4EA23A',
+    flexDirection: 'column'
   },
-  btnGrid: {
-    width: '100%',
-    textAlign: 'center',
-    backgroundColor: '#ECECEC',
+  bottomContainerTitle: {
+    fontSize: 16,
+    fontWeight: 700,
+    marginBottom: 8
   },
-  txtField: {
+  inputField: {
     border: '1px solid #707070',
-    width: '65%',
     borderRadius: '10px',
     height: 30,
-    '&:focus':{
+    margin: '6px 0',
+    '&:focus': {
       outline: 'none'
     },
-    '&:hover':{
+    '&:hover': {
       outline: 'none'
     },
     '& .MuiInputBase-input': {
       padding: '0 14px',
       height: 30
     },
-    '& .MuiOutlinedInput-root':{
+    '& .MuiOutlinedInput-root': {
       height: 30,
-      '&:focus':{
+      '&:focus': {
         outline: 'none'
       },
-      '&:hover':{
+      '&:hover': {
         outline: 'none'
       }
     },
@@ -188,6 +179,41 @@ const useStyles = makeStyles(theme => ({
       borderColor: 'transparent'
     }
   },
+  errorText:{
+    color: '#A62A22',
+    fontSize: 13
+  },
+  btnGreen: {
+    backgroundColor: '#4EA23A',
+    color: 'white',
+    borderRadius: '5px',
+    padding: '3px 14px',
+    margin: '6px 0',
+    '&:hover, &:focus': {
+      outline: 'none',
+      backgroundColor: '#4EA23A',
+    }
+  },
+  btnGrid: {
+    width: '100%',
+    textAlign: 'center',
+    padding: '16px',
+    backgroundColor: '#ECECEC',
+  },
+  btnRed:{
+    backgroundColor: '#a62a22',
+    color: 'white',
+    width: '100%',
+    borderRadius: '5px',
+    '&:hover, &:focus': {
+      outline: 'none',
+      backgroundColor: '#a62a22',
+    }
+  },
+
+  second: {
+    backgroundColor: '#FFFFFF',
+  },
   select: {
     width: '75%',
     border: '1px solid #D0D3D5',
@@ -196,73 +222,6 @@ const useStyles = makeStyles(theme => ({
       borderBottom: 'none',
     },
   },
-  textfield: {
-    padding: '16px',
-    display: 'flex',
-    justifyContent: 'space-between',
-  },
-  processingTxt: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    width: '100%',
-    fontFamily: 'SF Pro Display Regular',
-  },
-  input: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    fontSize: 15,
-    '&:focus':{
-      outline: 'none'
-    }
-  },
-  continue: {
-    backgroundColor: '#4EA23A',
-    color: 'white',
-    borderRadius: '5px',
-    padding: '3px 14px',
-    '&:hover, &:focus':{
-      outline: 'none',
-      backgroundColor: '#4EA23A',
-    }
-  },
-  divider: {
-    border: '1px solid #D6D6D6',
-    width: '99%',
-    height: '0px',
-  },
-  cNd: {
-    fontFamily: 'SF Pro Display Semibold',
-    fontSize: '14px',
-  },
-  orderList: {
-    '& .MuiAccordionSummary-content.Mui-expanded': {
-      margin: '10px 0'
-    },
-    '& .MuiIconButton-root':{
-      padding: 10
-    }
-  },
-  couponDiscountTitle: {
-    fontSize: 16,
-    fontWeight: 700,
-    marginBottom: 8
-  },
-  detailList:{
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  detailListItem: {
-    padding: '10px 0',
-    display: 'flex',
-    flexDirection: 'column',
-    lineHeight: '1',
-    '&:first-child':{
-      paddingTop: 0
-    },
-    '& span':{
-      fontSize: 12
-    }
-  }
 }));
 
 function getSteps() {
@@ -518,7 +477,6 @@ const Billing = props => {
               ),
           )}
           <Bill
-            classes={classes}
             billingInfo={billingInfo}
             totalPrice={totalPrice}
             serviceCharge={serviceCharge}
@@ -528,64 +486,62 @@ const Billing = props => {
         </div>
 
         {Object.keys(billingInfo).length == 0 && (
-          <Grid className={classes.coupon}>
+          <Grid className={classes.bottomContainer}>
             {Object.keys(couponeList).length == 0 && (
-              <div className={classes.couponDiscount}>
-                <Typography component="h5" className={classes.couponDiscountTitle}>Coupon & Discount</Typography>
-                <div className={classes.input}>
-                  <TextField
-                    variant="outlined"
-                    placeholder="Phone No."
-                    className={classes.txtField}
-                    name="phoneNumber"
-                    value={(userData && userData.phoneNumber) || ''}
-                    onChange={e => handleChange(e, userData)}
-                  />
-                  {Object.keys(couponeList).length == 0 && (
-                    <Button variant="contained" className={classes.continue} onClick={() => fetchCouponeList()}>
-                      Continue
-                    </Button>
-                  )}
-                </div>
+              <>
+                <Typography component="h5" className={classes.bottomContainerTitle}>Coupon & Discount</Typography>
+                <TextField
+                  variant="outlined"
+                  placeholder="Phone No."
+                  className={classes.inputField}
+                  name="phoneNumber"
+                  value={(userData && userData.phoneNumber) || ''}
+                  onChange={e => handleChange(e, userData)}
+                />
                 {userDataError && userDataError.phoneNumber && (
-                  <p className="danger" style={{ color: 'red' }}>
+                  <p className={classes.errorText}>
                     {userDataError.phoneNumber}
                   </p>
                 )}
-              </div>
+                {Object.keys(couponeList).length == 0 && (
+                  <Button variant="contained" className={classes.btnGreen} onClick={() => fetchCouponeList()}>
+                    Continue
+                  </Button>
+                )}
+              </>
             )}
             {couponeList && couponeList.data && !couponeList.data.voucher && (
-              <div>
-                <Typography>Register For Coupon</Typography>
+              <>
+                <Typography component="h5" className={classes.bottomContainerTitle}>Register For Coupon</Typography>
                 <TextField
                   variant="outlined"
                   placeholder="Full Name"
-                  className={classes.txtField}
+                  className={classes.inputField}
                   name="fullName"
                   value={(userData && userData.fullName) || ''}
                   onChange={e => handleChange(e, userData)}
                 />
                 {userDataError && userDataError.fullName && (
-                  <p className="danger" style={{ color: 'red' }}>
+                  <p className={classes.errorText}>
                     {userDataError.fullName}
                   </p>
                 )}
                 <TextField
                   variant="outlined"
                   placeholder="Email Address"
-                  className={classes.txtField}
+                  className={classes.inputField}
                   name="email"
                   value={(userData && userData.email) || ''}
                   onChange={e => handleChange(e, userData)}
                 />
-                <Button variant="contained" onClick={() => verifyOrder()}>
+                <Button variant="contained" onClick={() => verifyOrder()} className={classes.btnGreen}>
                   Continue
                 </Button>
-              </div>
+              </>
             )}
             {couponeList && couponeList.data && couponeList.data.voucher && (
-              <div>
-                <Typography>Coupon & Discount</Typography>
+              <>
+                <Typography component="h5" className={classes.bottomContainerTitle}>Coupon & Discount</Typography>
                 <Select
                   name="couponeId"
                   native
@@ -604,7 +560,7 @@ const Billing = props => {
                 <Button variant="contained" onClick={() => verifyOrder()}>
                   Apply
                 </Button>
-              </div>
+              </>
             )}
 
             {/* {Object.keys(couponeList).length != 0 && (
@@ -616,7 +572,7 @@ const Billing = props => {
         )}
         {Object.keys(billingInfo).length != 0 && (
           <Grid className={classes.btnGrid}>
-            <Button variant="contained" className={classes.confirm} onClick={() => createOrder()}>
+            <Button variant="contained" className={classes.btnRed} onClick={() => createOrder()}>
               {activeStep === steps.length - 1 ? 'Finish' : 'Confirm Order'}
             </Button>
           </Grid>

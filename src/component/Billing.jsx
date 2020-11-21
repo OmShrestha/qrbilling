@@ -101,7 +101,7 @@ const useStyles = makeStyles(theme => ({
   buttons: {
     border: '1px solid black',
     borderRadius: '10px',
-    '& .MuiButton-root':{
+    '& .MuiButton-root': {
       minWidth: '45px'
     }
   },
@@ -149,13 +149,44 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#ECECEC',
   },
   txtField: {
-    border: '1px solid #D0D3D5',
-    width: '75%',
+    border: '1px solid #707070',
+    width: '65%',
     borderRadius: '10px',
-
-    '& .MuiInputBase-input': {
-      padding: '10px 14px',
+    height: 30,
+    '&:focus':{
+      outline: 'none'
     },
+    '&:hover':{
+      outline: 'none'
+    },
+    '& .MuiInputBase-input': {
+      padding: '0 14px',
+      height: 30
+    },
+    '& .MuiOutlinedInput-root':{
+      height: 30,
+      '&:focus':{
+        outline: 'none'
+      },
+      '&:hover':{
+        outline: 'none'
+      }
+    },
+    '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+      borderRadius: 10
+    },
+    '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline:focus': {
+      outline: 'none'
+    },
+    '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline:hover': {
+      outline: 'none'
+    },
+    '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+      borderColor: 'transparent'
+    },
+    '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+      borderColor: 'transparent'
+    }
   },
   select: {
     width: '75%',
@@ -170,10 +201,6 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'space-between',
   },
-  continue: {
-    backgroundColor: '#4EA23A',
-    color: 'white',
-  },
   processingTxt: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -183,11 +210,20 @@ const useStyles = makeStyles(theme => ({
   input: {
     display: 'flex',
     justifyContent: 'space-between',
+    fontSize: 15,
+    '&:focus':{
+      outline: 'none'
+    }
   },
   continue: {
     backgroundColor: '#4EA23A',
     color: 'white',
     borderRadius: '5px',
+    padding: '3px 14px',
+    '&:hover, &:focus':{
+      outline: 'none',
+      backgroundColor: '#4EA23A',
+    }
   },
   divider: {
     border: '1px solid #D6D6D6',
@@ -198,10 +234,33 @@ const useStyles = makeStyles(theme => ({
     fontFamily: 'SF Pro Display Semibold',
     fontSize: '14px',
   },
-  orderList:{
-    // display: 'none',
-    '&.MuiAccordion-root.Mui-expanded':{
-      marginTop: 0
+  orderList: {
+    '& .MuiAccordionSummary-content.Mui-expanded': {
+      margin: '10px 0'
+    },
+    '& .MuiIconButton-root':{
+      padding: 10
+    }
+  },
+  couponDiscountTitle: {
+    fontSize: 16,
+    fontWeight: 700,
+    marginBottom: 8
+  },
+  detailList:{
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  detailListItem: {
+    padding: '10px 0',
+    display: 'flex',
+    flexDirection: 'column',
+    lineHeight: '1',
+    '&:first-child':{
+      paddingTop: 0
+    },
+    '& span':{
+      fontSize: 12
     }
   }
 }));
@@ -261,7 +320,7 @@ const Billing = props => {
       };
       fetch(API_BASE + `company/${companyId}/order/${menuList.data.order.id}`, requestOptions)
         .then(response => response.json())
-        .then(resCoupone => (resCoupone.success ? history.push('/Success') : () => {}))
+        .then(resCoupone => (resCoupone.success ? history.push('/Success') : () => { }))
         .catch(err => setErrors(err));
     } else {
       const billingData = billingInfo.data;
@@ -276,7 +335,7 @@ const Billing = props => {
       };
       fetch(API_BASE + `company/${companyId}/order`, requestOptions)
         .then(response => response.json())
-        .then(resCoupone => (resCoupone.success ? history.push('/Success') : () => {}))
+        .then(resCoupone => (resCoupone.success ? history.push('/Success') : () => { }))
         .catch(err => setErrors(err));
     }
   }
@@ -402,18 +461,16 @@ const Billing = props => {
                 <Typography>Processing</Typography>
               </div>
             </AccordionSummary>
-            <AccordionDetails>
-              <Typography className={classes.cNd}>
-                {menuList.data.order &&
-                  menuList.data.order.order_lines.map((item, index) => (
-                    <div>
-                      <Typography className={classes.productName} key={index}>
-                        {item.product_name}
-                      </Typography>
-                      <span>{item.state}</span>
-                    </div>
-                  ))}
-              </Typography>
+            <AccordionDetails className={classes.detailList}>
+              {menuList.data.order &&
+                menuList.data.order.order_lines.map((item, index) => (
+                  <div className={classes.detailListItem}>
+                    <Typography className={classes.productName} key={index}>
+                      {item.product_name}
+                    </Typography>
+                    <span>{item.state}</span>
+                  </div>
+                ))}
             </AccordionDetails>
           </Accordion>
 
@@ -473,8 +530,8 @@ const Billing = props => {
         {Object.keys(billingInfo).length == 0 && (
           <Grid className={classes.coupon}>
             {Object.keys(couponeList).length == 0 && (
-              <div>
-                <Typography className={classes.cNd}>Coupon & Discount</Typography>
+              <div className={classes.couponDiscount}>
+                <Typography component="h5" className={classes.couponDiscountTitle}>Coupon & Discount</Typography>
                 <div className={classes.input}>
                   <TextField
                     variant="outlined"
@@ -484,17 +541,17 @@ const Billing = props => {
                     value={(userData && userData.phoneNumber) || ''}
                     onChange={e => handleChange(e, userData)}
                   />
-                  {userDataError && userDataError.phoneNumber && (
-                    <p className="danger" style={{ color: 'red' }}>
-                      {userDataError.phoneNumber}
-                    </p>
-                  )}
                   {Object.keys(couponeList).length == 0 && (
                     <Button variant="contained" className={classes.continue} onClick={() => fetchCouponeList()}>
                       Continue
                     </Button>
                   )}
                 </div>
+                {userDataError && userDataError.phoneNumber && (
+                  <p className="danger" style={{ color: 'red' }}>
+                    {userDataError.phoneNumber}
+                  </p>
+                )}
               </div>
             )}
             {couponeList && couponeList.data && !couponeList.data.voucher && (

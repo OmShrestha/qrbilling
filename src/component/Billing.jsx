@@ -230,6 +230,7 @@ function getSteps() {
 
 const Billing = props => {
   const { itemTotal, menuList, tableNumber, companyId } = props;
+  console.log(itemTotal, 'test');
   const classes = useStyles();
   const [couponeList, setCouponeList] = useState({});
   const [billingInfo, setBillingInfo] = useState({});
@@ -267,7 +268,8 @@ const Billing = props => {
 
   async function createOrder() {
     if (menuList.data.order && menuList.data.order.order_lines) {
-      const billingData = billingInfo.data;
+      let billingData = billingInfo.data;
+      billingData.order_lines = menuList.data.order.order_lines.concat(billingData.order_lines);
       const requestOptions = {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -275,6 +277,7 @@ const Billing = props => {
           ...billingData,
           company: companyId,
           asset: tableNumber,
+          id: menuList.data.order.id,
         }),
       };
       fetch(API_BASE + `company/${companyId}/order/${menuList.data.order.id}`, requestOptions)
@@ -308,15 +311,59 @@ const Billing = props => {
       Object.keys(itemTotal).map(data => {
         let newObj = {
           id: null,
-          product: '056d497c-6dde-4874-935e-3f91c17a1a06',
+          product: itemTotal[data].id,
           product_name: itemTotal[data].name,
-          product_code: null,
+          product_code: itemTotal[data].productCode,
           rate: itemTotal[data].perPlate,
           quantity: itemTotal[data].number,
           total: itemTotal[data].total,
           state: 'New',
           company: companyId,
-          order: '509b9e29-664f-44b8-a984-62235a8bbdca',
+          order: (menuList.data.order && menuList.data.order.id) || null,
+        };
+        orderLine.push(newObj);
+      });
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          company: companyId,
+          asset: tableNumber,
+          user: couponeList.data.user || null,
+          name: (userData && userData.fullName) || couponeList.data.name || null,
+          phone_number: userData && userData.phoneNumber,
+          email: (userData && userData.email) || couponeList.data.email || null,
+          voucher: (userData && userData.couponeId) || null,
+          tax: 13.0,
+          bill: null,
+          order_lines: orderLine,
+        }),
+      };
+      fetch(API_BASE + 'company/af174b04-b495-47c1-bc32-c0dff7170c34/order/verify', requestOptions)
+        .then(response => response.json())
+        .then(resCoupone => setBillingInfo(resCoupone))
+        .catch(err => setErrors(err));
+    }
+  }
+
+  async function verifyOrderApply(skip) {
+    const error = {};
+    setUserDataError(error);
+    if (!skip && Object.keys(error).length > 0) {
+    } else {
+      let orderLine = [];
+      Object.keys(itemTotal).map(data => {
+        let newObj = {
+          id: null,
+          product: itemTotal[data].id,
+          product_name: itemTotal[data].name,
+          product_code: itemTotal[data].productCode,
+          rate: itemTotal[data].perPlate,
+          quantity: itemTotal[data].number,
+          total: itemTotal[data].total,
+          state: 'New',
+          company: companyId,
+          order: (menuList.data.order && menuList.data.order.id) || null,
         };
         orderLine.push(newObj);
       });
@@ -369,7 +416,7 @@ const Billing = props => {
   const validatePhoneNumber = () => {
     const errors = {};
     if (!userData || !userData.phoneNumber) errors.phoneNumber = 'Phone is required';
-    else if (userData.phoneNumber.length < 8) errors.phoneNumber = 'Not valid';
+    else if (!userData.phoneNumber.match(/^[0-9]{8,15}$/)) errors.phoneNumber = 'Not valid';
     return errors;
   };
   const validateUserInfo = () => {
@@ -377,9 +424,10 @@ const Billing = props => {
     if (!userData || !userData.fullName) {
       errors.fullName = 'Name is required';
     }
+    if (userData.email && !userData.email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/))
+      errors.email = 'Not valid';
     return errors;
   };
-  console.log(userData, 'response', couponeList);
 
   const serviceCharge = totalPrice * (menuList.data.service_charge / 100) || 0;
   const taxCharge = totalPrice * (menuList.data.tax / 100) || 0;
@@ -449,6 +497,8 @@ const Billing = props => {
                                 '',
                                 props.itemTotal[menuData].perPlate,
                                 props.itemTotal[menuData].name,
+                                props.itemTotal[menuData].id,
+                                props.itemTotal[menuData].product_code,
                               )
                             }
                           >
@@ -462,6 +512,8 @@ const Billing = props => {
                                 '',
                                 props.itemTotal[menuData].perPlate,
                                 props.itemTotal[menuData].name,
+                                props.itemTotal[menuData].id,
+                                props.itemTotal[menuData].product_code,
                               )
                             }
                           >
@@ -534,6 +586,11 @@ const Billing = props => {
                   value={(userData && userData.email) || ''}
                   onChange={e => handleChange(e, userData)}
                 />
+                {userDataError && userDataError.email && (
+                  <p className="danger" style={{ color: 'red' }}>
+                    {userDataError.email}
+                  </p>
+                )}
                 <Button variant="contained" onClick={() => verifyOrder()} className={classes.btnGreen}>
                   Continue
                 </Button>
@@ -557,7 +614,7 @@ const Billing = props => {
                     </option>
                   ))}
                 </Select>
-                <Button variant="contained" onClick={() => verifyOrder()}>
+                <Button variant="contained" onClick={() => verifyOrderApply()}>
                   Apply
                 </Button>
               </>

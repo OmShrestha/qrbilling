@@ -5,44 +5,62 @@ import clsx from 'clsx';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
 const useStyles = makeStyles(theme => ({
-  logo: {
-    backgroundColor: '#F8F9F9',
-    borderRadius: '5px',
-    width: '25%',
-  },
-  info: {
-    backgroundColor: '#F8F9F9',
-    borderRadius: '5px',
-    width: '74%',
-  },
-  img: {
-    width: '100px',
-    height: '100px',
-    objectFit: 'contain',
-  },
-  card: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    padding: '8px 16px',
-  },
-
-  arrow: {
-    margin: '12px 0 0px 17px',
-  },
   back: {
     cursor: 'pointer',
     margin: '8px 16px',
   },
   shape: {
     backgroundColor: 'white',
-    width: 50,
-    height: 50,
+    width: 30,
+    height: 30,
   },
   shapeCircle: {
     borderRadius: '50%',
   },
+  arrow: {
+    margin: '5px 0 0px 10px',
+    fontSize: '1rem'
+  },
+  card: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: '8px 16px 30px',
+    margin: '18px 0 0'
+  },
+  logo: {
+    backgroundColor: '#F8F9F9',
+    borderRadius: '5px',
+    width: '25%',
+    height: '106px',
+    marginRight: '8px'
+  },
+  img: {
+    width: '106px',
+    height: '106px',
+    objectFit: 'cover',
+  },
+  info: {
+    backgroundColor: '#F8F9F9',
+    borderRadius: '5px',
+    width: '72%',
+    height: '106px',
+  },
+  cardContent:{
+    padding: '6px 12px',
+  },
+  resName: {
+    fontSize: '14pt',
+    fontWeight: 'bold',
+    lineHeight: '22px'
+  },
+  tableNumber: {
+    fontSize: '12pt',
+    lineHeight: '22px',
+    marginBottom: '3px'
+  },
   txt: {
-    fontFamily: 'SF Pro Display Regular',
+    fontSize: '12pt',
+    lineHeight: '22px'
   },
 }));
 
@@ -68,14 +86,10 @@ const LogoInfo = ({ menuList, tableNumber }) => {
 
         {menuList && menuList.data && (
           <Card className={classes.info}>
-            <CardContent>
-              <Typography className={classes.txt}>{menuList.data.name}</Typography>
-            </CardContent>
-            <CardContent>
-              <Typography className={classes.txt}>Table No {tableNumber}</Typography>
-            </CardContent>
-            <CardContent>
-              <Typography className={classes.txt}>Description</Typography>
+            <CardContent className={classes.cardContent}>
+              <Typography className={classes.resName}>{menuList.data.name}</Typography>
+              <Typography className={classes.tableNumber}>Table No {tableNumber}</Typography>
+              <Typography className={classes.txt}>Lorem ipsum, dolor sit amet consectetur adipisicing elit...</Typography>
             </CardContent>
           </Card>
         )}

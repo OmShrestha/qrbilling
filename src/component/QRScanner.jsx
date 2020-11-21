@@ -32,6 +32,7 @@ class ScannerQR extends Component {
       width: 300,
       position: 'relative',
     };
+    
 
     return (
       <div>

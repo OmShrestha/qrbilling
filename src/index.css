@@ -1,10 +1,10 @@
 body {
   margin: 0;
-  font-family:  Pro Display Regular;
+  font-family: 'SF Pro Display Regular' !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family:Pro Display Regular;
+  font-family: 'SF Pro Display Regular' !important;
 }

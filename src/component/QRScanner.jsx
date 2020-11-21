@@ -44,7 +44,6 @@ class ScannerQR extends Component {
           onScan={this.handleScan}
           facingMode={'rear'}
         />
-        <p>{this.state.result}</p>
       </div>
     );
   }

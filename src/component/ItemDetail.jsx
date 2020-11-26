@@ -71,10 +71,10 @@ const useStyles = makeStyles(theme => ({
     padding: '9px 20px',
     bottom: 0,
   },
-  totalPrice:{
+  totalPrice: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: 700
+    fontWeight: 700,
   },
   checkout: {
     border: '1px solid black',
@@ -97,10 +97,10 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#A62A22',
     borderRadius: '10px',
     padding: '8px 16px',
-    '&:hover, &:focus':{
+    '&:hover, &:focus': {
       outline: 'none',
       backgroundColor: '#A62A22',
-    }
+    },
   },
   orderBtnContainer: {
     position: 'fixed',
@@ -110,7 +110,7 @@ const useStyles = makeStyles(theme => ({
   total: {
     color: 'white',
     fontSize: '14px',
-    lineHeight: '14px'
+    lineHeight: '14px',
   },
   viewTxt: {
     color: '#273238',
@@ -197,9 +197,7 @@ const ItemDetails = props => {
     }
   };
   async function fetchData() {
-    const res = await fetch(
-      API_BASE + 'company/af174b04-b495-47c1-bc32-c0dff7170c34/menu?asset=' + query.get('table_no'),
-    );
+    const res = await fetch(API_BASE + `company/${props.match.params.id}/menu?asset=` + query.get('table_no'));
     res
       .json()
       .then(res => setMenuList(res))
@@ -228,60 +226,60 @@ const ItemDetails = props => {
           companyId={props.match.params.id}
         ></RedeemForm>
       ) : (
-          <div className={classes.root}>
-            <LogoInfo menuList={menuList} tableNumber={query.get('table_no')} />
-            <div className={classes.secondRoot}>
-              <Tabs
-                className={classes.tabs}
-                value={value}
-                onChange={handleChange}
-                variant="scrollable"
-                scrollButtons="off"
-                aria-label="scrollable prevent tabs example"
-              >
-                {menuList &&
-                  menuList.data &&
-                  menuList.data.menu.map((menuData, index) => (
-                    <Tab label={menuData.category_name} {...a11yProps(index)} key={index} />
-                  ))}
-              </Tabs>
+        <div className={classes.root}>
+          <LogoInfo menuList={menuList} tableNumber={query.get('table_no')} />
+          <div className={classes.secondRoot}>
+            <Tabs
+              className={classes.tabs}
+              value={value}
+              onChange={handleChange}
+              variant="scrollable"
+              scrollButtons="off"
+              aria-label="scrollable prevent tabs example"
+            >
               {menuList &&
                 menuList.data &&
-                menuList.data.menu.map((menuData, menuIndex) => (
-                  <TabPanel className={classes.panel} key={menuIndex} value={value} index={menuIndex}>
-                    {menuData.products.map((product, index) => (
-                      <ProductList
-                        key={index}
-                        className={classes.product}
-                        product={product}
-                        menuIndex={menuIndex}
-                        index={index}
-                        itemTotal={itemTotal}
-                        addItem={addItem}
-                        removeItem={removeItem}
-                      />
-                    ))}
-                    <Collapse in={totalPrice > 0} className={classes.Collapse}>
-                      <div className={classes.checkoutContainer}>
-                        <div>
-                          <Typography className={classes.total}>Total</Typography>
-                          <span className={classes.totalPrice}>Rs {totalPrice}</span>
-                        </div>
-                        <Button className={classes.checkout} onClick={() => proceedToRedeem()}>
-                          Check out
-                    </Button>{' '}
-                      </div>
-                    </Collapse>
-                  </TabPanel>
+                menuList.data.menu.map((menuData, index) => (
+                  <Tab label={menuData.category_name} {...a11yProps(index)} key={index} />
                 ))}
-            </div>
-            <Grid container className={classes.orderBtnContainer}>
-              <Button className={classes.orderBtn} onClick={() => proceedToRedeem()}>
-                View Order
-            </Button>
-            </Grid>
+            </Tabs>
+            {menuList &&
+              menuList.data &&
+              menuList.data.menu.map((menuData, menuIndex) => (
+                <TabPanel className={classes.panel} key={menuIndex} value={value} index={menuIndex}>
+                  {menuData.products.map((product, index) => (
+                    <ProductList
+                      key={index}
+                      className={classes.product}
+                      product={product}
+                      menuIndex={menuIndex}
+                      index={index}
+                      itemTotal={itemTotal}
+                      addItem={addItem}
+                      removeItem={removeItem}
+                    />
+                  ))}
+                  <Collapse in={totalPrice > 0} className={classes.Collapse}>
+                    <div className={classes.checkoutContainer}>
+                      <div>
+                        <Typography className={classes.total}>Total</Typography>
+                        <span className={classes.totalPrice}>Rs {totalPrice}</span>
+                      </div>
+                      <Button className={classes.checkout} onClick={() => proceedToRedeem()}>
+                        Check out
+                      </Button>{' '}
+                    </div>
+                  </Collapse>
+                </TabPanel>
+              ))}
           </div>
-        )}
+          <Grid container className={classes.orderBtnContainer}>
+            <Button className={classes.orderBtn} onClick={() => proceedToRedeem()}>
+              View Order
+            </Button>
+          </Grid>
+        </div>
+      )}
     </div>
   );
 };

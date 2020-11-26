@@ -70,15 +70,15 @@ const useStyles = makeStyles(theme => ({
   },
   AddItemTxt: {
     fontSize: '12px',
-    textTransform: 'uppercase'
+    textTransform: 'uppercase',
   },
   orderList: {
     '& .MuiAccordionSummary-content.Mui-expanded': {
-      margin: '10px 0'
+      margin: '10px 0',
     },
     '& .MuiIconButton-root': {
-      padding: 10
-    }
+      padding: 10,
+    },
   },
   processingTxt: {
     display: 'flex',
@@ -88,7 +88,7 @@ const useStyles = makeStyles(theme => ({
   },
   detailList: {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   detailListItem: {
     padding: '10px 0',
@@ -97,13 +97,13 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     lineHeight: '1',
     '&:first-child': {
-      paddingTop: 0
-    }
+      paddingTop: 0,
+    },
   },
   productName: {
     fontWeight: 'bold',
     fontSize: '14px',
-    textTransform: 'capitalize'
+    textTransform: 'capitalize',
   },
   order: {
     display: 'flex',
@@ -117,8 +117,8 @@ const useStyles = makeStyles(theme => ({
     border: '1px solid black',
     borderRadius: '10px',
     '& .MuiButton-root': {
-      minWidth: '45px'
-    }
+      minWidth: '45px',
+    },
   },
   divider: {
     border: '1px solid #D6D6D6',
@@ -130,12 +130,12 @@ const useStyles = makeStyles(theme => ({
     padding: '16px',
     marginTop: '16px',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   bottomContainerTitle: {
     fontSize: 16,
     fontWeight: 700,
-    marginBottom: 8
+    marginBottom: 8,
   },
   inputField: {
     border: '1px solid #707070',
@@ -143,43 +143,43 @@ const useStyles = makeStyles(theme => ({
     height: 30,
     margin: '6px 0',
     '&:focus': {
-      outline: 'none'
+      outline: 'none',
     },
     '&:hover': {
-      outline: 'none'
+      outline: 'none',
     },
     '& .MuiInputBase-input': {
       padding: '0 14px',
-      height: 30
+      height: 30,
     },
     '& .MuiOutlinedInput-root': {
       height: 30,
       '&:focus': {
-        outline: 'none'
+        outline: 'none',
       },
       '&:hover': {
-        outline: 'none'
-      }
+        outline: 'none',
+      },
     },
     '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
-      borderRadius: 10
+      borderRadius: 10,
     },
     '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline:focus': {
-      outline: 'none'
+      outline: 'none',
     },
     '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline:hover': {
-      outline: 'none'
+      outline: 'none',
     },
     '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-      borderColor: 'transparent'
+      borderColor: 'transparent',
     },
     '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-      borderColor: 'transparent'
-    }
+      borderColor: 'transparent',
+    },
   },
-  errorText:{
+  errorText: {
     color: '#A62A22',
-    fontSize: 13
+    fontSize: 13,
   },
   btnGreen: {
     backgroundColor: '#4EA23A',
@@ -190,7 +190,7 @@ const useStyles = makeStyles(theme => ({
     '&:hover, &:focus': {
       outline: 'none',
       backgroundColor: '#4EA23A',
-    }
+    },
   },
   btnGrid: {
     width: '100%',
@@ -198,7 +198,7 @@ const useStyles = makeStyles(theme => ({
     padding: '16px',
     backgroundColor: '#ECECEC',
   },
-  btnRed:{
+  btnRed: {
     backgroundColor: '#a62a22',
     color: 'white',
     width: '100%',
@@ -206,7 +206,7 @@ const useStyles = makeStyles(theme => ({
     '&:hover, &:focus': {
       outline: 'none',
       backgroundColor: '#a62a22',
-    }
+    },
   },
 
   second: {
@@ -280,7 +280,7 @@ const Billing = props => {
       };
       fetch(API_BASE + `company/${companyId}/order/${menuList.data.order.id}`, requestOptions)
         .then(response => response.json())
-        .then(resCoupone => (resCoupone.success ? history.push('/Success') : () => { }))
+        .then(resCoupone => (resCoupone.success ? history.push('/Success') : () => {}))
         .catch(err => setErrors(err));
     } else {
       const billingData = billingInfo.data;
@@ -295,7 +295,7 @@ const Billing = props => {
       };
       fetch(API_BASE + `company/${companyId}/order`, requestOptions)
         .then(response => response.json())
-        .then(resCoupone => (resCoupone.success ? history.push('/Success') : () => { }))
+        .then(resCoupone => (resCoupone.success ? history.push('/Success') : () => {}))
         .catch(err => setErrors(err));
     }
   }
@@ -459,7 +459,12 @@ const Billing = props => {
               Add More Items +
             </Typography>
           </div>
-          <Accordion square expanded={expanded === 'panel1'} onChange={handleAcordion('panel1')} className={classes.orderList}>
+          <Accordion
+            square
+            expanded={expanded === 'panel1'}
+            onChange={handleAcordion('panel1')}
+            className={classes.orderList}
+          >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <div className={classes.processingTxt}>
                 <Typography>Previous Order</Typography>
@@ -532,6 +537,7 @@ const Billing = props => {
             serviceCharge={serviceCharge}
             taxCharge={taxCharge}
             grandTotal={grandTotal}
+            previousGrandTotal={(menuList.data && menuList.data.order && menuList.data.order.grand_total) || 0}
           />
         </div>
 
@@ -539,7 +545,10 @@ const Billing = props => {
           <Grid className={classes.bottomContainer}>
             {Object.keys(couponeList).length == 0 && (
               <>
-                <Typography component="h5" className={classes.bottomContainerTitle}>Coupon & Discount</Typography>
+                <Typography component="h5" className={classes.bottomContainerTitle}>
+                  Coupon & Discount
+                </Typography>
+                {/* {menuList.data.order && menuList.data.order.order_lines.length == 0 && ( */}
                 <TextField
                   variant="outlined"
                   placeholder="Phone No."
@@ -548,21 +557,29 @@ const Billing = props => {
                   value={(userData && userData.phoneNumber) || ''}
                   onChange={e => handleChange(e, userData)}
                 />
+                {/* )} */}
                 {userDataError && userDataError.phoneNumber && (
-                  <p className={classes.errorText}>
-                    {userDataError.phoneNumber}
-                  </p>
+                  <p className={classes.errorText}>{userDataError.phoneNumber}</p>
                 )}
-                {Object.keys(couponeList).length == 0 && (
-                  <Button variant="contained" className={classes.btnGreen} onClick={() => fetchCouponeList()}>
+                {menuList.data.order &&
+                  // menuList.data.order.order_lines.length == 0 &&
+                  Object.keys(couponeList).length == 0 && (
+                    <Button variant="contained" className={classes.btnGreen} onClick={() => fetchCouponeList()}>
+                      Continue
+                    </Button>
+                  )}
+                {/* {menuList.data.order && menuList.data.order.order_lines.length > 0 && (
+                  <Button variant="contained" onClick={() => verifyOrderApply()} className={classes.btnGreen}>
                     Continue
                   </Button>
-                )}
+                )} */}
               </>
             )}
             {couponeList && couponeList.data && !couponeList.data.voucher && (
               <>
-                <Typography component="h5" className={classes.bottomContainerTitle}>Register For Coupon</Typography>
+                <Typography component="h5" className={classes.bottomContainerTitle}>
+                  Register For Coupon
+                </Typography>
                 <TextField
                   variant="outlined"
                   placeholder="Full Name"
@@ -572,13 +589,11 @@ const Billing = props => {
                   onChange={e => handleChange(e, userData)}
                 />
                 {userDataError && userDataError.fullName && (
-                  <p className={classes.errorText}>
-                    {userDataError.fullName}
-                  </p>
+                  <p className={classes.errorText}>{userDataError.fullName}</p>
                 )}
                 <TextField
                   variant="outlined"
-                  placeholder="Email Address"
+                  placeholder="Email Address (Optional)"
                   className={classes.inputField}
                   name="email"
                   value={(userData && userData.email) || ''}
@@ -596,7 +611,9 @@ const Billing = props => {
             )}
             {couponeList && couponeList.data && couponeList.data.voucher && (
               <>
-                <Typography component="h5" className={classes.bottomContainerTitle}>Coupon & Discount</Typography>
+                <Typography component="h5" className={classes.bottomContainerTitle}>
+                  Coupon & Discount
+                </Typography>
                 <Select
                   name="couponeId"
                   native

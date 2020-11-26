@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
     fontFamily: 'SF Pro Display Regular',
     fontSize: '14px',
     padding: '16px 16px 8px',
-    textTransform: 'uppercase'
+    textTransform: 'uppercase',
   },
   billing: {
     display: 'flex',
@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   },
   dot: {
     border: '1px dashed #707070',
-    margin: '5px 0 -5px'
+    margin: '5px 0 -5px',
   },
   total: {
     display: 'flex',
@@ -32,14 +32,13 @@ const useStyles = makeStyles(theme => ({
     fontSize: '12px',
     textTransform: 'uppercase',
     color: '#4EA23A',
-    fontWeight: 700
+    fontWeight: 700,
   },
-}))
-
+}));
 
 const Bill = props => {
   const classes = useStyles();
-  const { billingInfo, totalPrice, serviceCharge, taxCharge, grandTotal } = props;
+  const { billingInfo, totalPrice, serviceCharge, taxCharge, grandTotal, previousGrandTotal } = props;
   return (
     <div>
       <div className={classes.bill}>
@@ -78,11 +77,20 @@ const Bill = props => {
         </div>
 
         <div className={classes.dot} />
+        {previousGrandTotal > 0 && (
+          <div className={classes.billing}>
+            <div>Previous</div>
+            <div className={classes.price}>
+              Rs.
+              {previousGrandTotal.toFixed(2)}
+            </div>
+          </div>
+        )}
         <div className={classes.total}>
           <div>Grand Total</div>
           <div className={classes.price}>
             Rs.
-            {(billingInfo.data && billingInfo.data.grand_total) || grandTotal.toFixed(2)}
+            {(((billingInfo.data && billingInfo.data.grand_total) || grandTotal) + previousGrandTotal).toFixed(2)}
           </div>
         </div>
       </div>

@@ -19,7 +19,8 @@ class ScannerQR extends Component {
         result: data,
       });
       const jsonData = JSON.parse(data);
-      window.location.assign(BASE_URL + jsonData.company_id + '?table_no=' + jsonData.table_no);
+      if (jsonData.company_id && jsonData.table_no)
+        window.location.assign(BASE_URL + jsonData.company_id + '?table_no=' + jsonData.table_no);
     }
   }
   handleError(err) {
@@ -32,7 +33,6 @@ class ScannerQR extends Component {
       width: 300,
       position: 'relative',
     };
-    
 
     return (
       <div>

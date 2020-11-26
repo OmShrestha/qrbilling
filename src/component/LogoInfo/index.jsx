@@ -19,20 +19,20 @@ const useStyles = makeStyles(theme => ({
   },
   arrow: {
     margin: '5px 0 0px 10px',
-    fontSize: '1rem'
+    fontSize: '1rem',
   },
   card: {
     display: 'flex',
     justifyContent: 'space-between',
     padding: '8px 16px 30px',
-    margin: '18px 0 0'
+    margin: '18px 0 0',
   },
   logo: {
     backgroundColor: '#F8F9F9',
     borderRadius: '5px',
     width: '25%',
     height: '106px',
-    marginRight: '8px'
+    marginRight: '8px',
   },
   img: {
     width: '106px',
@@ -45,22 +45,22 @@ const useStyles = makeStyles(theme => ({
     width: '72%',
     height: '106px',
   },
-  cardContent:{
+  cardContent: {
     padding: '6px 12px',
   },
   resName: {
     fontSize: '14pt',
     fontWeight: 'bold',
-    lineHeight: '22px'
+    lineHeight: '22px',
   },
   tableNumber: {
     fontSize: '12pt',
     lineHeight: '22px',
-    marginBottom: '3px'
+    marginBottom: '3px',
   },
   txt: {
     fontSize: '12pt',
-    lineHeight: '22px'
+    lineHeight: '22px',
   },
 }));
 
@@ -88,8 +88,7 @@ const LogoInfo = ({ menuList, tableNumber }) => {
           <Card className={classes.info}>
             <CardContent className={classes.cardContent}>
               <Typography className={classes.resName}>{menuList.data.name}</Typography>
-              <Typography className={classes.tableNumber}>Table No {tableNumber}</Typography>
-              <Typography className={classes.txt}>Lorem ipsum, dolor sit amet consectetur adipisicing elit...</Typography>
+              <Typography className={classes.tableNumber}>Table No: {tableNumber}</Typography>
             </CardContent>
           </Card>
         )}

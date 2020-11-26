@@ -215,69 +215,77 @@ const ItemDetails = props => {
   }
   return (
     <div>
-      {redeem ? (
-        <RedeemForm
-          itemTotal={itemTotal}
-          addItem={addItem}
-          removeItem={removeItem}
-          proceedToRedeem={proceedToRedeem}
-          menuList={menuList}
-          tableNumber={query.get('table_no')}
-          companyId={props.match.params.id}
-        ></RedeemForm>
-      ) : (
+      {hasError ? (
         <div className={classes.root}>
-          <LogoInfo menuList={menuList} tableNumber={query.get('table_no')} />
-          <div className={classes.secondRoot}>
-            <Tabs
-              className={classes.tabs}
-              value={value}
-              onChange={handleChange}
-              variant="scrollable"
-              scrollButtons="off"
-              aria-label="scrollable prevent tabs example"
-            >
-              {menuList &&
-                menuList.data &&
-                menuList.data.menu.map((menuData, index) => (
-                  <Tab label={menuData.category_name} {...a11yProps(index)} key={index} />
-                ))}
-            </Tabs>
-            {menuList &&
-              menuList.data &&
-              menuList.data.menu.map((menuData, menuIndex) => (
-                <TabPanel className={classes.panel} key={menuIndex} value={value} index={menuIndex}>
-                  {menuData.products.map((product, index) => (
-                    <ProductList
-                      key={index}
-                      className={classes.product}
-                      product={product}
-                      menuIndex={menuIndex}
-                      index={index}
-                      itemTotal={itemTotal}
-                      addItem={addItem}
-                      removeItem={removeItem}
-                    />
+          <div className={classes.secondRoot}>No data found!</div>
+        </div>
+      ) : (
+        <div>
+          {redeem ? (
+            <RedeemForm
+              itemTotal={itemTotal}
+              addItem={addItem}
+              removeItem={removeItem}
+              proceedToRedeem={proceedToRedeem}
+              menuList={menuList}
+              tableNumber={query.get('table_no')}
+              companyId={props.match.params.id}
+            ></RedeemForm>
+          ) : (
+            <div className={classes.root}>
+              <LogoInfo menuList={menuList} tableNumber={query.get('table_no')} />
+              <div className={classes.secondRoot}>
+                <Tabs
+                  className={classes.tabs}
+                  value={value}
+                  onChange={handleChange}
+                  variant="scrollable"
+                  scrollButtons="off"
+                  aria-label="scrollable prevent tabs example"
+                >
+                  {menuList &&
+                    menuList.data &&
+                    menuList.data.menu.map((menuData, index) => (
+                      <Tab label={menuData.category_name} {...a11yProps(index)} key={index} />
+                    ))}
+                </Tabs>
+                {menuList &&
+                  menuList.data &&
+                  menuList.data.menu.map((menuData, menuIndex) => (
+                    <TabPanel className={classes.panel} key={menuIndex} value={value} index={menuIndex}>
+                      {menuData.products.map((product, index) => (
+                        <ProductList
+                          key={index}
+                          className={classes.product}
+                          product={product}
+                          menuIndex={menuIndex}
+                          index={index}
+                          itemTotal={itemTotal}
+                          addItem={addItem}
+                          removeItem={removeItem}
+                        />
+                      ))}
+                      <Collapse in={totalPrice > 0} className={classes.Collapse}>
+                        <div className={classes.checkoutContainer}>
+                          <div>
+                            <Typography className={classes.total}>Total</Typography>
+                            <span className={classes.totalPrice}>Rs {totalPrice}</span>
+                          </div>
+                          <Button className={classes.checkout} onClick={() => proceedToRedeem()}>
+                            Check out
+                          </Button>{' '}
+                        </div>
+                      </Collapse>
+                    </TabPanel>
                   ))}
-                  <Collapse in={totalPrice > 0} className={classes.Collapse}>
-                    <div className={classes.checkoutContainer}>
-                      <div>
-                        <Typography className={classes.total}>Total</Typography>
-                        <span className={classes.totalPrice}>Rs {totalPrice}</span>
-                      </div>
-                      <Button className={classes.checkout} onClick={() => proceedToRedeem()}>
-                        Check out
-                      </Button>{' '}
-                    </div>
-                  </Collapse>
-                </TabPanel>
-              ))}
-          </div>
-          <Grid container className={classes.orderBtnContainer}>
-            <Button className={classes.orderBtn} onClick={() => proceedToRedeem()}>
-              View Order
-            </Button>
-          </Grid>
+              </div>
+              <Grid container className={classes.orderBtnContainer}>
+                <Button className={classes.orderBtn} onClick={() => proceedToRedeem()}>
+                  View Order
+                </Button>
+              </Grid>
+            </div>
+          )}
         </div>
       )}
     </div>

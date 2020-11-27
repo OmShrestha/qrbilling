@@ -10,20 +10,20 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'space-between',
     padding: '9px 20px',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   buttons: {
     border: '1px solid black',
     borderRadius: '10px',
     fontFamily: 'SF Pro Display',
-    '& .MuiButton-root':{
-      minWidth: '45px'
+    '& .MuiButton-root': {
+      minWidth: '45px',
     },
-    '& button':{
-      '&:hover, &:focus':{
+    '& button': {
+      '&:hover, &:focus': {
         outline: 'none',
-      }
-    }
+      },
+    },
   },
   addOrder: {
     border: '1px solid #707070',
@@ -32,16 +32,16 @@ const useStyles = makeStyles({
     backgroundColor: '#fff',
     fontFamily: 'SF Pro Display',
     color: '#8D8E94',
-    '&:hover, &:focus':{
+    '&:hover, &:focus': {
       outline: 'none',
       backgroundColor: '#fff',
-    }
+    },
   },
   productName: {
     fontSize: '16px',
     color: '#0D0D0D',
     fontFamily: 'SF Pro Display',
-    textTransform: 'capitalize'
+    textTransform: 'capitalize',
   },
   productPrice: {
     fontFamily: 'SF Pro Display',
@@ -52,7 +52,7 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingLeft: '5px'
+    paddingLeft: '5px',
   },
   viewTxt: {
     cursor: 'pointer',
@@ -86,16 +86,22 @@ const ProductList = ({ open, product, menuIndex, index, itemTotal, addItem, remo
   return (
     <div className={classes.root}>
       <div className={classes.textBox}>
-        <Typography
-          className={classes.productName}
-        >{`${product.name}`}</Typography>{' '}
+        <Typography className={classes.productName}>{`${product.name}`}</Typography>{' '}
         <div className={classes.viewImg}>
           <Typography className={classes.productPrice}>{`Rs ${product.price}`}</Typography>
-
-          <Typography className={classes.viewTxt} onClick={handleViewImage}>
-            View Image
-          </Typography>
-          {display ? <img src="/Cp" alt="smth" className={classes.imgView} /> : null}
+          {product.images.length > 0 && (
+            <Typography className={classes.viewTxt} onClick={handleViewImage}>
+              View Image
+            </Typography>
+          )}
+          {display ? (
+            <img
+              src={product.images[0].image}
+              alt="smth"
+              className={classes.imgView}
+              onClick={() => setDisplay(!display)}
+            />
+          ) : null}
         </div>
       </div>
       <div>

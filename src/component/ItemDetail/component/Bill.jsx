@@ -38,11 +38,20 @@ const useStyles = makeStyles(theme => ({
 
 const Bill = props => {
   const classes = useStyles();
-  const { billingInfo, totalPrice, serviceCharge, taxCharge, grandTotal, previousGrandTotal } = props;
+  const { billingInfo, totalPrice, serviceCharge, taxCharge, grandTotal, previousGrandTotal, tax, service } = props;
   return (
     <div>
       <div className={classes.bill}>
         <Typography className={classes.billTxt}>Bill</Typography>
+        {previousGrandTotal > 0 && (
+          <div className={classes.billing}>
+            <div>Previous</div>
+            <div className={classes.price}>
+              Rs.
+              {previousGrandTotal.toFixed(2)}
+            </div>
+          </div>
+        )}
         <div className={classes.billing}>
           <div>Sub Total</div>
           <div className={classes.price}>
@@ -62,14 +71,14 @@ const Bill = props => {
           </div>
         )}
         <div container className={classes.billing}>
-          <div>Restaurant service charge</div>
+          <div>Restaurant service charge({service}%)</div>
           <div className={classes.price}>
             Rs.
             {(billingInfo.data && billingInfo.data.service_charge_amount.toFixed(2)) || serviceCharge.toFixed(2)}
           </div>
         </div>
         <div className={classes.billing}>
-          <div>VAT</div>
+          <div>VAT({tax}%)</div>
           <div className={classes.price}>
             Rs.
             {(billingInfo.data && billingInfo.data.taxed_amount.toFixed(2)) || taxCharge.toFixed(2)}
@@ -77,15 +86,7 @@ const Bill = props => {
         </div>
 
         <div className={classes.dot} />
-        {previousGrandTotal > 0 && (
-          <div className={classes.billing}>
-            <div>Previous</div>
-            <div className={classes.price}>
-              Rs.
-              {previousGrandTotal.toFixed(2)}
-            </div>
-          </div>
-        )}
+
         <div className={classes.total}>
           <div>Grand Total</div>
           <div className={classes.price}>

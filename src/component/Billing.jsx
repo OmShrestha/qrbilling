@@ -538,6 +538,8 @@ const Billing = props => {
             taxCharge={taxCharge}
             grandTotal={grandTotal}
             previousGrandTotal={(menuList.data && menuList.data.order && menuList.data.order.grand_total) || 0}
+            tax={menuList.data.tax}
+            service={menuList.data.service_charge}
           />
         </div>
 

@@ -64,7 +64,6 @@ const useStyles = makeStyles(theme => ({
   checkoutContainer: {
     width: '100%',
     backgroundColor: '#4EA23A',
-    display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     position: 'sticky',
@@ -265,24 +264,24 @@ const ItemDetails = props => {
                           removeItem={removeItem}
                         />
                       ))}
-                      <Collapse in={totalPrice > 0} className={classes.Collapse}>
-                        <div className={classes.checkoutContainer}>
-                          <div>
-                            <Typography className={classes.total}>Total</Typography>
-                            <span className={classes.totalPrice}>Rs {totalPrice}</span>
-                          </div>
-                          <Button className={classes.checkout} onClick={() => proceedToRedeem()}>
-                            Check out
-                          </Button>{' '}
-                        </div>
-                      </Collapse>
                     </TabPanel>
                   ))}
               </div>
               <Grid container className={classes.orderBtnContainer}>
-                <Button className={classes.orderBtn} onClick={() => proceedToRedeem()}>
+                {/* <Button className={classes.orderBtn} onClick={() => proceedToRedeem()}>
                   View Order
-                </Button>
+                </Button> */}
+                <Collapse in={totalPrice > 0} className={classes.Collapse}>
+                  <div className={classes.checkoutContainer}>
+                    <div>
+                      <Typography className={classes.total}>Total</Typography>
+                      <span className={classes.totalPrice}>Rs {totalPrice}</span>
+                    </div>
+                    <Button className={classes.checkout} onClick={() => proceedToRedeem()}>
+                      Check out
+                    </Button>{' '}
+                  </div>
+                </Collapse>
               </Grid>
             </div>
           )}

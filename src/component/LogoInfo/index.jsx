@@ -88,7 +88,7 @@ const LogoInfo = ({ menuList, tableNumber }) => {
           <Card className={classes.info}>
             <CardContent className={classes.cardContent}>
               <Typography className={classes.resName}>{menuList.data.name}</Typography>
-              <Typography className={classes.tableNumber}>Table No: {tableNumber}</Typography>
+              <Typography className={classes.tableNumber}> {menuList.data.asset.name}</Typography>
             </CardContent>
           </Card>
         )}

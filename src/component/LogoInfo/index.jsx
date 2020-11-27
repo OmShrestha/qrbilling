@@ -80,7 +80,7 @@ const LogoInfo = ({ menuList, tableNumber }) => {
       <div className={classes.card}>
         {menuList && menuList.data && (
           <Card className={classes.logo}>
-            <img src={menuList.data.logo} className={classes.img} />
+            <img src={menuList.data.logo_icon} className={classes.img} />
           </Card>
         )}
 

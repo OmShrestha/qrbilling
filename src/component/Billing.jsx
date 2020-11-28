@@ -388,6 +388,45 @@ const Billing = props => {
     }
   }
 
+  async function verifyOrderApplyNext() {
+    let orderLine = [];
+    Object.keys(itemTotal).map(data => {
+      let newObj = {
+        id: null,
+        product: itemTotal[data].id,
+        product_name: itemTotal[data].name,
+        product_code: itemTotal[data].productCode,
+        rate: itemTotal[data].perPlate,
+        quantity: itemTotal[data].number,
+        total: itemTotal[data].total,
+        state: 'New',
+        company: companyId,
+        order: (menuList.data.order && menuList.data.order.id) || null,
+      };
+      orderLine.push(newObj);
+    });
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        company: companyId,
+        asset: tableNumber,
+        user: menuList.data.order.user || null,
+        name: menuList.data.order.name || null,
+        phone_number: menuList.data.order.phone_number || null,
+        email: menuList.data.order.email || null,
+        voucher: (userData && userData.couponeId) || null,
+        tax: 13.0,
+        bill: null,
+        order_lines: orderLine,
+      }),
+    };
+    fetch(API_BASE + 'company/af174b04-b495-47c1-bc32-c0dff7170c34/order/verify', requestOptions)
+      .then(response => response.json())
+      .then(resCoupone => setBillingInfo(resCoupone))
+      .catch(err => setErrors(err));
+  }
+
   useEffect(() => {
     if (couponeList && couponeList.data && couponeList.data.voucher && couponeList.data.voucher.length == 0) {
       verifyOrder(true);
@@ -550,31 +589,31 @@ const Billing = props => {
                 <Typography component="h5" className={classes.bottomContainerTitle}>
                   Coupon & Discount
                 </Typography>
-                {/* {menuList.data.order && menuList.data.order.order_lines.length == 0 && ( */}
-                <TextField
-                  variant="outlined"
-                  placeholder="Phone No."
-                  className={classes.inputField}
-                  name="phoneNumber"
-                  value={(userData && userData.phoneNumber) || ''}
-                  onChange={e => handleChange(e, userData)}
-                />
-                {/* )} */}
+                {menuList.data.order && menuList.data.order.order_lines.length == 0 && (
+                  <TextField
+                    variant="outlined"
+                    placeholder="Phone No."
+                    className={classes.inputField}
+                    name="phoneNumber"
+                    value={(userData && userData.phoneNumber) || ''}
+                    onChange={e => handleChange(e, userData)}
+                  />
+                )}
                 {userDataError && userDataError.phoneNumber && (
                   <p className={classes.errorText}>{userDataError.phoneNumber}</p>
                 )}
                 {menuList.data.order &&
-                  // menuList.data.order.order_lines.length == 0 &&
+                  menuList.data.order.order_lines.length == 0 &&
                   Object.keys(couponeList).length == 0 && (
                     <Button variant="contained" className={classes.btnGreen} onClick={() => fetchCouponeList()}>
                       Continue
                     </Button>
                   )}
-                {/* {menuList.data.order && menuList.data.order.order_lines.length > 0 && (
-                  <Button variant="contained" onClick={() => verifyOrderApply()} className={classes.btnGreen}>
+                {menuList.data.order && menuList.data.order.order_lines.length > 0 && (
+                  <Button variant="contained" onClick={() => verifyOrderApplyNext()} className={classes.btnGreen}>
                     Continue
                   </Button>
-                )} */}
+                )}
               </>
             )}
             {couponeList && couponeList.data && !couponeList.data.voucher && (

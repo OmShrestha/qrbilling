@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import QrReader from 'react-qr-scanner';
 import './style/qrStyle.css';
 import { BASE_URL } from '../Constant';
+import { Typography } from '@material-ui/core';
 
 class ScannerQR extends Component {
   constructor(props) {
@@ -9,6 +10,7 @@ class ScannerQR extends Component {
     this.state = {
       delay: 100,
       result: 'No result',
+      facingMode: 'rear',
     };
     this.handleScan = this.handleScan.bind(this);
   }
@@ -27,15 +29,29 @@ class ScannerQR extends Component {
     console.error(err);
   }
 
+  handleCameraSwitch() {
+    this.setState({
+      facingMode: this.state.facingMode == 'rear' ? 'front' : 'rear',
+    });
+  }
+
   render() {
     const previewStyle = {
       height: 300,
       width: 300,
       position: 'relative',
+      borderStyle: 'solid',
+      borderColor: 'red',
     };
-
+    console.log(this.state.facingMode, 'facing mode');
     return (
       <div>
+        <Typography
+          style={{ color: '#00e6ff', fontSize: '15pt', textAlign: 'center' }}
+          onClick={() => this.handleCameraSwitch()}
+        >
+          Switch Camera
+        </Typography>
         <QrReader
           resolution
           className="qrReader"
@@ -43,7 +59,7 @@ class ScannerQR extends Component {
           style={previewStyle}
           onError={this.handleError}
           onScan={this.handleScan}
-          facingMode={'rear'}
+          facingMode={this.state.facingMode}
         />
       </div>
     );

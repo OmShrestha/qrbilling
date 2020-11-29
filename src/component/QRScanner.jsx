@@ -3,6 +3,7 @@ import QrReader from 'react-qr-scanner';
 import './style/qrStyle.css';
 import { BASE_URL } from '../Constant';
 import { Typography } from '@material-ui/core';
+import history from '../history';
 
 class ScannerQR extends Component {
   constructor(props) {
@@ -22,7 +23,7 @@ class ScannerQR extends Component {
       });
       const jsonData = JSON.parse(data);
       if (jsonData.company_id && jsonData.table_no)
-        window.location.assign(BASE_URL + jsonData.company_id + '?table_no=' + jsonData.table_no);
+        history.push(jsonData.company_id + '?table_no=' + jsonData.table_no);
     }
   }
   handleError(err) {
@@ -43,7 +44,6 @@ class ScannerQR extends Component {
       borderStyle: 'solid',
       borderColor: 'red',
     };
-    console.log(this.state.facingMode, 'facing mode');
     return (
       <div>
         <Typography

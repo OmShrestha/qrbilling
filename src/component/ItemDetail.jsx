@@ -268,9 +268,14 @@ const ItemDetails = props => {
                   ))}
               </div>
               <Grid container className={classes.orderBtnContainer}>
-                {/* <Button className={classes.orderBtn} onClick={() => proceedToRedeem()}>
-                  View Order
-                </Button> */}
+                {totalPrice < 0 ||
+                  (totalPrice == 0 && (
+                    <Button className={classes.orderBtn} onClick={() => proceedToRedeem()}>
+                      View Order
+                    </Button>
+                  ))}
+              </Grid>
+              <Grid container className={classes.orderBtnContainer}>
                 <Collapse in={totalPrice > 0} className={classes.Collapse}>
                   <div className={classes.checkoutContainer}>
                     <div>

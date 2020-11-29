@@ -70,7 +70,7 @@ const Bill = props => {
             </div>
           </div>
         )}
-        <div container className={classes.billing}>
+        <div className={classes.billing}>
           <div>Restaurant service charge({service}%)</div>
           <div className={classes.price}>
             Rs.

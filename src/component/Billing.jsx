@@ -228,7 +228,6 @@ function getSteps() {
 
 const Billing = props => {
   const { itemTotal, menuList, tableNumber, companyId } = props;
-  console.log(itemTotal, 'test');
   const classes = useStyles();
   const [couponeList, setCouponeList] = useState({});
   const [billingInfo, setBillingInfo] = useState({});
@@ -477,8 +476,8 @@ const Billing = props => {
         <div className={classes.third}>
           <Grid className={classes.stepperContainer}>
             <Stepper activeStep={activeStep} className={classes.stepper}>
-              {steps.map(label => (
-                <Step key={label}>
+              {steps.map((label, index) => (
+                <Step key={index}>
                   <StepLabel className={classes.steps}>{label}</StepLabel>
                 </Step>
               ))}
@@ -513,7 +512,7 @@ const Billing = props => {
             <AccordionDetails className={classes.detailList}>
               {menuList.data.order &&
                 menuList.data.order.order_lines.map((item, index) => (
-                  <div className={classes.detailListItem}>
+                  <div className={classes.detailListItem} key={index}>
                     <Typography className={classes.productName} key={index}>
                       {item.product_name}
                     </Typography>
@@ -529,41 +528,43 @@ const Billing = props => {
                 <Grid container className={classes.item} key={menuIndex}>
                   <div className={classes.order}>
                     <Typography className={classes.productName}>{props.itemTotal[menuData].name}</Typography>
-                    <Grid>
-                      {
-                        <div className={classes.buttons}>
-                          <Button
-                            onClick={() =>
-                              props.removeItem(
-                                menuData,
-                                '',
-                                props.itemTotal[menuData].perPlate,
-                                props.itemTotal[menuData].name,
-                                props.itemTotal[menuData].id,
-                                props.itemTotal[menuData].product_code,
-                              )
-                            }
-                          >
-                            <RemoveIcon />
-                          </Button>
-                          <span>{(props.itemTotal[menuData] && props.itemTotal[menuData].number) || 0}</span>
-                          <Button
-                            onClick={() =>
-                              props.addItem(
-                                menuData,
-                                '',
-                                props.itemTotal[menuData].perPlate,
-                                props.itemTotal[menuData].name,
-                                props.itemTotal[menuData].id,
-                                props.itemTotal[menuData].product_code,
-                              )
-                            }
-                          >
-                            <AddIcon />
-                          </Button>
-                        </div>
-                      }
-                    </Grid>
+                    {!Object.keys(billingInfo).length != 0 && (
+                      <Grid>
+                        {
+                          <div className={classes.buttons}>
+                            <Button
+                              onClick={() =>
+                                props.removeItem(
+                                  menuData,
+                                  '',
+                                  props.itemTotal[menuData].perPlate,
+                                  props.itemTotal[menuData].name,
+                                  props.itemTotal[menuData].id,
+                                  props.itemTotal[menuData].product_code,
+                                )
+                              }
+                            >
+                              <RemoveIcon />
+                            </Button>
+                            <span>{(props.itemTotal[menuData] && props.itemTotal[menuData].number) || 0}</span>
+                            <Button
+                              onClick={() =>
+                                props.addItem(
+                                  menuData,
+                                  '',
+                                  props.itemTotal[menuData].perPlate,
+                                  props.itemTotal[menuData].name,
+                                  props.itemTotal[menuData].id,
+                                  props.itemTotal[menuData].product_code,
+                                )
+                              }
+                            >
+                              <AddIcon />
+                            </Button>
+                          </div>
+                        }
+                      </Grid>
+                    )}
                   </div>
 
                   <Divider className={classes.divider} />
@@ -589,26 +590,26 @@ const Billing = props => {
                 <Typography component="h5" className={classes.bottomContainerTitle}>
                   Coupon & Discount
                 </Typography>
-                {menuList.data.order && menuList.data.order.order_lines.length == 0 && (
-                  <TextField
-                    variant="outlined"
-                    placeholder="Phone No."
-                    className={classes.inputField}
-                    name="phoneNumber"
-                    value={(userData && userData.phoneNumber) || ''}
-                    onChange={e => handleChange(e, userData)}
-                  />
-                )}
+                {(menuList.data.order && menuList.data.order.order_lines.length == 0) ||
+                  (!menuList.data.order && (
+                    <TextField
+                      variant="outlined"
+                      placeholder="Phone No."
+                      className={classes.inputField}
+                      name="phoneNumber"
+                      value={(userData && userData.phoneNumber) || ''}
+                      onChange={e => handleChange(e, userData)}
+                    />
+                  ))}
                 {userDataError && userDataError.phoneNumber && (
                   <p className={classes.errorText}>{userDataError.phoneNumber}</p>
                 )}
-                {menuList.data.order &&
-                  menuList.data.order.order_lines.length == 0 &&
-                  Object.keys(couponeList).length == 0 && (
+                {(menuList.data.order && menuList.data.order.order_lines.length == 0) ||
+                  (!menuList.data.order && Object.keys(couponeList).length == 0 && (
                     <Button variant="contained" className={classes.btnGreen} onClick={() => fetchCouponeList()}>
                       Continue
                     </Button>
-                  )}
+                  ))}
                 {menuList.data.order && menuList.data.order.order_lines.length > 0 && (
                   <Button variant="contained" onClick={() => verifyOrderApplyNext()} className={classes.btnGreen}>
                     Continue
@@ -663,7 +664,7 @@ const Billing = props => {
                   onChange={e => handleChange(e, userData)}
                   placeholder={'Select Coupone'}
                 >
-                  <option aria-label="None" value="" />
+                  <option aria-label="None">Select Coupon</option>
                   {couponeList.data.voucher.map((data, index) => (
                     <option value={data.id} key={index}>
                       {data.description}

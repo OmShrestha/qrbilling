@@ -1,11 +1,11 @@
 import { Button, makeStyles, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import LogoInfo from './LogoInfo';
-import { API_BASE } from '../Constant';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
-
+import { BASE_URL } from '../Constant';
+import { Link } from 'react-router-dom';
 const useStyles = makeStyles(theme => ({
   root: {
     backgroundImage: `url("https://www.scandichotels.com/imagevault/publishedmedia/qn6infvg30381stkubky/scandic-sundsvall-city-restaurant-verket-10.jpg")`,
@@ -33,11 +33,11 @@ const useStyles = makeStyles(theme => ({
   steps: {
     flexDirection: 'column',
   },
-  showCase:{
+  showCase: {
     flex: '1 0 auto',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
   },
   svg: {
     display: 'flex',
@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: '20px'
+    marginBottom: '20px',
   },
   cupponproSVG: {
     paddingLeft: '24px',
@@ -115,9 +115,7 @@ const Success = ({ props }) => {
           </div>
           <div>
             <Typography className={classes.successText}>Order Success</Typography>
-            <Typography className={classes.successSubText}>
-              Your food will arrive shortly
-            </Typography>
+            <Typography className={classes.successSubText}>Your food will arrive shortly</Typography>
           </div>
           <div className={classes.otherImages}>
             <img className={classes.cupponproSVG} src="/Cp.svg" alt="Cp" />
@@ -126,10 +124,10 @@ const Success = ({ props }) => {
         </div>
         <div className={classes.btnGroups}>
           <Button variant="contained" className={classes.btnCupponpro}>
-            Go To Cupponpro
+            <a href={'https://cupponpro.com/'}>addEventListener Go To Cupponpro</a>
           </Button>
           <Button variant="contained" className={classes.btnDone}>
-            Done
+            <Link to={'/'}>Done</Link>
           </Button>
         </div>
       </div>

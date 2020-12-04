@@ -42,6 +42,11 @@ const useStyles = makeStyles(theme => ({
   stepper: {
     backgroundColor: '#ECECEC',
     borderRadius: '20px 20px 0px 0px',
+    padding: '10px 8px',
+    '& .MuiStepIcon-root.MuiSvgIcon-root': {
+      height: '0.7em',
+      width: '0.7em'
+    },
     '& .MuiStepIcon-root.MuiStepIcon-completed': {
       color: 'green',
     },
@@ -57,6 +62,10 @@ const useStyles = makeStyles(theme => ({
       color: 'currentColor',
       fontSize: '0',
     },
+    '& .MuiStepLabel-label.MuiStepLabel-active, & .MuiStepLabel-label.MuiStepLabel-completed':{
+      fontSize: '0.675rem',
+      fontWeight: 700
+    }
   },
   itemCart: {
     backgroundColor: '#a62a22',

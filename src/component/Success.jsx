@@ -22,7 +22,11 @@ const useStyles = makeStyles(theme => ({
   stepper: {
     backgroundColor: '#ECECEC',
     borderRadius: '20px 20px 0px 0px',
-    padding: '0 24px',
+    padding: '0 8px',
+    '& .MuiStepIcon-root.MuiSvgIcon-root': {
+      height: '0.7em',
+      width: '0.7em'
+    },
     '& .MuiStepIcon-root.MuiStepIcon-completed': {
       color: 'green',
     },
@@ -32,6 +36,10 @@ const useStyles = makeStyles(theme => ({
   },
   steps: {
     flexDirection: 'column',
+    '& .MuiStepLabel-label.MuiStepLabel-active, & .MuiStepLabel-label.MuiStepLabel-completed':{
+      fontSize: '0.675rem',
+      fontWeight: 700
+    }
   },
   showCase: {
     flex: '1 0 auto',
@@ -80,10 +88,27 @@ const useStyles = makeStyles(theme => ({
     marginBottom: '10px',
     backgroundColor: '#a62a22',
     color: 'white',
+    '&:hover, &:focus':{
+      backgroundColor: '#a62a22',
+    },
+    '& a, & a:hover, & a:focus':{
+      color: 'white',
+      textDecoration: 'none'
+    }
   },
   btnDone: {
     backgroundColor: '#273238',
     color: 'white',
+    '&:hover, &:focus':{
+      backgroundColor: '#273238',
+    },
+    '& a, & a:hover, & a:focus':{
+      color: 'white',
+      textDecoration: 'none'
+    },
+    'button:focus':{
+      outline: 'none'
+    }
   },
 }));
 

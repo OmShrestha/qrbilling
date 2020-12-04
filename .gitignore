@@ -1,3 +1,5 @@
 node_modules
 build
 package.json.local
+
+.DS_Store

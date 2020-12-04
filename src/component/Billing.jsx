@@ -246,11 +246,11 @@ const Billing = props => {
   };
 
   async function fetchCouponeList() {
-    setLoading(true);
     const error = validatePhoneNumber();
     setUserDataError(error);
     if (Object.keys(error).length > 0) {
     } else {
+      setLoading(true);
       const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -304,11 +304,11 @@ const Billing = props => {
   }
 
   async function verifyOrder(skip) {
-    setLoading(true);
     const error = validateUserInfo();
     setUserDataError(error);
     if (!skip && Object.keys(error).length > 0) {
     } else {
+      setLoading(true);
       let orderLine = [];
       Object.keys(itemTotal).map(data => {
         let newObj = {
@@ -434,16 +434,14 @@ const Billing = props => {
   }
 
   useEffect(() => {
+    setLoading(false);
     if (couponeList && couponeList.data && couponeList.data.voucher && couponeList.data.voucher.length == 0) {
       verifyOrder(true);
-      setLoading(false);
     }
   }, [couponeList]);
 
   useEffect(() => {
-    if (billingInfo && billingInfo.data) {
-      setLoading(false);
-    }
+    setLoading(false);
   }, [billingInfo]);
 
   const history = useHistory();

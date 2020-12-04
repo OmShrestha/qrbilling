@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import QrReader from 'react-qr-scanner';
+import QrReader from 'react-qr-reader';
 import './style/qrStyle.css';
 import { BASE_URL } from '../Constant';
 import { Typography } from '@material-ui/core';
@@ -21,9 +21,10 @@ class ScannerQR extends Component {
       this.setState({
         result: data,
       });
-      const jsonData = JSON.parse(data);
+      window.location.href = data;
+      /* const jsonData = JSON.parse(data);
       if (jsonData.company_id && jsonData.table_no)
-        history.push(jsonData.company_id + '?table_no=' + jsonData.table_no);
+        history.push(jsonData.company_id + '?table_no=' + jsonData.table_no); */
     }
   }
   handleError(err) {
@@ -45,23 +46,22 @@ class ScannerQR extends Component {
       borderColor: 'red',
     };
     return (
-      <div>
-        <Typography
+      <>
+        {/* <Typography
           style={{ color: '#00e6ff', fontSize: '15pt', textAlign: 'center' }}
           onClick={() => this.handleCameraSwitch()}
         >
           Switch Camera
-        </Typography>
+        </Typography> */}
         <QrReader
-          resolution
           className="qrReader"
           delay={this.state.delay}
           style={previewStyle}
           onError={this.handleError}
           onScan={this.handleScan}
-          facingMode={this.state.facingMode}
+          // facingMode={this.state.facingMode}
         />
-      </div>
+      </>
     );
   }
 }

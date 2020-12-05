@@ -21,7 +21,7 @@ class ScannerQR extends Component {
       this.setState({
         result: data,
       });
-      window.location.href = data;
+      history.push(data.replace('https://mastarqr.com/', ''));
       /* const jsonData = JSON.parse(data);
       if (jsonData.company_id && jsonData.table_no)
         history.push(jsonData.company_id + '?table_no=' + jsonData.table_no); */

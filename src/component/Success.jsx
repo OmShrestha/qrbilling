@@ -149,7 +149,7 @@ const Success = ({ props }) => {
         </div>
         <div className={classes.btnGroups}>
           <Button variant="contained" className={classes.btnCupponpro}>
-            <a href={'https://cupponpro.com/'}>addEventListener Go To Cupponpro</a>
+            <a href={'https://cupponpro.com/'}>Go To Cupponpro</a>
           </Button>
           <Button variant="contained" className={classes.btnDone}>
             <Link to={'/'}>Done</Link>

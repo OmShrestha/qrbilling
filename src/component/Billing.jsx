@@ -13,6 +13,7 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  CircularProgress,
 } from '@material-ui/core';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
@@ -247,6 +248,7 @@ const Billing = props => {
   const steps = getSteps();
   const [expanded, setExpanded] = useState('panel1');
   const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleReset = () => {
     setActiveStep(0);
@@ -257,6 +259,7 @@ const Billing = props => {
     setUserDataError(error);
     if (Object.keys(error).length > 0) {
     } else {
+      setLoading(true);
       const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -273,6 +276,7 @@ const Billing = props => {
   }
 
   async function createOrder() {
+    setLoading(true);
     if (menuList.data.order && menuList.data.order.order_lines) {
       let billingData = billingInfo.data;
       billingData.order_lines = menuList.data.order.order_lines.concat(billingData.order_lines);
@@ -313,6 +317,7 @@ const Billing = props => {
     setUserDataError(error);
     if (!skip && Object.keys(error).length > 0) {
     } else {
+      setLoading(true);
       let orderLine = [];
       Object.keys(itemTotal).map(data => {
         let newObj = {
@@ -353,6 +358,7 @@ const Billing = props => {
   }
 
   async function verifyOrderApply(skip) {
+    setLoading(true);
     const error = {};
     setUserDataError(error);
     if (!skip && Object.keys(error).length > 0) {
@@ -397,6 +403,7 @@ const Billing = props => {
   }
 
   async function verifyOrderApplyNext() {
+    setLoading(true);
     let orderLine = [];
     Object.keys(itemTotal).map(data => {
       let newObj = {
@@ -436,10 +443,15 @@ const Billing = props => {
   }
 
   useEffect(() => {
+    setLoading(false);
     if (couponeList && couponeList.data && couponeList.data.voucher && couponeList.data.voucher.length == 0) {
       verifyOrder(true);
     }
   }, [couponeList]);
+
+  useEffect(() => {
+    setLoading(false);
+  }, [billingInfo]);
 
   const history = useHistory();
   let totalPrice = 0;
@@ -477,6 +489,8 @@ const Billing = props => {
   const serviceCharge = totalPrice * (menuList.data.service_charge / 100) || 0;
   const taxCharge = totalPrice * (menuList.data.tax / 100) || 0;
   const grandTotal = totalPrice + serviceCharge + taxCharge;
+
+  console.log(loading, 'loading');
 
   return (
     <div className={classes.root}>
@@ -594,7 +608,7 @@ const Billing = props => {
 
         {Object.keys(billingInfo).length == 0 && (
           <Grid className={classes.bottomContainer}>
-            {Object.keys(couponeList).length == 0 && (
+            {grandTotal > 0 && Object.keys(couponeList).length == 0 && (
               <>
                 <Typography component="h5" className={classes.bottomContainerTitle}>
                   Coupon & Discount
@@ -615,13 +629,21 @@ const Billing = props => {
                 )}
                 {(menuList.data.order && menuList.data.order.order_lines.length == 0) ||
                   (!menuList.data.order && Object.keys(couponeList).length == 0 && (
-                    <Button variant="contained" className={classes.btnGreen} onClick={() => fetchCouponeList()}>
-                      Continue
+                    <Button
+                      variant="contained"
+                      className={classes.btnGreen}
+                      onClick={loading ? () => {} : () => fetchCouponeList()}
+                    >
+                      {loading ? <CircularProgress /> : 'Continue'}
                     </Button>
                   ))}
                 {menuList.data.order && menuList.data.order.order_lines.length > 0 && (
-                  <Button variant="contained" onClick={() => verifyOrderApplyNext()} className={classes.btnGreen}>
-                    Continue
+                  <Button
+                    variant="contained"
+                    onClick={loading ? () => {} : () => verifyOrderApplyNext()}
+                    className={classes.btnGreen}
+                  >
+                    {loading ? <CircularProgress /> : 'Continue'}
                   </Button>
                 )}
               </>
@@ -655,8 +677,12 @@ const Billing = props => {
                     {userDataError.email}
                   </p>
                 )}
-                <Button variant="contained" onClick={() => verifyOrder()} className={classes.btnGreen}>
-                  Continue
+                <Button
+                  variant="contained"
+                  onClick={loading ? () => {} : () => verifyOrder()}
+                  className={classes.btnGreen}
+                >
+                  {loading ? <CircularProgress /> : 'Continue'}
                 </Button>
               </>
             )}
@@ -680,8 +706,8 @@ const Billing = props => {
                     </option>
                   ))}
                 </Select>
-                <Button variant="contained" onClick={() => verifyOrderApply()}>
-                  Apply
+                <Button variant="contained" onClick={loading ? () => {} : () => verifyOrderApply()}>
+                  {loading ? <CircularProgress /> : 'Apply'}
                 </Button>
               </>
             )}
@@ -695,8 +721,8 @@ const Billing = props => {
         )}
         {Object.keys(billingInfo).length != 0 && (
           <Grid className={classes.btnGrid}>
-            <Button variant="contained" className={classes.btnRed} onClick={() => createOrder()}>
-              {activeStep === steps.length - 1 ? 'Finish' : 'Confirm Order'}
+            <Button variant="contained" className={classes.btnRed} onClick={loading ? () => {} : () => createOrder()}>
+              {loading ? <CircularProgress /> : activeStep === steps.length - 1 ? 'Finish' : 'Confirm Order'}
             </Button>
           </Grid>
         )}

@@ -64,6 +64,7 @@ const useStyles = makeStyles(theme => ({
   checkoutContainer: {
     width: '100%',
     backgroundColor: '#4EA23A',
+    display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     position: 'sticky',
@@ -105,6 +106,9 @@ const useStyles = makeStyles(theme => ({
     position: 'fixed',
     justifyContent: 'center',
     bottom: 20,
+    '& .MuiCollapse-container':{
+      flex: '1 0 auto'
+    }
   },
   total: {
     color: 'white',

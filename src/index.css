@@ -8,3 +8,7 @@ body {
 code {
   font-family: 'SF Pro Display Regular' !important;
 }
+
+button:focus {
+  outline: none !important;
+}

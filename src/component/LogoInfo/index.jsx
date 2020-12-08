@@ -3,6 +3,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import Timer from './Timer';
 
 const useStyles = makeStyles(theme => ({
   back: {
@@ -64,7 +65,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const LogoInfo = ({ menuList, tableNumber }) => {
+const LogoInfo = ({ menuList, tableNumber, expireTime }) => {
   const classes = useStyles();
 
   const circle = (
@@ -90,6 +91,7 @@ const LogoInfo = ({ menuList, tableNumber }) => {
               <Typography className={classes.resName}>{menuList.data.name}</Typography>
               <Typography className={classes.tableNumber}> {menuList.data.asset.name}</Typography>
             </CardContent>
+            <Timer time={expireTime} />
           </Card>
         )}
       </div>

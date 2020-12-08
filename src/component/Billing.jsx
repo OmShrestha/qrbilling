@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
     padding: '10px 8px',
     '& .MuiStepIcon-root.MuiSvgIcon-root': {
       height: '0.7em',
-      width: '0.7em'
+      width: '0.7em',
     },
     '& .MuiStepIcon-root.MuiStepIcon-completed': {
       color: 'green',
@@ -63,10 +63,10 @@ const useStyles = makeStyles(theme => ({
       color: 'currentColor',
       fontSize: '0',
     },
-    '& .MuiStepLabel-label.MuiStepLabel-active, & .MuiStepLabel-label.MuiStepLabel-completed':{
+    '& .MuiStepLabel-label.MuiStepLabel-active, & .MuiStepLabel-label.MuiStepLabel-completed': {
       fontSize: '0.675rem',
-      fontWeight: 700
-    }
+      fontWeight: 700,
+    },
   },
   itemCart: {
     backgroundColor: '#a62a22',
@@ -237,7 +237,7 @@ function getSteps() {
 }
 
 const Billing = props => {
-  const { itemTotal, menuList, tableNumber, companyId } = props;
+  const { itemTotal, menuList, tableNumber, companyId, orderToken } = props;
   const classes = useStyles();
   const [couponeList, setCouponeList] = useState({});
   const [billingInfo, setBillingInfo] = useState({});
@@ -298,7 +298,7 @@ const Billing = props => {
       const billingData = billingInfo.data;
       const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Order-Token': orderToken },
         body: JSON.stringify({
           ...billingData,
           company: companyId,
@@ -341,9 +341,9 @@ const Billing = props => {
           company: companyId,
           asset: tableNumber,
           user: couponeList.data.user || null,
-          name: (userData && userData.fullName) || couponeList.data.name || "",
+          name: (userData && userData.fullName) || couponeList.data.name || '',
           phone_number: userData && userData.phoneNumber,
-          email: (userData && userData.email) || couponeList.data.email || "",
+          email: (userData && userData.email) || couponeList.data.email || '',
           voucher: (userData && userData.couponeId) || null,
           tax: 13.0,
           bill: null,
@@ -386,9 +386,9 @@ const Billing = props => {
           company: companyId,
           asset: tableNumber,
           user: couponeList.data.user || null,
-          name: (userData && userData.fullName) || couponeList.data.name || "",
+          name: (userData && userData.fullName) || couponeList.data.name || '',
           phone_number: userData && userData.phoneNumber,
-          email: (userData && userData.email) || couponeList.data.email || "",
+          email: (userData && userData.email) || couponeList.data.email || '',
           voucher: (userData && userData.couponeId) || null,
           tax: 13.0,
           bill: null,
@@ -427,9 +427,9 @@ const Billing = props => {
         company: companyId,
         asset: tableNumber,
         user: menuList.data.order.user || null,
-        name: menuList.data.order.name || "",
-        phone_number: menuList.data.order.phone_number || "",
-        email: menuList.data.order.email || "",
+        name: menuList.data.order.name || '',
+        phone_number: menuList.data.order.phone_number || '',
+        email: menuList.data.order.email || '',
         voucher: (userData && userData.couponeId) || null,
         tax: 13.0,
         bill: null,
@@ -494,7 +494,7 @@ const Billing = props => {
 
   return (
     <div className={classes.root}>
-      <LogoInfo menuList={menuList} props={props} />
+      {/* <LogoInfo menuList={menuList} props={props} /> */}
       <div className={classes.secondary}>
         <div className={classes.third}>
           <Grid className={classes.stepperContainer}>

@@ -106,9 +106,9 @@ const useStyles = makeStyles(theme => ({
     position: 'fixed',
     justifyContent: 'center',
     bottom: 20,
-    '& .MuiCollapse-container':{
-      flex: '1 0 auto'
-    }
+    '& .MuiCollapse-container': {
+      flex: '1 0 auto',
+    },
   },
   total: {
     color: 'white',
@@ -223,7 +223,8 @@ const ItemDetails = props => {
           <div className={classes.secondRoot}>No data found!</div>
         </div>
       ) : (
-        <div>
+        <div className={classes.root}>
+          <LogoInfo menuList={menuList} tableNumber={query.get('table_no')} expireTime={query.get('expire')} />
           {redeem ? (
             <RedeemForm
               itemTotal={itemTotal}
@@ -233,10 +234,10 @@ const ItemDetails = props => {
               menuList={menuList}
               tableNumber={query.get('table_no')}
               companyId={props.match.params.id}
+              orderToken={query.get('token')}
             ></RedeemForm>
           ) : (
-            <div className={classes.root}>
-              <LogoInfo menuList={menuList} tableNumber={query.get('table_no')} />
+            <div>
               <div className={classes.secondRoot}>
                 <Tabs
                   className={classes.tabs}

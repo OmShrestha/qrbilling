@@ -473,7 +473,7 @@ const Billing = props => {
   const validatePhoneNumber = () => {
     const errors = {};
     if (!userData || !userData.phoneNumber) errors.phoneNumber = 'Phone is required';
-    else if (!userData.phoneNumber.match(/^[0-9]{8,15}$/)) errors.phoneNumber = 'Not valid';
+    else if (!userData.phoneNumber.match(/^[0-9]{10}$/)) errors.phoneNumber = 'Not valid';
     return errors;
   };
   const validateUserInfo = () => {

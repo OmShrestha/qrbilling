@@ -15,31 +15,37 @@ class ScannerQR extends Component {
     };
     this.handleScan = this.handleScan.bind(this);
   }
-  handleTokenValidation(data, jsonData) {
+  handleTokenValidation(tokenResponse, url) {
     debugger;
-    if (data.token) {
-      // history.push(data.replace('https://mastarqr.com/', ''));
-      history.push(
-        jsonData.company_id +
-          '?table_no=' +
-          jsonData.table_no +
-          '&expire=' +
-          data.scan_cooldown +
-          '&token=' +
-          data.token,
-      );
+    if (tokenResponse.token) {
+      let newUrl = url.replace('https://mastarqr.com/', '');
+      history.push(newUrl + '&expire=' + tokenResponse.scan_cooldown + '&token=' + tokenResponse.token);
     } else {
       this.setState({
         waitMessage: 'Please try after a while. Another order is being processed...',
       });
     }
   }
+  getParameters(url) {
+    var params = {};
+    var parser = document.createElement('a');
+    parser.href = url;
+    var query = parser.search.substring(1);
+    var vars = query.split('&');
+    for (var i = 0; i < vars.length; i++) {
+      var pair = vars[i].split('=');
+      params[pair[0]] = decodeURIComponent(pair[1]);
+    }
+    return params;
+  }
 
-  handleScan(data) {
-    const jsonData = JSON.parse(data);
-    if (data) {
+  handleScan(url) {
+    // let newData =
+    //   'https://mastarqr.com/56221fc3-dece-45b3-b2bd-cc2343702d1c?table_no=7e3f1595-d659-49f2-93f4-45b8d0a39366';
+    const jsonData = this.getParameters(url);
+    if (url) {
       this.setState({
-        result: data,
+        result: url,
       });
       const requestOptions = {
         method: 'POST',
@@ -48,7 +54,7 @@ class ScannerQR extends Component {
       };
       fetch(API_BASE + 'order/validate-qr-scan/', requestOptions)
         .then(response => response.json())
-        .then(data => this.handleTokenValidation(data, jsonData));
+        .then(tokenResponse => this.handleTokenValidation(tokenResponse, url));
     }
   }
   handleError(err) {

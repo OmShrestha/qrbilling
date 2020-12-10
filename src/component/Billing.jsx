@@ -275,7 +275,18 @@ const Billing = props => {
     }
   }
 
-  async function createOrder() {
+  async function refreshToken(tableNo) {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ asset: tableNo }),
+    };
+    fetch(API_BASE + 'order/validate-qr-scan/', requestOptions)
+      .then(response => response.json())
+      .then(tokenResponse => (tokenResponse.token ? createOrder(tokenResponse.token) : () => {}));
+  }
+
+  async function createOrder(newToken) {
     setLoading(true);
     if (menuList.data.order && menuList.data.order.order_lines) {
       let billingData = billingInfo.data;
@@ -298,16 +309,16 @@ const Billing = props => {
       const billingData = billingInfo.data;
       const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Proxy-Authorization': orderToken },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...billingData,
           company: companyId,
           asset: tableNumber,
         }),
       };
-      fetch(API_BASE + `company/${companyId}/order`, requestOptions)
+      fetch(API_BASE + `company/${companyId}/order?session=${newToken || orderToken}`, requestOptions)
         .then(response => response.json())
-        .then(resCoupone => (resCoupone.success ? history.push('/Success') : () => {}))
+        .then(resCoupone => (resCoupone.success ? history.push('/Success') : refreshToken(tableNumber)))
         .catch(err => setErrors(err));
     }
   }

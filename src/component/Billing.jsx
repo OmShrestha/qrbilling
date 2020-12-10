@@ -298,7 +298,7 @@ const Billing = props => {
       const billingData = billingInfo.data;
       const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Order-Token': orderToken },
+        headers: { 'Content-Type': 'application/json', 'Proxy-Authorization': orderToken },
         body: JSON.stringify({
           ...billingData,
           company: companyId,

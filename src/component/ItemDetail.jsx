@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import RedeemForm from './Billing';
+import BillingForm from './Billing';
 import { API_BASE } from '../Constant';
 import { useHistory } from 'react-router-dom';
 
@@ -226,7 +226,7 @@ const ItemDetails = props => {
         <div className={classes.root}>
           <LogoInfo menuList={menuList} tableNumber={query.get('table_no')} expireTime={query.get('expire')} />
           {redeem ? (
-            <RedeemForm
+            <BillingForm
               itemTotal={itemTotal}
               addItem={addItem}
               removeItem={removeItem}
@@ -235,7 +235,7 @@ const ItemDetails = props => {
               tableNumber={query.get('table_no')}
               companyId={props.match.params.id}
               orderToken={query.get('token')}
-            ></RedeemForm>
+            ></BillingForm>
           ) : (
             <div>
               <div className={classes.secondRoot}>

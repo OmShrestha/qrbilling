@@ -16,7 +16,6 @@ class ScannerQR extends Component {
     this.handleScan = this.handleScan.bind(this);
   }
   handleTokenValidation(tokenResponse, url) {
-    debugger;
     if (tokenResponse.token) {
       let newUrl = url.replace('https://mastarqr.com/', '');
       history.push(newUrl + '&expire=' + tokenResponse.scan_cooldown + '&token=' + tokenResponse.token);

@@ -91,7 +91,7 @@ const LogoInfo = ({ menuList, tableNumber, expireTime }) => {
               <Typography className={classes.resName}>{menuList.data.name}</Typography>
               <Typography className={classes.tableNumber}> {menuList.data.asset.name}</Typography>
             </CardContent>
-            <Timer time={expireTime} />
+            {!menuList.data.order && <Timer time={expireTime} />}
           </Card>
         )}
       </div>

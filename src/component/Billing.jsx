@@ -276,6 +276,7 @@ const Billing = props => {
   }
 
   async function refreshToken(tableNo) {
+    debugger;
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -317,8 +318,17 @@ const Billing = props => {
         }),
       };
       fetch(API_BASE + `company/${companyId}/order?session=${newToken || orderToken}`, requestOptions)
-        .then(response => response.json())
-        .then(resCoupone => (resCoupone.success ? history.push('/Success') : refreshToken(tableNumber)))
+        .then(response => {
+          if (response.status == 400) {
+            debugger;
+            window.location.assign('/');
+          } else {
+            return response.json();
+          }
+        })
+        .then(resCoupone => {
+          resCoupone.success ? history.push('/Success') : refreshToken(tableNumber);
+        })
         .catch(err => setErrors(err));
     }
   }

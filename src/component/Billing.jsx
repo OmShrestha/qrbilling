@@ -276,7 +276,6 @@ const Billing = props => {
   }
 
   async function refreshToken(tableNo) {
-    debugger;
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -320,8 +319,8 @@ const Billing = props => {
       fetch(API_BASE + `company/${companyId}/order?session=${newToken || orderToken}`, requestOptions)
         .then(response => {
           if (response.status == 400) {
-            debugger;
-            window.location.assign('/');
+            alert('Session Expired. Please try again!!!');
+            setTimeout(() => window.location.assign('/'), 1000);
           } else {
             return response.json();
           }

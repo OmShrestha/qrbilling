@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
     padding: '0 8px',
     '& .MuiStepIcon-root.MuiSvgIcon-root': {
       height: '0.7em',
-      width: '0.7em'
+      width: '0.7em',
     },
     '& .MuiStepIcon-root.MuiStepIcon-completed': {
       color: 'green',
@@ -36,10 +36,10 @@ const useStyles = makeStyles(theme => ({
   },
   steps: {
     flexDirection: 'column',
-    '& .MuiStepLabel-label.MuiStepLabel-active, & .MuiStepLabel-label.MuiStepLabel-completed':{
+    '& .MuiStepLabel-label.MuiStepLabel-active, & .MuiStepLabel-label.MuiStepLabel-completed': {
       fontSize: '0.675rem',
-      fontWeight: 700
-    }
+      fontWeight: 700,
+    },
   },
   showCase: {
     flex: '1 0 auto',
@@ -88,27 +88,27 @@ const useStyles = makeStyles(theme => ({
     marginBottom: '10px',
     backgroundColor: '#a62a22',
     color: 'white',
-    '&:hover, &:focus':{
+    '&:hover, &:focus': {
       backgroundColor: '#a62a22',
     },
-    '& a, & a:hover, & a:focus':{
+    '& a, & a:hover, & a:focus': {
       color: 'white',
-      textDecoration: 'none'
-    }
+      textDecoration: 'none',
+    },
   },
   btnDone: {
     backgroundColor: '#273238',
     color: 'white',
-    '&:hover, &:focus':{
+    '&:hover, &:focus': {
       backgroundColor: '#273238',
     },
-    '& a, & a:hover, & a:focus':{
+    '& a, & a:hover, & a:focus': {
       color: 'white',
-      textDecoration: 'none'
+      textDecoration: 'none',
     },
-    'button:focus':{
-      outline: 'none'
-    }
+    'button:focus': {
+      outline: 'none',
+    },
   },
 }));
 
@@ -151,9 +151,11 @@ const Success = ({ props }) => {
           <Button variant="contained" className={classes.btnCupponpro}>
             <a href={'https://cupponpro.com/'}>Go To Cupponpro</a>
           </Button>
-          <Button variant="contained" className={classes.btnDone}>
-            <Link to={'/'}>Done</Link>
-          </Button>
+          <Link to={'/'} className={classes.btnDone} style={{ textAlign: 'center' }}>
+            <Button variant="contained" className={classes.btnDone}>
+              Done
+            </Button>
+          </Link>
         </div>
       </div>
     </div>

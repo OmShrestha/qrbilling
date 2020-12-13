@@ -76,7 +76,7 @@ const LogoInfo = ({ menuList, tableNumber, expireTime }) => {
   return (
     <div>
       <Badge color="secondary" badgeContent={0} className={classes.back}>
-        {circle}
+        {/* {circle} */}
       </Badge>
       <div className={classes.card}>
         {menuList && menuList.data && (

@@ -283,7 +283,14 @@ const Billing = props => {
     };
     fetch(API_BASE + 'order/validate-qr-scan/', requestOptions)
       .then(response => response.json())
-      .then(tokenResponse => (tokenResponse.token ? createOrder(tokenResponse.token) : () => {}));
+      .then(tokenResponse => {
+        if (tokenResponse.token == null) {
+          alert('Session Expired. Please try again!!!');
+          setTimeout(() => window.location.assign('/'), 1000);
+        } else {
+          return tokenResponse.token ? createOrder(tokenResponse.token) : () => {};
+        }
+      });
   }
 
   async function createOrder(newToken) {

@@ -372,12 +372,12 @@ const Billing = props => {
           phone_number: userData && userData.phoneNumber,
           email: (userData && userData.email) || couponeList.data.email || '',
           voucher: (userData && userData.couponeId) || null,
-          tax: 13.0,
+          tax: menuList.data.tax,
           bill: null,
           order_lines: orderLine,
         }),
       };
-      fetch(API_BASE + 'company/af174b04-b495-47c1-bc32-c0dff7170c34/order/verify', requestOptions)
+      fetch(API_BASE + `company/${companyId}/order/verify`, requestOptions)
         .then(response => response.json())
         .then(resCoupone => setBillingInfo(resCoupone))
         .catch(err => setErrors(err));
@@ -422,7 +422,7 @@ const Billing = props => {
           order_lines: orderLine,
         }),
       };
-      fetch(API_BASE + 'company/af174b04-b495-47c1-bc32-c0dff7170c34/order/verify', requestOptions)
+      fetch(API_BASE + `company/${companyId}/order/verify`, requestOptions)
         .then(response => response.json())
         .then(resCoupone => setBillingInfo(resCoupone))
         .catch(err => setErrors(err));
@@ -458,12 +458,12 @@ const Billing = props => {
         phone_number: menuList.data.order.phone_number || '',
         email: menuList.data.order.email || '',
         voucher: (userData && userData.couponeId) || null,
-        tax: 13.0,
+        tax: menuList.data.tax,
         bill: null,
         order_lines: orderLine,
       }),
     };
-    fetch(API_BASE + 'company/af174b04-b495-47c1-bc32-c0dff7170c34/order/verify', requestOptions)
+    fetch(API_BASE + `company/${companyId}/order/verify`, requestOptions)
       .then(response => response.json())
       .then(resCoupone => setBillingInfo(resCoupone))
       .catch(err => setErrors(err));

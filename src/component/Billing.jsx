@@ -355,7 +355,6 @@ const Billing = props => {
           rate: itemTotal[data].perPlate,
           quantity: itemTotal[data].number,
           total: itemTotal[data].total,
-          state: 'New',
           company: companyId,
           order: (menuList.data.order && menuList.data.order.id) || null,
         };
@@ -400,7 +399,6 @@ const Billing = props => {
           rate: itemTotal[data].perPlate,
           quantity: itemTotal[data].number,
           total: itemTotal[data].total,
-          state: 'New',
           company: companyId,
           order: (menuList.data.order && menuList.data.order.id) || null,
         };
@@ -441,7 +439,6 @@ const Billing = props => {
         rate: itemTotal[data].perPlate,
         quantity: itemTotal[data].number,
         total: itemTotal[data].total,
-        state: 'New',
         company: companyId,
         order: (menuList.data.order && menuList.data.order.id) || null,
       };

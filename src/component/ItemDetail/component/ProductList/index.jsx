@@ -71,7 +71,7 @@ const useStyles = makeStyles({
     width: '100%' /* Full width */,
     height: '100%' /* Full height */,
     overflow: 'auto' /* Enable scroll if needed */,
-    backgroundColor: 'rgb(0,0,0)' /* Fallback color */,
+    //backgroundColor: 'rgb(0,0,0)' /* Fallback color */,
     backgroundColor: 'rgba(0,0,0,0.9)' /* Black w/ opacity */,
   },
 });

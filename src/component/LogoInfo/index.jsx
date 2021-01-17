@@ -1,9 +1,8 @@
 import { Badge, Card, CardContent, Typography } from '@material-ui/core';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import Timer from './Timer';
+/* import clsx from 'clsx';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'; */
 
 const useStyles = makeStyles(theme => ({
   back: {
@@ -68,11 +67,11 @@ const useStyles = makeStyles(theme => ({
 const LogoInfo = ({ menuList, tableNumber, expireTime }) => {
   const classes = useStyles();
 
-  const circle = (
+  /* const circle = (
     <div className={clsx(classes.shape, classes.shapeCircle)}>
       <ArrowBackIosIcon className={classes.arrow} />
     </div>
-  );
+  ); */
   return (
     <div>
       <Badge color="secondary" badgeContent={0} className={classes.back}>
@@ -81,7 +80,7 @@ const LogoInfo = ({ menuList, tableNumber, expireTime }) => {
       <div className={classes.card}>
         {menuList && menuList.data && (
           <Card className={classes.logo}>
-            <img src={menuList.data.logo_icon} className={classes.img} />
+            <img src={menuList.data.logo_icon} className={classes.img}  alt="Company Logo"/>
           </Card>
         )}
 
@@ -91,7 +90,7 @@ const LogoInfo = ({ menuList, tableNumber, expireTime }) => {
               <Typography className={classes.resName}>{menuList.data.name}</Typography>
               <Typography className={classes.tableNumber}> {menuList.data.asset.name}</Typography>
             </CardContent>
-            {!menuList.data.order && <Timer time={expireTime} />}
+           {/*  {!menuList.data.order && <Timer time={expireTime} />} */}
           </Card>
         )}
       </div>

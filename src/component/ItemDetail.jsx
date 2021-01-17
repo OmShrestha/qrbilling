@@ -224,6 +224,7 @@ const ItemDetails = props => {
         product_code: order.product.product_code,
         product_name: order.product.name,
         quantity: order.quantity,
+        status: order.status,
         rate: order.rate,
         total: order.total,
         id: null,
@@ -236,10 +237,11 @@ const ItemDetails = props => {
       price_details: res.data.price_details
     };
 
-    status === 'NEW_ORDER' ? setOrderList(orders) : setOrderList({});
+    console.log(res.data, 'response from item details');
+    status !== 'COMPLETED' || status !== 'CANCELLED' ? setOrderList(orders) : setOrderList({});
   }
 
-  function getParameters(url) {
+  /* function getParameters(url) {
     var params = {};
     var parser = document.createElement('a');
     parser.href = url;
@@ -252,18 +254,17 @@ const ItemDetails = props => {
     return params;
   }
 
-  function handleTokenValidation(tokenResponse, url) {
-    if (tokenResponse.token) {
+  function handleValidation(qrResponse, url) {
+    if (qrResponse) {
       window.location.assign(
-        window.location.href + '&expire=' + tokenResponse.scan_cooldown + '&token=' + tokenResponse.token,
+        window.location.href,
       );
     } else {
       window.location.assign('/');
     }
   }
+
   function handleScan(url) {
-    // let newData =
-    //   'https://mastarqr.com/56221fc3-dece-45b3-b2bd-cc2343702d1c?table_no=7e3f1595-d659-49f2-93f4-45b8d0a39366';
     const jsonData = getParameters(url);
     if (url) {
       const requestOptions = {
@@ -273,19 +274,18 @@ const ItemDetails = props => {
       };
       fetch(API_BASE + 'order/validate-qr-scan/', requestOptions)
         .then(response => response.json())
-        .then(tokenResponse => handleTokenValidation(tokenResponse, url));
+        .then(qrResponse => handleValidation(qrResponse, url));
     }
-  }
+  } */
 
   useEffect(() => {
-    if (query.get('token')) {
-      fetchData();
-      fetchOrders();
+    fetchData();
+    fetchOrders();
+    /* if (query.get('token')) {
     } else {
       handleScan(window.location.href);
-    }
+    } */
 
-    // fetchData();
   }, []);
   let totalPrice = 0;
   for (var key in itemTotal) {
@@ -301,7 +301,7 @@ const ItemDetails = props => {
         </div>
       ) : (
         <div className={classes.root}>
-          <LogoInfo menuList={menuList} tableNumber={query.get('table_no')} expireTime={query.get('expire')} />
+          <LogoInfo menuList={menuList} tableNumber={query.get('table_no')} />
           {redeem ? (
             <BillingForm
               itemTotal={itemTotal}

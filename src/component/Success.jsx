@@ -1,10 +1,9 @@
 import { Button, makeStyles, Typography } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import LogoInfo from './LogoInfo';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
-import { BASE_URL } from '../Constant';
 import { Link } from 'react-router-dom';
 const useStyles = makeStyles(theme => ({
   root: {
@@ -119,7 +118,7 @@ function getSteps() {
 const Success = ({ props }) => {
   const classes = useStyles();
   const [menuList, setMenuList] = useState({});
-  const [hasError, setErrors] = useState(false);
+  //const [hasError, setErrors] = useState(false);
   const [activeStep, setActiveStep] = useState(+4);
   const steps = getSteps();
 

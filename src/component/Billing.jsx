@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import LogoInfo from './LogoInfo';
 
 import { API_BASE, API_BASE_V2 } from '../Constant';
 import { makeStyles } from '@material-ui/core/styles';
@@ -238,13 +237,12 @@ function getSteps() {
 }
 
 const Billing = props => {
-  const { itemTotal, menuList, orderList, tableNumber, companyId, orderToken } = props;
+  const { itemTotal, menuList, orderList, tableNumber, companyId } = props;
   const classes = useStyles();
   const [couponeList, setCouponeList] = useState({});
   const [billingInfo, setBillingInfo] = useState({});
   const [hasError, setErrors] = useState(false);
   const [userDataError, setUserDataError] = useState({});
-  // const [orderSaved, setOrderSaved] = useState(false);
   const [activeStep, setActiveStep] = useState(+3);
   const steps = getSteps();
   const [expanded, setExpanded] = useState('panel1');
@@ -256,9 +254,22 @@ const Billing = props => {
   };
 
   async function fetchCouponeList() {
-    const error = validatePhoneNumber();
-    setUserDataError(error);
-    if (Object.keys(error).length > 0) {
+    //const error = validatePhoneNumber();
+    //setUserDataError(error);
+    setLoading(true);
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          phone_number: userData && userData.phoneNumber || '',
+          email: (userData && userData.email) || '',
+        }),
+      };
+      fetch(API_BASE + `order-user-detail?company=${companyId}`, requestOptions)
+        .then(response => response.json())
+        .then(resCoupone => setCouponeList(resCoupone))
+        .catch(err => setErrors(err));
+    /* if (Object.keys(error).length > 0) {
     } else {
       setLoading(true);
       const requestOptions = {
@@ -273,8 +284,10 @@ const Billing = props => {
         .then(response => response.json())
         .then(resCoupone => setCouponeList(resCoupone))
         .catch(err => setErrors(err));
-    }
+    } */
   }
+
+  console.log(couponeList, 'couponeList');
 
   async function refreshToken(tableNo) {
     const requestOptions = {
@@ -562,6 +575,9 @@ const Billing = props => {
 
   console.log(loading, 'loading');
 
+  console.log(menuList, 'menulist');
+  console.log(orderList, 'orderlist');
+
   return (
     <div className={classes.root}>
       {/* <LogoInfo menuList={menuList} props={props} /> */}
@@ -705,9 +721,9 @@ const Billing = props => {
                       onChange={e => handleChange(e, userData)}
                     />
                   ))}
-                {userDataError && userDataError.phoneNumber && (
+                {/* {userDataError && userDataError.phoneNumber && (
                   <p className={classes.errorText}>{userDataError.phoneNumber}</p>
-                )}
+                )} */}
                 {(menuList.data.order && menuList.data.order.order_lines.length == 0) ||
                   (!menuList.data.order && Object.keys(couponeList).length == 0 && (
                     <Button

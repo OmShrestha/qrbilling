@@ -47,7 +47,7 @@ const Layout = (props) => {
       ) : (
         <img
           src="https://i.pinimg.com/originals/9b/56/2c/9b562ca0be290e80f201486a4fbcf849.png"
-          alt="image"
+          alt="QR"
           onClick={() => setQRScannerSelected(!QRScannerSelected)}
         />
       )}

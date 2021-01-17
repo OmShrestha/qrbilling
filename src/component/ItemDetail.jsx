@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import BillingForm from './Billing';
-import { API_BASE } from '../Constant';
+import { API_BASE, API_BASE_V2 } from '../Constant';
 import { useHistory } from 'react-router-dom';
 
 // material
@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import { Button } from '@material-ui/core';
 import ProductList from './ItemDetail/component/ProductList';
 import LogoInfo from './LogoInfo';
+import axios from 'axios';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -126,6 +127,7 @@ const ItemDetails = props => {
   const [hasError, setErrors] = useState(false);
   const [orderSaved, setOrderSaved] = useState(false);
   const [menuList, setMenuList] = useState({});
+  const [orderList, setOrderList] = useState({});
   const [itemTotal, setItemTotal] = useState({});
   const [redeem, setRedeem] = useState(false);
   const [open, setOpen] = useState(false);
@@ -199,12 +201,42 @@ const ItemDetails = props => {
       }
     }
   };
+
   async function fetchData() {
     const res = await fetch(API_BASE + `company/${props.match.params.id}/menu?asset=` + query.get('table_no'));
     res
       .json()
       .then(res => setMenuList(res))
       .catch(err => setErrors(err));
+  }
+  
+  async function fetchOrders(){
+    const res = await axios.get(API_BASE_V2 + `order/latest-asset-order/${query.get('table_no')}`);
+
+    const status = res.data.status;
+    let orderListOrderLines = [];
+
+    res.data.order_lines.map(order => orderListOrderLines.push(
+      {
+        company: props.match.params.id,
+        id: null,
+        product: order.product.id,
+        product_code: order.product.product_code,
+        product_name: order.product.name,
+        quantity: order.quantity,
+        rate: order.rate,
+        total: order.total,
+        id: null,
+      }
+    ));
+
+    const orders = {
+      order_id: res.data.id,
+      order_lines: orderListOrderLines,
+      price_details: res.data.price_details
+    };
+
+    status === 'NEW_ORDER' ? setOrderList(orders) : setOrderList({});
   }
 
   function getParameters(url) {
@@ -248,6 +280,7 @@ const ItemDetails = props => {
   useEffect(() => {
     if (query.get('token')) {
       fetchData();
+      fetchOrders();
     } else {
       handleScan(window.location.href);
     }
@@ -276,6 +309,7 @@ const ItemDetails = props => {
               removeItem={removeItem}
               proceedToRedeem={proceedToRedeem}
               menuList={menuList}
+              orderList={orderList}
               tableNumber={query.get('table_no')}
               companyId={props.match.params.id}
               orderToken={query.get('token')}

@@ -237,7 +237,7 @@ const ItemDetails = props => {
       price_details: res.data.price_details
     };
 
-    status !== 'COMPLETED'  ? setOrderList(orders) : setOrderList({});
+    status !== "COMPLETED" && status !== "CANCELLED" ? setOrderList(orders) : setOrderList({});
   }
 
   /* function getParameters(url) {
@@ -300,6 +300,8 @@ const ItemDetails = props => {
       totalPrice += itemTotal[key].total;
     }
   }
+
+  console.log(orderList);
   return (
     <div>
       {hasError ? (
@@ -357,10 +359,8 @@ const ItemDetails = props => {
                     </TabPanel>
                   ))}
               </div>
-              <Grid container className={classes.orderBtnContainer}>
-                {menuList.data &&
-                  menuList.data.order &&
-                  menuList.data.order.order_lines.length > 0 &&
+                  <Grid container className={classes.orderBtnContainer}>
+                {orderList && orderList.hasOwnProperty('order_lines') &&
                   (totalPrice < 0 || totalPrice == 0) && (
                     <Button className={classes.orderBtn} onClick={() => proceedToRedeem()}>
                       View Order

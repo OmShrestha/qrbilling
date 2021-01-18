@@ -623,7 +623,6 @@ const Billing = props => {
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <div className={classes.processingTxt}>
                 <Typography>Previous Order</Typography>
-                <Typography>Processing</Typography>
               </div>
             </AccordionSummary>
             <AccordionDetails className={classes.detailList}>
@@ -633,7 +632,7 @@ const Billing = props => {
                     <Typography className={classes.productName} key={index}>
                       {order.product_name}
                     </Typography>
-                  <span>{`${order.quantity} * ${order.rate}`}</span>
+                  <span>{`${order.status} ${order.quantity} * ${order.rate}`}</span>
                   </div>
               )) : <div className={classes.detailListItem}>
                   <Typography>No previous order</Typography>

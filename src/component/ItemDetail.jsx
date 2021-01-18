@@ -237,8 +237,7 @@ const ItemDetails = props => {
       price_details: res.data.price_details
     };
 
-    console.log(res.data, 'response from item details');
-    status !== 'COMPLETED' || status !== 'CANCELLED' ? setOrderList(orders) : setOrderList({});
+    status !== 'COMPLETED'  ? setOrderList(orders) : setOrderList({});
   }
 
   /* function getParameters(url) {
@@ -287,6 +286,14 @@ const ItemDetails = props => {
     } */
 
   }, []);
+
+ /*  if (menuList.data !== undefined) {
+    console.log(orderList);
+
+    //menuList.data.order = orderList;
+    //console.log(menuList);
+  } */
+
   let totalPrice = 0;
   for (var key in itemTotal) {
     if (itemTotal.hasOwnProperty(key)) {

@@ -257,7 +257,14 @@ const Billing = props => {
     //const error = validatePhoneNumber();
     //setUserDataError(error);
     setLoading(true);
-      const requestOptions = {
+    const phone_number = userData && userData.phoneNumber || '';
+   
+
+    fetch(API_BASE_V2 + `company/${companyId}/user-vouchers/?phone_number=${phone_number}`).then(response => response.json())
+        .then(resCoupone => setCouponeList(resCoupone))
+      .catch(err => setErrors(err));
+    
+      /* const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -268,7 +275,7 @@ const Billing = props => {
       fetch(API_BASE + `order-user-detail?company=${companyId}`, requestOptions)
         .then(response => response.json())
         .then(resCoupone => setCouponeList(resCoupone))
-        .catch(err => setErrors(err));
+        .catch(err => setErrors(err)); */
     /* if (Object.keys(error).length > 0) {
     } else {
       setLoading(true);
@@ -371,8 +378,9 @@ const Billing = props => {
           product: itemTotal[data].id,
           product_name: itemTotal[data].name,
           product_code: itemTotal[data].productCode,
-          rate: itemTotal[data].perPlate,
           quantity: itemTotal[data].number,
+          rate: itemTotal[data].perPlate,
+          status: 'NEW',
           total: itemTotal[data].total,
           company: companyId,
           order: (menuList.data.order && menuList.data.order.id) || null,
@@ -385,10 +393,10 @@ const Billing = props => {
         body: JSON.stringify({
           company: companyId,
           asset: tableNumber,
-          user: couponeList.data.user || null,
-          name: (userData && userData.fullName) || couponeList.data.name || '',
+          user: couponeList.records.user || null,
+          name: (userData && userData.fullName) || couponeList.records.name || '',
           phone_number: userData && userData.phoneNumber,
-          email: (userData && userData.email) || couponeList.data.email || '',
+          email: (userData && userData.email) || couponeList.records.email || '',
           voucher: (userData && userData.couponeId) || null,
           tax: menuList.data.tax,
           bill: null,
@@ -469,10 +477,10 @@ const Billing = props => {
         body: JSON.stringify({
           company: companyId,
           asset: tableNumber,
-          user: couponeList.data.user || null,
-          name: (userData && userData.fullName) || couponeList.data.name || '',
+          user: couponeList.records.user || null,
+          name: (userData && userData.fullName) || couponeList.records.name || '',
           phone_number: userData && userData.phoneNumber,
-          email: (userData && userData.email) || couponeList.data.email || '',
+          email: (userData && userData.email) || couponeList.records.email || '',
           voucher: (userData && userData.couponeId) || null,
           tax: 13.0,
           bill: null,
@@ -527,7 +535,7 @@ const Billing = props => {
 
   useEffect(() => {
     setLoading(false);
-    if (couponeList && couponeList.data && couponeList.data.voucher && couponeList.data.voucher.length == 0) {
+    if (couponeList && couponeList.records && couponeList.records.voucher && couponeList.records.voucher.length == 0) {
       verifyOrder(true);
     }
   }, [couponeList]);
@@ -745,7 +753,7 @@ const Billing = props => {
                 )}
               </>
             )}
-            {couponeList && couponeList.data && !couponeList.data.voucher && (
+            {couponeList && couponeList.records && !couponeList.records.voucher && (
               <>
                {/*  <Typography component="h5" className={classes.bottomContainerTitle}>
                   Register For Coupon

@@ -1,96 +1,105 @@
-import { Badge, Card, CardContent, Typography } from '@material-ui/core';
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-/* import clsx from 'clsx';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'; */
+import { Card, CardContent, Typography } from "@material-ui/core";
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import DummyLogo from "../../assets/Image 1.png";
+import Timer from "./Timer";
+import { Button } from "@material-ui/core";
+import clsx from "clsx";
+import { Lock as LockIcon } from "@material-ui/icons";
 
-const useStyles = makeStyles(theme => ({
-  back: {
-    cursor: 'pointer',
-    margin: '8px 16px',
-  },
-  shape: {
-    backgroundColor: 'white',
-    width: 30,
-    height: 30,
-  },
-  shapeCircle: {
-    borderRadius: '50%',
-  },
-  arrow: {
-    margin: '5px 0 0px 10px',
-    fontSize: '1rem',
-  },
+const useStyles = makeStyles((theme) => ({
   card: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    padding: '8px 16px 30px',
-    margin: '18px 0 0',
-  },
-  logo: {
-    backgroundColor: '#F8F9F9',
-    borderRadius: '5px',
-    width: '25%',
-    height: '106px',
-    marginRight: '8px',
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    padding: "8px 16px 30px",
+    margin: "18px 0 0",
+    textAlign: "center",
   },
   img: {
-    width: '106px',
-    height: '106px',
-    objectFit: 'cover',
+    width: "106px",
+    height: "106px",
+    objectFit: "cover",
   },
   info: {
-    backgroundColor: '#F8F9F9',
-    borderRadius: '5px',
-    width: '72%',
-    height: '106px',
+    marginTop: 12,
+    backgroundColor: "#F8F9F9",
   },
   cardContent: {
-    padding: '6px 12px',
+    padding: "6px 12px",
   },
   resName: {
-    fontSize: '14pt',
-    fontWeight: 'bold',
-    lineHeight: '22px',
+    fontSize: "14pt",
+    fontWeight: 900,
+    lineHeight: "22px",
   },
   tableNumber: {
-    fontSize: '12pt',
-    lineHeight: '22px',
-    marginBottom: '3px',
+    fontSize: "10pt",
+    lineHeight: "15px",
+    marginBottom: "3px",
+    color: "grey",
   },
-  txt: {
-    fontSize: '12pt',
-    lineHeight: '22px',
+  buttons: {
+    fontWeight: 700,
+    fontSize: 10,
+    borderColor: "#000",
+    marginRight: 10,
+  },
+  filledButton: {
+    color: "white",
+    backgroundColor: "#A62A22",
+  },
+  lockIcon: {
+    fontSize: 15,
   },
 }));
 
 const LogoInfo = ({ menuList, tableNumber, expireTime }) => {
   const classes = useStyles();
-
-  /* const circle = (
-    <div className={clsx(classes.shape, classes.shapeCircle)}>
-      <ArrowBackIosIcon className={classes.arrow} />
-    </div>
-  ); */
   return (
     <div>
-      <Badge color="secondary" badgeContent={0} className={classes.back}>
-        {/* {circle} */}
-      </Badge>
       <div className={classes.card}>
         {menuList && menuList.data && (
-          <Card className={classes.logo}>
-            <img src={menuList.data.logo_icon} className={classes.img}  alt="Company Logo"/>
-          </Card>
-        )}
-
-        {menuList && menuList.data && (
-          <Card className={classes.info}>
+          <Card>
             <CardContent className={classes.cardContent}>
-              <Typography className={classes.resName}>{menuList.data.name}</Typography>
-              <Typography className={classes.tableNumber}> {menuList.data.asset.name}</Typography>
+              {/* Logo */}
+              <img
+                src={menuList.data.logo_icon || DummyLogo}
+                className={classes.img}
+                alt="Company Logo"
+              />
+
+              {/* Restaurant, Table Info */}
+              <div className={classes.info}>
+                <Typography className={classes.resName}>
+                  {menuList.data.name}{" "}
+                </Typography>
+                <Typography variant="caption" className={classes.tableNumber}>
+                  {menuList.data.asset.name}{" "}
+                </Typography>
+                {!menuList.data.order && <Timer time={expireTime} />}
+              </div>
+
+              {/* Buttons */}
+              <div>
+                <Button
+                  size="small"
+                  variant="outlined"
+                  className={classes.buttons}
+                >
+                  <LockIcon className={classes.lockIcon} />
+                  Your Cart
+                </Button>
+                <Button
+                  size="small"
+                  variant="contained"
+                  className={clsx(classes.buttons, classes.filledButton)}
+                >
+                  Check Out
+                </Button>
+              </div>
             </CardContent>
-           {/*  {!menuList.data.order && <Timer time={expireTime} />} */}
           </Card>
         )}
       </div>

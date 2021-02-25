@@ -45,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 10,
     borderColor: "#000",
     marginRight: 10,
+    padding: "5px 20px",
   },
   filledButton: {
     color: "white",

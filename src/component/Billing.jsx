@@ -351,7 +351,7 @@ const Billing = (props) => {
       couponeList &&
       couponeList.records &&
       couponeList.records.voucher &&
-      couponeList.records.voucher.length == 0
+      couponeList.records.voucher.length === 0
     ) {
       verifyOrder(true);
     }
@@ -491,7 +491,7 @@ const Billing = (props) => {
                     <Typography className={classes.productName}>
                       {props.itemTotal[menuData].name}
                     </Typography>
-                    {!Object.keys(billingInfo).length != 0 && (
+                    {!Object.keys(billingInfo).length !== 0 && (
                       <Grid>
                         {
                           <div className={classes.buttons}>
@@ -555,9 +555,9 @@ const Billing = (props) => {
           />
         </div>
 
-        {Object.keys(billingInfo).length == 0 && (
+        {Object.keys(billingInfo).length === 0 && (
           <Grid className={classes.bottomContainer}>
-            {grandTotal > 0 && Object.keys(couponeList).length == 0 && (
+            {grandTotal > 0 && Object.keys(couponeList).length === 0 && (
               <>
                 <Typography
                   component="h5"
@@ -566,7 +566,7 @@ const Billing = (props) => {
                   Coupon & Discount
                 </Typography>
                 {(menuList.data.order &&
-                  menuList.data.order.order_lines.length == 0) ||
+                  menuList.data.order.order_lines.length === 0) ||
                   (!menuList.data.order && (
                     <TextField
                       variant="outlined"
@@ -581,9 +581,9 @@ const Billing = (props) => {
                   <p className={classes.errorText}>{userDataError.phoneNumber}</p>
                 )} */}
                 {(menuList.data.order &&
-                  menuList.data.order.order_lines.length == 0) ||
+                  menuList.data.order.order_lines.length === 0) ||
                   (!menuList.data.order &&
-                    Object.keys(couponeList).length == 0 && (
+                    Object.keys(couponeList).length === 0 && (
                       <Button
                         variant="contained"
                         className={classes.btnGreen}
@@ -685,7 +685,7 @@ const Billing = (props) => {
             )} */}
           </Grid>
         )}
-        {Object.keys(billingInfo).length != 0 && (
+        {Object.keys(billingInfo).length !== 0 && (
           <Grid className={classes.btnGrid}>
             <Button
               variant="contained"

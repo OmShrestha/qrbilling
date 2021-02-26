@@ -66,7 +66,7 @@ const LogoInfo = ({ menuList, tableNumber, expireTime }) => {
             <CardContent className={classes.cardContent}>
               {/* Logo */}
               <img
-                src={menuList.data.logo_icon || DummyLogo}
+                src={`${menuList.data.images[0].image}`}
                 className={classes.img}
                 alt="Company Logo"
               />

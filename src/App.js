@@ -3,14 +3,18 @@ import Routes from './routers/Router';
 import { Router } from 'react-router-dom';
 import './App.css';
 import history from './history';
+import { MuiThemeProvider } from '@material-ui/core';
+import theme from './theme';
 
 function App() {
   return (
-    <div className="App">
-      <Router history={history}>
+    <MuiThemeProvider theme={theme}>
+      <div className="App">
+        <Router history={history}>
           <Routes />
-      </Router>
-    </div>
+        </Router>
+      </div>
+    </MuiThemeProvider>
   );
 }
 

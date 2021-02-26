@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 
 // material
 import PropTypes from "prop-types";
-import { Tabs, Tab, Collapse, Grid, Card } from "@material-ui/core";
+import { Tabs, Tab, Collapse, Grid, CircularProgress } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import { Button } from "@material-ui/core";
 import ProductList from "./ItemDetail/component/ProductList";
@@ -14,6 +14,8 @@ import axios from "axios";
 
 import CustomSearchBar from "./SearchBar";
 import styles from "./ItemDetail.style";
+import { fetchCategory } from "../services/categoryService";
+import CategoryCard from "./categoryCard/categoryCard";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -45,6 +47,7 @@ function a11yProps(index) {
 
 const ItemDetails = (props) => {
   const classes = styles();
+  const [category, setCategory] = useState(null);
   const [value, setValue] = useState(0);
   const [hasError, setErrors] = useState(false);
   const [orderSaved, setOrderSaved] = useState(false);
@@ -60,6 +63,15 @@ const ItemDetails = (props) => {
   const proceedToRedeem = () => {
     setRedeem(!redeem);
   };
+
+  useEffect(() => {
+    const getCategory = async () => {
+      fetchCategory(props.match.params.id)
+        .then((res) => setCategory(res.data.records))
+        .catch((res) => console.log(res));
+    };
+    getCategory();
+  }, [props.match.params.id]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -238,21 +250,7 @@ const ItemDetails = (props) => {
                 </Tabs>
 
                 {/* Category Card should render in 'all' tab */}
-                {menuList && menuList.data && (
-                  <Grid
-                    container
-                    spacing={2}
-                    className={classes.categoryCardContainer}
-                  >
-                    {menuList.data.menu.map((menuData, index) => (
-                      <Grid item xs={6} key={index}>
-                        <Card elevation={0} className={classes.categoryCard}>
-                          <Typography>{menuData.category_name}</Typography>
-                        </Card>
-                      </Grid>
-                    ))}
-                  </Grid>
-                )}
+                <CategoryCard category={category} />
                 {/* Category Card Ends Here */}
 
                 {/* Tabs food menus */}

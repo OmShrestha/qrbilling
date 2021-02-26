@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/core";
+import { fade, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -15,26 +15,13 @@ const useStyles = makeStyles((theme) => ({
     searchBarTitle: {
         textAlign: "center",
         fontSize: 18,
+        fontWeight: 700
     },
     tabs: {
         backgroundColor: "#fff",
         "&.MuiTab-textColorInherit.Mui-selected": {
             color: "#a62a22",
         },
-    },
-    categoryCardContainer: {
-        backgroundColor: "#ECECEC",
-    },
-    categoryCard: {
-        padding: 10,
-        margin: 10,
-        height: 162,
-        width: 162,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        textAlign: "center",
-        borderRadius: 15,
     },
     checkoutContainer: {
         width: "100%",

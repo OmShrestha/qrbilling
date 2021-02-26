@@ -11,9 +11,10 @@ const styles = makeStyles((theme) => ({
     border: "none",
     backgroundColor: "#ECECEC",
     padding: 5,
-    paddingLeft: 10,
+    paddingLeft: 15,
     borderRadius: 40,
     width: "80vw",
+    fontSize: 12,
   },
   searchButton: {
     borderRadius: 40,

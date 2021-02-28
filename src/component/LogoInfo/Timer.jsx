@@ -1,5 +1,4 @@
-import React from 'react';
-import { color } from '@material-ui/system';
+import React from "react";
 
 class Timer extends React.Component {
   constructor(props) {
@@ -9,7 +8,7 @@ class Timer extends React.Component {
 
   tick() {
     if (this.state.seconds !== 0) {
-      this.setState(state => ({
+      this.setState((state) => ({
         seconds: state.seconds - 1,
       }));
     }
@@ -25,7 +24,7 @@ class Timer extends React.Component {
 
   render() {
     return (
-      <div style={{ backgroundColor: '#266d7d', color: 'white' }}>
+      <div style={{ backgroundColor: "#266d7d", color: "white" }}>
         {this.state.seconds > 0 ? (
           <h5>
             Order time expire in <b>{this.state.seconds}</b> seconds

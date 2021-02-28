@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from "react";
 /* import {
   Collapse,
   Navbar,
@@ -14,10 +14,10 @@ import React, { useState } from 'react';
   NavbarText,
 } from 'reactstrap'; */
 
-const Example = props => {
-  const [isOpen, setIsOpen] = useState(false);
+const Example = (props) => {
+  // const [isOpen, setIsOpen] = useState(false);
 
-  const toggle = () => setIsOpen(!isOpen);
+  // const toggle = () => setIsOpen(!isOpen);
 
   return <>{props.children}</>;
 };

@@ -1,5 +1,30 @@
 //Library
 import React, { useState, useEffect } from "react";
+import axios from "axios";
+
+// REFERENCE Dont Delete
+// REFERENCE Dont Delete
+// REFERENCE Dont Delete
+// REFERENCE Dont Delete
+// REFERENCE Dont Delete
+// REFERENCE Dont Delete
+// REFERENCE Dont Delete
+// REFERENCE Dont Delete
+// REFERENCE Dont Delete
+// REFERENCE Dont Delete
+// REFERENCE Dont Delete
+// REFERENCE Dont Delete
+// REFERENCE Dont Delete
+// REFERENCE Dont Delete
+// REFERENCE Dont Delete
+// REFERENCE Dont Delete
+// REFERENCE Dont Delete
+// REFERENCE Dont Delete
+// REFERENCE Dont Delete
+// REFERENCE Dont Delete
+// REFERENCE Dont Delete
+// REFERENCE Dont Delete
+// REFERENCE Dont Delete
 
 // material
 import PropTypes from "prop-types";
@@ -17,14 +42,17 @@ import {
 import { ExpandMore as ExpandMoreIcon } from "@material-ui/icons";
 
 //Local
+import ProductList from "./ItemDetail/component/ProductList";
 import LogoInfo from "./LogoInfo";
+import { API_BASE, API_BASE_V2 } from "../Constant";
 import CustomSearchBar from "./SearchBar";
 import BillingForm from "./Billing";
 import styles from "./ItemDetail.style";
 import { fetchCategory } from "../services/categoryService";
 import CategoryCard from "./categoryCard/categoryCard";
+import { fetchSubCategory } from "../services/subCategoryService";
 import { fetchProduct } from "../services/fetchProductService";
-import { fetchCompanyData } from "../services/logoService";
+import { ColumnsGap } from "react-bootstrap-icons";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -56,16 +84,16 @@ function a11yProps(index) {
 
 const ItemDetails = (props) => {
   const classes = styles();
-
+  const [category, setCategory] = useState(null);
+  // const [subCategory, setSubCategory] = useState(null);
   const [value, setValue] = useState(0);
-  const [mainCategory, setMainCategory] = useState(null);
   const [hasError, setErrors] = useState(false);
+  // const [orderSaved, setOrderSaved] = useState(false);
   const [menuList, setMenuList] = useState({});
   const [orderList, setOrderList] = useState({});
   const [itemTotal, setItemTotal] = useState({});
   const [redeem, setRedeem] = useState(false);
   const [categoryID, setCategoryID] = useState(null);
-  const [subCategory, setSubCategory] = useState(null);
   const [products, setProducts] = useState(null);
   const [child, setChild] = useState(null);
 
@@ -74,55 +102,55 @@ const ItemDetails = (props) => {
     setRedeem(!redeem);
   };
 
-  //Handle Category Tab/Slider Change
-  const handleTabChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  const fetchProductsHandler = async (id) => {
-    fetchProduct(props.match.params.id, id)
-      // .then((res) => console.log(res));
-      .then((res) => setProducts(res.data.data));
-  };
-
-  useEffect(() => {
-    fetchCompanyDataHandler();
-  }, []);
-
-  const fetchCompanyDataHandler = () => {
-    fetchCompanyData(props.match.params.id, query.get("table_no"))
-      .then((res) => setMenuList(res.data))
-      .catch((err) => setErrors(err));
-  };
-
   //Get All The Main Category
   useEffect(() => {
-    const getMainCategory = async () => {
+    const getCategory = async () => {
       fetchCategory(props.match.params.id)
-        .then((res) => setMainCategory(res.data.records))
-        .catch((res) => alert(res));
+        .then((res) => setCategory(res.data.records))
+        .catch((res) => console.log(res));
     };
-    getMainCategory();
+    getCategory();
   }, [props.match.params.id]);
 
   //Get Sub Category after clicking in Main Category
   useEffect(() => {
     const getProducts = async () => {
       fetchProduct(props.match.params.id, categoryID)
-        .then((res) => setSubCategory(res.data.data))
-        .catch((err) => alert(err));
+        .then((res) => setProducts(res.data.data))
+        .catch((err) => console.log(err));
     };
     getProducts();
   }, [props.match.params.id, categoryID]);
 
+  //Handle Category Change
+  const handleChange = (newValue) => {
+    setValue(newValue);
+  };
+
+  const fetchProductsHandler = async (id) => {
+    fetchProduct(props.match.params.id, id);
+  };
+
   //Fetch Sub Category when category card is clicked
   const fetchSubCategoryHandler = async (id, index, child) => {
-    // fetchSubCategory(props.match.params.id, id)
-    //   .then((res) => console.log(res))
-    //   .catch((err) => alert(err));
+    fetchSubCategory(props.match.params.id, id)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
     setValue(index);
     setChild(child);
   };
+
+  //Important
+  // async function saveOrder() {
+  //   const requestOptions = {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify(itemTotal),
+  //   };
+  //   fetch(API_BASE + "company/asset/order/create", requestOptions)
+  //     .then((response) => response.json())
+  //     .then((data) => setOrderSaved({ postId: data.id }));
+  // }
 
   const addItem = (menuIndex, index, price, itemName, id, productCode) => {
     let newData = {
@@ -175,6 +203,55 @@ const ItemDetails = (props) => {
     }
   };
 
+  // async function fetchData() {
+  //   const res = await fetch(
+  //     API_BASE +
+  //       `company/${props.match.params.id}/product&product_category=fcde1236-ab2d-4eea-a6be-26620781fff4`
+  //   );
+  //   res
+  //     .json()
+  //     .then((res) => setMenuList(res))
+  //     .catch((err) => setErrors(err));
+  // }
+
+  // async function fetchOrders() {
+  //   const res = await axios.get(
+  //     API_BASE_V2 + `order/latest-asset-order/${query.get("table_no")}`
+  //   );
+
+  //   const status = res.data.status;
+  //   let orderListOrderLines = [];
+
+  //   res.data.order_lines.map((order) =>
+  //     orderListOrderLines.push({
+  //       company: props.match.params.id,
+  //       id: null,
+  //       product: order.product.id,
+  //       product_code: order.product.product_code,
+  //       product_name: order.product.name,
+  //       quantity: order.quantity,
+  //       status: order.status,
+  //       rate: order.rate,
+  //       total: order.total,
+  //     })
+  //   );
+
+  //   const orders = {
+  //     order_id: res.data.id,
+  //     order_lines: orderListOrderLines,
+  //     price_details: res.data.price_details,
+  //   };
+
+  //   status !== "COMPLETED" && status !== "CANCELLED"
+  //     ? setOrderList(orders)
+  //     : setOrderList({});
+  // }
+
+  useEffect(() => {
+    // fetchData();
+    // fetchOrders();
+  }, []);
+
   let totalPrice = 0;
   for (var key in itemTotal) {
     if (itemTotal.hasOwnProperty(key)) {
@@ -206,26 +283,29 @@ const ItemDetails = (props) => {
           ) : (
             <div>
               <div className={classes.secondRoot}>
+                {/* SearchBar Title */}
                 <Typography className={classes.searchBarTitle}>
                   What do you want to eat today?
                 </Typography>
+
+                {/* SearchBar */}
                 <CustomSearchBar />
 
+                {/* Category Tabs */}
                 <Tabs
                   className={classes.tabs}
                   value={value}
-                  onChange={handleTabChange}
+                  onChange={handleChange}
                   variant="scrollable"
                   scrollButtons="off"
                   aria-label="scrollable prevent tabs example"
                 >
                   <Tab label="All" {...a11yProps(0)} />
-                  {mainCategory?.map((menuData, index) => (
+                  {category?.map((menuData, index) => (
                     <Tab
                       label={menuData.name}
                       {...a11yProps(index + 1)}
                       key={index + 1}
-                      id={menuData.id}
                     />
                   ))}
                 </Tabs>
@@ -233,7 +313,7 @@ const ItemDetails = (props) => {
                 {/* Category Card should render in 'all' tab */}
                 {value === 0 && (
                   <CategoryCard
-                    category={mainCategory}
+                    category={category}
                     click={(id, index, child) => {
                       fetchSubCategoryHandler(id, index, child);
                       setCategoryID(id);
@@ -246,7 +326,6 @@ const ItemDetails = (props) => {
                 {child?.map((children, index) => {
                   return (
                     <Accordion
-                      key={index}
                       onClick={() => fetchProductsHandler(children.id)}
                     >
                       <AccordionSummary
@@ -258,29 +337,77 @@ const ItemDetails = (props) => {
                           {children.name}
                         </Typography>
                       </AccordionSummary>
-                      <AccordionDetails
-                        style={{ display: "flex", flexDirection: "column" }}
-                      >
-                        {products?.map((product, index) => {
+                      <AccordionDetails>
+                        {products.map((product) => {
                           return (
-                            <Grid
-                              container
-                              direction="column"
-                              justify="center"
-                              key={index}
-                            >
-                              <Grid item xs={12}>
-                                {product.name}
-                                {product.selling_price}
-                              </Grid>
-                            </Grid>
+                            <div>
+                              {product.name}
+                              {product.selling_price}
+                            </div>
                           );
                         })}
+                        {/* <ProductList
+                          key={index}
+                          className={classes.product}
+                          product={item}
+                          menuIndex={index}
+                          index={index}
+                          itemTotal={itemTotal}
+                          addItem={addItem}
+                          removeItem={removeItem}
+                        /> */}
                       </AccordionDetails>
                     </Accordion>
                   );
                 })}
+                {/* {products?.map((product, index) => (
+                  <TabPanel
+                    className={classes.panel}
+                    key={index + 1}
+                    value={value}
+                    index={index + 1}
+                  >
+                    <Accordion>
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                      >
+                        <Typography className={classes.heading}>
+                          {product.name}
+                        </Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <ProductList
+                          key={index}
+                          className={classes.product}
+                          product={product}
+                          menuIndex={index}
+                          index={index}
+                          itemTotal={itemTotal}
+                          addItem={addItem}
+                          removeItem={removeItem}
+                        />
+                      </AccordionDetails>
+                    </Accordion>
+                  </TabPanel>
+                ))} */}
               </div>
+
+              {/* View Order Button */}
+              {/* <Grid container className={classes.orderBtnContainer}>
+                {orderList &&
+                  orderList.hasOwnProperty("order_lines") &&
+                  (totalPrice < 0 || totalPrice === 0) && (
+                    <Button
+                      className={classes.orderBtn}
+                      onClick={() => proceedToRedeem()}
+                    >
+                      View Order
+                    </Button>
+                  )}
+              </Grid> */}
+              {/* View Order Button ends Here */}
 
               {/* Checkout Button if order is added */}
               <Grid container className={classes.orderBtnContainer}>

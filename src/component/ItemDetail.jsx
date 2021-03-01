@@ -21,9 +21,10 @@ import LogoInfo from "./LogoInfo";
 import CustomSearchBar from "./SearchBar";
 import BillingForm from "./Billing";
 import styles from "./ItemDetail.style";
-import { fetchCategory } from "../services/categoryService";
+import ProductList from "./ItemDetail/component/ProductList";
 import CategoryCard from "./categoryCard/categoryCard";
 import { fetchProduct } from "../services/fetchProductService";
+import { fetchCategory } from "../services/categoryService";
 import { fetchCompanyData } from "../services/logoService";
 
 function TabPanel(props) {
@@ -59,15 +60,15 @@ const ItemDetails = (props) => {
 
   const [value, setValue] = useState(0);
   const [mainCategory, setMainCategory] = useState(null);
+  const [products, setProducts] = useState(null);
   const [hasError, setErrors] = useState(false);
   const [menuList, setMenuList] = useState({});
   const [orderList, setOrderList] = useState({});
   const [itemTotal, setItemTotal] = useState({});
   const [redeem, setRedeem] = useState(false);
-  const [categoryID, setCategoryID] = useState(null);
-  const [subCategory, setSubCategory] = useState(null);
-  const [products, setProducts] = useState(null);
+  const [subCategoryID, setSubCategoryID] = useState(null);
   const [child, setChild] = useState(null);
+  const [expanded, setExpanded] = useState(false);
 
   const query = new URLSearchParams(props.location.search);
   const proceedToRedeem = () => {
@@ -75,14 +76,23 @@ const ItemDetails = (props) => {
   };
 
   //Handle Category Tab/Slider Change
-  const handleTabChange = (event, newValue) => {
+  const handleTabChange = (event, newValue, isExpanded) => {
     setValue(newValue);
+    setProducts(null);
+    setSubCategoryID(null);
   };
 
-  const fetchProductsHandler = async (id) => {
-    fetchProduct(props.match.params.id, id)
-      // .then((res) => console.log(res));
-      .then((res) => setProducts(res.data.data));
+  const handleAccordianChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+
+  //Fetch when Products Accordian is clicked
+  const fetchProductsHandler = async (currentID) => {
+    subCategoryID !== currentID &&
+      fetchProduct(props.match.params.id, currentID)
+        .then((res) => setProducts(res.data.data))
+        .then(() => setSubCategoryID(currentID))
+        .catch((err) => alert(err));
   };
 
   useEffect(() => {
@@ -105,23 +115,10 @@ const ItemDetails = (props) => {
     getMainCategory();
   }, [props.match.params.id]);
 
-  //Get Sub Category after clicking in Main Category
-  useEffect(() => {
-    const getProducts = async () => {
-      fetchProduct(props.match.params.id, categoryID)
-        .then((res) => setSubCategory(res.data.data))
-        .catch((err) => alert(err));
-    };
-    getProducts();
-  }, [props.match.params.id, categoryID]);
-
   //Fetch Sub Category when category card is clicked
   const fetchSubCategoryHandler = async (id, index, child) => {
-    // fetchSubCategory(props.match.params.id, id)
-    //   .then((res) => console.log(res))
-    //   .catch((err) => alert(err));
     setValue(index);
-    setChild(child);
+    child.length > 0 ? setChild(child) : fetchProductsHandler(id);
   };
 
   const addItem = (menuIndex, index, price, itemName, id, productCode) => {
@@ -175,6 +172,25 @@ const ItemDetails = (props) => {
     }
   };
 
+  const productList = products?.map((product, index) => {
+    return (
+      <Grid container direction="column" justify="center" key={index}>
+        <Grid item xs={12}>
+          <ProductList
+            key={index}
+            className={classes.product}
+            product={product}
+            menuIndex={index}
+            index={index}
+            itemTotal={itemTotal}
+            addItem={addItem}
+            removeItem={removeItem}
+          />
+        </Grid>
+      </Grid>
+    );
+  });
+
   let totalPrice = 0;
   for (var key in itemTotal) {
     if (itemTotal.hasOwnProperty(key)) {
@@ -225,62 +241,85 @@ const ItemDetails = (props) => {
                       label={menuData.name}
                       {...a11yProps(index + 1)}
                       key={index + 1}
-                      id={menuData.id}
+                      onClick={() =>
+                        menuData.child.length > 0
+                          ? setChild(menuData.child)
+                          : (fetchProductsHandler(menuData.id), setChild(null))
+                      }
                     />
                   ))}
                 </Tabs>
 
                 {/* Category Card should render in 'all' tab */}
-                {value === 0 && (
+                {value === 0 ? (
                   <CategoryCard
                     category={mainCategory}
                     click={(id, index, child) => {
                       fetchSubCategoryHandler(id, index, child);
-                      setCategoryID(id);
+                      // setCategoryID(id);
                     }}
                   />
+                ) : // If Has child then render with Accordian(Sub Category)
+                child?.length > 0 ? (
+                  child?.map((children, index) => {
+                    return (
+                      <Accordion
+                        expanded={expanded === `panel${index}`}
+                        onChange={handleAccordianChange(`panel${index}`)}
+                        className={classes.accordian}
+                        key={index}
+                        onClick={() => fetchProductsHandler(children.id)}
+                      >
+                        <AccordionSummary
+                          expandIcon={<ExpandMoreIcon />}
+                          aria-controls="panel1a-content"
+                          id="panel1a-header"
+                        >
+                          <Typography className={classes.heading}>
+                            {children.name}
+                          </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails
+                          style={{ display: "flex", flexDirection: "column" }}
+                        >
+                          {productList}
+                        </AccordionDetails>
+                      </Accordion>
+                    );
+                  })
+                ) : (
+                  // If no child then directly render product List
+                  productList
                 )}
-                {/* Category Card Ends Here */}
-
-                {/* Tabs food menus */}
-                {child?.map((children, index) => {
-                  return (
-                    <Accordion
-                      key={index}
-                      onClick={() => fetchProductsHandler(children.id)}
-                    >
-                      <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel1a-content"
-                        id="panel1a-header"
-                      >
-                        <Typography className={classes.heading}>
-                          {children.name}
-                        </Typography>
-                      </AccordionSummary>
-                      <AccordionDetails
-                        style={{ display: "flex", flexDirection: "column" }}
-                      >
-                        {products?.map((product, index) => {
-                          return (
-                            <Grid
-                              container
-                              direction="column"
-                              justify="center"
-                              key={index}
-                            >
-                              <Grid item xs={12}>
-                                {product.name}
-                                {product.selling_price}
-                              </Grid>
-                            </Grid>
-                          );
-                        })}
-                      </AccordionDetails>
-                    </Accordion>
-                  );
-                })}
               </div>
+
+              <Grid container className={classes.orderBtnContainer}>
+                {orderList &&
+                  orderList.hasOwnProperty("order_lines") &&
+                  (totalPrice < 0 || totalPrice === 0) && (
+                    <Button
+                      className={classes.orderBtn}
+                      onClick={() => proceedToRedeem()}
+                    >
+                      View Order
+                    </Button>
+                  )}
+              </Grid>
+
+              {/* View Order Button */}
+              <Grid container className={classes.orderBtnContainer}>
+                {orderList &&
+                  orderList.hasOwnProperty("order_lines") &&
+                  (totalPrice < 0 || totalPrice === 0) && (
+                    <Button
+                      className={classes.orderBtn}
+                      onClick={() => proceedToRedeem()}
+                    >
+                      View Order
+                    </Button>
+                  )}
+              </Grid>
+              {/* View Order Button ends Here */}
 
               {/* Checkout Button if order is added */}
               <Grid container className={classes.orderBtnContainer}>

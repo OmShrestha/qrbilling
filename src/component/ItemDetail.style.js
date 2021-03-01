@@ -80,6 +80,12 @@ const useStyles = makeStyles((theme) => ({
     viewTxt: {
         color: "#273238",
     },
+    accordian: {
+        backgroundColor: '#ECECEC',
+        '& .MuiAccordionDetails-root': {
+            padding: 0
+        }
+    }
 }));
 
 export default useStyles;

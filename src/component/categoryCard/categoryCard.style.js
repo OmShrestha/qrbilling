@@ -8,7 +8,7 @@ const styles = makeStyles(theme => ({
         margin: 10,
         height: 162,
         width: 162,
-        borderRadius: 12,
+        borderRadius: 20,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",

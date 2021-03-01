@@ -21,7 +21,7 @@ import LogoInfo from "./LogoInfo";
 import CustomSearchBar from "./SearchBar";
 import BillingForm from "./Billing";
 import styles from "./ItemDetail.style";
-import ProductList from "./ItemDetail/component/ProductList";
+import ProductList from "./ProductList";
 import CategoryCard from "./categoryCard/categoryCard";
 import { fetchProduct } from "../services/fetchProductService";
 import { fetchCategory } from "../services/categoryService";

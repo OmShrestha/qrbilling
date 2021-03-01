@@ -42,7 +42,7 @@ import {
 import { ExpandMore as ExpandMoreIcon } from "@material-ui/icons";
 
 //Local
-import ProductList from "./ItemDetail/component/ProductList";
+import ProductList from "./component/ProductList";
 import LogoInfo from "./LogoInfo";
 import { API_BASE, API_BASE_V2 } from "../Constant";
 import CustomSearchBar from "./SearchBar";
@@ -438,14 +438,6 @@ const ItemDetails = (props) => {
 };
 
 export default ItemDetails;
-
-
-
-
-
-
-
-
 
 import React, { useState, useEffect } from "react";
 import BillingForm from "./Billing";

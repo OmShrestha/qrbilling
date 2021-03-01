@@ -29,7 +29,7 @@ const useStyles = makeStyles({
   addOrder: {
     border: "0.5px solid #707070",
     borderRadius: "10px",
-    fontSize: "8px",
+    fontSize: "16px",
     fontWeight: 400,
     backgroundColor: "#A62A22",
     fontFamily: "SF Pro Display",

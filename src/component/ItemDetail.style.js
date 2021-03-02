@@ -43,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     orderBtnContainer: {
+        zIndex: 999,
         position: "fixed",
         width: '50px',
         height: '50px',
@@ -52,6 +53,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#A62A22',
         justifyContent: "center",
         bottom: 50,
+        left: 10,
         "& .MuiCollapse-container": {
             flex: "1 0 auto",
         },
@@ -61,6 +63,9 @@ const useStyles = makeStyles((theme) => ({
         '& .MuiAccordionDetails-root': {
             padding: 0
         }
+    },
+    cartIcon: {
+        color: '#fff'
     }
 }));
 

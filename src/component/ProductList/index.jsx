@@ -20,20 +20,16 @@ const useStyles = makeStyles({
     "& .MuiButton-root": {
       minWidth: "45px",
     },
-    "& button": {
-      "&:hover, &:focus": {
-        outline: "none",
-      },
-    },
   },
   addOrder: {
     border: "0.5px solid #707070",
     borderRadius: "10px",
-    fontSize: "16px",
+    fontSize: "12px",
     fontWeight: 400,
     backgroundColor: "#A62A22",
     fontFamily: "SF Pro Display",
     color: "#fff",
+    padding: "4px 8px",
   },
   productName: {
     fontSize: "16px",

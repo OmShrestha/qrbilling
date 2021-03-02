@@ -346,48 +346,26 @@ const ItemDetails = (props) => {
                   productList
                 )}
               </div>
-              <Grid container className={classes.orderBtnContainer}>
-                {orderList &&
-                  orderList.hasOwnProperty("order_lines") &&
-                  (totalPrice < 0 || totalPrice === 0) && (
-                    <Button
-                      className={classes.orderBtn}
-                      onClick={() => proceedToRedeem()}
-                    >
-                      View Order
-                    </Button>
-                  )}
-              </Grid>
-              {/* View Order Button */}
-              <Grid container className={classes.orderBtnContainer}>
-                {orderList &&
-                  orderList.hasOwnProperty("order_lines") &&
-                  (totalPrice < 0 || totalPrice === 0) && (
-                    <Button
-                      className={classes.orderBtn}
-                      onClick={() => proceedToRedeem()}
-                    >
-                      View Order
-                    </Button>
-                  )}
-              </Grid>
-              {/* View Order Button ends Here */}
 
               {/* Checkout Button if order is added */}
-              {Object.keys(itemTotal).length > 0 ? (
-                <Grid container className={classes.orderBtnContainer}>
-                  <Collapse in={totalPrice > 0}>
-                    <IconButton onClick={() => proceedToRedeem()}>
-                      <Badge
-                        badgeContent={Object.keys(itemTotal).length}
-                        color="primary"
-                      >
-                        <ShoppingCartIcon />
-                      </Badge>
-                    </IconButton>
-                  </Collapse>
-                </Grid>
-              ) : null}
+              <Grid
+                container
+                style={{
+                  display: Object.keys(itemTotal).length > 0 ? "block" : "none",
+                }}
+                className={classes.orderBtnContainer}
+              >
+                <Collapse in={totalPrice > 0}>
+                  <IconButton onClick={() => proceedToRedeem()}>
+                    <Badge
+                      badgeContent={Object.keys(itemTotal).length}
+                      color="primary"
+                    >
+                      <ShoppingCartIcon className={classes.cartIcon} />
+                    </Badge>
+                  </IconButton>
+                </Collapse>
+              </Grid>
               {/* Checkout Button ends here */}
             </div>
           )}

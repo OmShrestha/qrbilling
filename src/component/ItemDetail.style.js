@@ -23,6 +23,12 @@ const useStyles = makeStyles((theme) => ({
             color: "#a62a22",
         },
     },
+    tab: {
+        backgroundColor: '#ECECEC',
+        borderRadius: 40,
+        margin: '0px 10px',
+        padding: '14px 18px'
+    },
     checkoutContainer: {
         width: "100%",
         backgroundColor: "#4EA23A",

@@ -14,7 +14,6 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "space-between",
     padding: "8px 16px 30px",
-    margin: "18px 0 0",
     textAlign: "center",
   },
   img: {

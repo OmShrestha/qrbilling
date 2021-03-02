@@ -69,11 +69,15 @@ const ItemDetails = (props) => {
   const [subCategoryID, setSubCategoryID] = useState(null);
   const [child, setChild] = useState(null);
   const [expanded, setExpanded] = useState(false);
+  const [allProducts, setAllProducts] = useState(null);
+  const [filteredProducts, setfilteredProducts] = useState(null);
 
   const query = new URLSearchParams(props.location.search);
   const proceedToRedeem = () => {
     setRedeem(!redeem);
   };
+
+  const handleSearchChange = (e) => {};
 
   //Handle Category Tab/Slider Change
   const handleTabChange = (event, newValue, isExpanded) => {
@@ -82,6 +86,7 @@ const ItemDetails = (props) => {
     setSubCategoryID(null);
   };
 
+  //Tooggling Accordians
   const handleAccordianChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
@@ -117,6 +122,7 @@ const ItemDetails = (props) => {
 
   //Fetch Sub Category when category card is clicked
   const fetchSubCategoryHandler = async (id, index, child) => {
+    setChild(null);
     setValue(index);
     child.length > 0 ? setChild(child) : fetchProductsHandler(id);
   };
@@ -235,9 +241,10 @@ const ItemDetails = (props) => {
                   scrollButtons="off"
                   aria-label="scrollable prevent tabs example"
                 >
-                  <Tab label="All" {...a11yProps(0)} />
+                  <Tab className={classes.tab} label="All" {...a11yProps(0)} />
                   {mainCategory?.map((menuData, index) => (
                     <Tab
+                      className={classes.tab}
                       label={menuData.name}
                       {...a11yProps(index + 1)}
                       key={index + 1}

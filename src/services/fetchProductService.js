@@ -7,5 +7,11 @@ const fetchProduct = async (companyID, categoryID) => {
         `company/${companyID}/product?product_category=${categoryID}`)
     return res;
 };
+const fetchAllProduct = async (companyID, categoryID) => {
+    const res = await axios.get(
+        API_BASE +
+        `company/${companyID}/product?product_category=${categoryID}`)
+    return res;
+};
 
-export { fetchProduct }
+export { fetchProduct, fetchAllProduct }

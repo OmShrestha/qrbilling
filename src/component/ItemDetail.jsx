@@ -13,8 +13,13 @@ import {
   AccordionSummary,
   Typography,
   AccordionDetails,
+  Badge,
+  IconButton,
 } from "@material-ui/core";
-import { ExpandMore as ExpandMoreIcon } from "@material-ui/icons";
+import {
+  ExpandMore as ExpandMoreIcon,
+  ShoppingCart as ShoppingCartIcon,
+} from "@material-ui/icons";
 
 //Local
 import LogoInfo from "./LogoInfo";
@@ -23,7 +28,7 @@ import BillingForm from "./Billing";
 import styles from "./ItemDetail.style";
 import ProductList from "./ProductList";
 import CategoryCard from "./categoryCard/categoryCard";
-import { fetchProduct } from "../services/fetchProductService";
+import { fetchAllProduct, fetchProduct } from "../services/fetchProductService";
 import { fetchCategory } from "../services/categoryService";
 import { fetchCompanyData } from "../services/logoService";
 
@@ -77,7 +82,17 @@ const ItemDetails = (props) => {
     setRedeem(!redeem);
   };
 
-  const handleSearchChange = (e) => {};
+  const handleSearchChange = (e) => {
+    //go to all tab first
+    setValue(0);
+
+    let result = allProducts?.filter((product) =>
+      product.name.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    e.target.value.length > 0
+      ? setfilteredProducts(result)
+      : setfilteredProducts(null);
+  };
 
   //Handle Category Tab/Slider Change
   const handleTabChange = (event, newValue, isExpanded) => {
@@ -102,6 +117,9 @@ const ItemDetails = (props) => {
 
   useEffect(() => {
     fetchCompanyDataHandler();
+    fetchAllProduct(props.match.params.id).then((res) =>
+      setAllProducts(res.data.data)
+    );
   }, []);
 
   const fetchCompanyDataHandler = () => {
@@ -231,7 +249,10 @@ const ItemDetails = (props) => {
                 <Typography className={classes.searchBarTitle}>
                   What do you want to eat today?
                 </Typography>
-                <CustomSearchBar />
+                <CustomSearchBar
+                  filters={filteredProducts}
+                  change={(e) => handleSearchChange(e)}
+                />
 
                 <Tabs
                   className={classes.tabs}
@@ -259,13 +280,39 @@ const ItemDetails = (props) => {
 
                 {/* Category Card should render in 'all' tab */}
                 {value === 0 ? (
-                  <CategoryCard
-                    category={mainCategory}
-                    click={(id, index, child) => {
-                      fetchSubCategoryHandler(id, index, child);
-                      // setCategoryID(id);
-                    }}
-                  />
+                  filteredProducts === null ? (
+                    <CategoryCard
+                      category={mainCategory}
+                      click={(id, index, child) => {
+                        fetchSubCategoryHandler(id, index, child);
+                        // setCategoryID(id);
+                      }}
+                    />
+                  ) : (
+                    filteredProducts?.map((product, index) => {
+                      return (
+                        <Grid
+                          container
+                          direction="column"
+                          justify="center"
+                          key={index}
+                        >
+                          <Grid item xs={12}>
+                            <ProductList
+                              key={index}
+                              className={classes.product}
+                              product={product}
+                              menuIndex={index}
+                              index={index}
+                              itemTotal={itemTotal}
+                              addItem={addItem}
+                              removeItem={removeItem}
+                            />
+                          </Grid>
+                        </Grid>
+                      );
+                    })
+                  )
                 ) : // If Has child then render with Accordian(Sub Category)
                 child?.length > 0 ? (
                   child?.map((children, index) => {
@@ -299,7 +346,6 @@ const ItemDetails = (props) => {
                   productList
                 )}
               </div>
-
               <Grid container className={classes.orderBtnContainer}>
                 {orderList &&
                   orderList.hasOwnProperty("order_lines") &&
@@ -312,7 +358,6 @@ const ItemDetails = (props) => {
                     </Button>
                   )}
               </Grid>
-
               {/* View Order Button */}
               <Grid container className={classes.orderBtnContainer}>
                 {orderList &&
@@ -329,24 +374,20 @@ const ItemDetails = (props) => {
               {/* View Order Button ends Here */}
 
               {/* Checkout Button if order is added */}
-              <Grid container className={classes.orderBtnContainer}>
-                <Collapse in={totalPrice > 0} className={classes.Collapse}>
-                  <div className={classes.checkoutContainer}>
-                    <div>
-                      <Typography className={classes.total}>Total</Typography>
-                      <span className={classes.totalPrice}>
-                        Rs {totalPrice}
-                      </span>
-                    </div>
-                    <Button
-                      className={classes.checkout}
-                      onClick={() => proceedToRedeem()}
-                    >
-                      Check out
-                    </Button>
-                  </div>
-                </Collapse>
-              </Grid>
+              {Object.keys(itemTotal).length > 0 ? (
+                <Grid container className={classes.orderBtnContainer}>
+                  <Collapse in={totalPrice > 0}>
+                    <IconButton onClick={() => proceedToRedeem()}>
+                      <Badge
+                        badgeContent={Object.keys(itemTotal).length}
+                        color="primary"
+                      >
+                        <ShoppingCartIcon />
+                      </Badge>
+                    </IconButton>
+                  </Collapse>
+                </Grid>
+              ) : null}
               {/* Checkout Button ends here */}
             </div>
           )}

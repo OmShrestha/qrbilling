@@ -36,6 +36,7 @@ const CustomSearchBar = (props) => {
   return (
     <div className={classes.root}>
       <input
+        onChange={(e) => props.change(e)}
         className={classes.input}
         type="text"
         placeholder="Search Foods..."

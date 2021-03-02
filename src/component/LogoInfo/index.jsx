@@ -2,7 +2,6 @@ import { Card, CardContent, Typography } from "@material-ui/core";
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import DummyLogo from "../../assets/Image 1.png";
-import Timer from "./Timer";
 import { Button } from "@material-ui/core";
 import clsx from "clsx";
 import { Lock as LockIcon } from "@material-ui/icons";
@@ -78,7 +77,6 @@ const LogoInfo = ({ menuList, tableNumber, expireTime }) => {
                 <Typography variant="caption" className={classes.tableNumber}>
                   {menuList.data.asset.name}{" "}
                 </Typography>
-                {!menuList.data.order && <Timer time={expireTime} />}
               </div>
 
               {/* Buttons */}

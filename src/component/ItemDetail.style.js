@@ -29,36 +29,8 @@ const useStyles = makeStyles((theme) => ({
         margin: '0px 10px',
         padding: '14px 18px'
     },
-    checkoutContainer: {
-        width: "100%",
-        backgroundColor: "#4EA23A",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        position: "sticky",
-        padding: "9px 20px",
-        bottom: 0,
-    },
-    totalPrice: {
-        color: "#fff",
-        fontSize: 16,
-        fontWeight: 700,
-    },
-    checkout: {
-        border: "1px solid black",
-        borderRadius: "10px",
-        fontSize: "14px",
-        backgroundColor: "#ECECEC !important",
-    },
     product: {
         padding: "none",
-    },
-    panel: {
-        backgroundColor: "#ECECEC !important",
-        paddingBottom: "65px",
-        "&.MuiBox-root-15": {
-            padding: "0",
-        },
     },
     orderBtn: {
         color: "white",
@@ -72,19 +44,17 @@ const useStyles = makeStyles((theme) => ({
     },
     orderBtnContainer: {
         position: "fixed",
+        width: '50px',
+        height: '50px',
+        borderRadius: '50%',
+        display: 'flex',
+        alignItems: 'center',
+        backgroundColor: '#A62A22',
         justifyContent: "center",
-        bottom: 20,
+        bottom: 50,
         "& .MuiCollapse-container": {
             flex: "1 0 auto",
         },
-    },
-    total: {
-        color: "white",
-        fontSize: "14px",
-        lineHeight: "14px",
-    },
-    viewTxt: {
-        color: "#273238",
     },
     accordian: {
         backgroundColor: '#ECECEC',

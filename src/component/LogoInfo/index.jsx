@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography } from "@material-ui/core";
+import { Badge, Card, CardContent, Typography } from "@material-ui/core";
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import DummyLogo from "../../assets/Image 1.png";
@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LogoInfo = ({ menuList, tableNumber, expireTime }) => {
+const LogoInfo = ({ menuList, tableNumber, cartItems, goToCart }) => {
   const classes = useStyles();
   return (
     <div>
@@ -82,14 +82,22 @@ const LogoInfo = ({ menuList, tableNumber, expireTime }) => {
               {/* Buttons */}
               <div>
                 <Button
+                  onClick={goToCart}
                   size="small"
                   variant="outlined"
                   className={classes.buttons}
                 >
-                  <LockIcon className={classes.lockIcon} />
+                  <Badge
+                    style={{ marginRight: 15 }}
+                    badgeContent={cartItems}
+                    color="primary"
+                  >
+                    <LockIcon className={classes.lockIcon} />
+                  </Badge>
                   Your Cart
                 </Button>
                 <Button
+                  onClick={goToCart}
                   size="small"
                   variant="contained"
                   className={clsx(classes.buttons, classes.filledButton)}

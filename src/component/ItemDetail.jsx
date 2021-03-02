@@ -230,7 +230,12 @@ const ItemDetails = (props) => {
         </div>
       ) : (
         <div className={classes.root}>
-          <LogoInfo menuList={menuList} tableNumber={query.get("table_no")} />
+          <LogoInfo
+            goToCart={proceedToRedeem}
+            cartItems={Object.keys(itemTotal).length}
+            menuList={menuList}
+            tableNumber={query.get("table_no")}
+          />
           {redeem ? (
             <BillingForm
               itemTotal={itemTotal}
@@ -356,7 +361,7 @@ const ItemDetails = (props) => {
                 className={classes.orderBtnContainer}
               >
                 <Collapse in={totalPrice > 0}>
-                  <IconButton onClick={() => proceedToRedeem()}>
+                  <IconButton onClick={proceedToRedeem}>
                     <Badge
                       badgeContent={Object.keys(itemTotal).length}
                       color="primary"

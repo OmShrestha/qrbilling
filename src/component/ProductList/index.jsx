@@ -56,12 +56,13 @@ const ProductList = ({
               <Button
                 onClick={() =>
                   removeItem(
-                    product,
-                    menuIndex.toString(),
-                    index.toString(),
+                    // price, itemName, id, productCode
                     product.selling_price,
                     product.name,
                     product.id,
+                    product,
+                    menuIndex.toString(),
+                    index.toString(),
                     product.product_code
                   )
                 }

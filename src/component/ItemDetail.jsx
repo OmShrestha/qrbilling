@@ -166,21 +166,10 @@ const ItemDetails = (props) => {
       },
     };
     setItemTotal(newData);
-    console.log(newData);
   };
 
-  const removeItem = ({ price, itemName, id, productCode }) => {
-    if (itemTotal[id]?.number === 0) {
-      let newData = itemTotal?.filter(
-        (item) => item.toString() === id.toString()
-      );
-      console.log(newData);
-      // if (itemTotal[id].number - 1 === 0) {
-      //   setItemTotal(newData);
-      // } else {
-      //   setItemTotal(newData);
-      // }
-    }
+  const removeItem = (price, itemName, id, productCode, menuIndex, index) => {
+    console.log(price);
     if (itemTotal[id]?.number > 0) {
       let newData = {
         ...itemTotal,
@@ -189,14 +178,15 @@ const ItemDetails = (props) => {
           productCode: productCode,
           name: itemName,
           perPlate: price,
-          number:
-            itemTotal[id] && itemTotal[id].number
-              ? itemTotal[id].number - 1
-              : 0 - 1,
+          number: itemTotal[id]?.number > 0 && itemTotal[id]?.number - 1,
           total:
             itemTotal[id] && itemTotal[id].number
               ? (itemTotal[id].number - 1) * price
               : (0 - 1) * price,
+          // total:
+          //   itemTotal[id] && itemTotal[id].number
+          //     ? (itemTotal[id].number - 1) * price
+          //     : (0 - 1) * price,
         },
       };
       if (itemTotal[id].number - 1 === 0) {

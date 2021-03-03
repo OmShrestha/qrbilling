@@ -42,7 +42,7 @@ function CartIcon({ itemTotal, totalPrice, proceedToRedeem }) {
     >
       <Collapse in={totalPrice > 0}>
         <IconButton onClick={proceedToRedeem}>
-          <Badge badgeContent={Object.keys(itemTotal).length} color="primary">
+          <Badge badgeContent={Object.keys(itemTotal).length} color="secondary">
             <ShoppingCartIcon className={classes.cartIcon} />
           </Badge>
         </IconButton>

@@ -1,6 +1,18 @@
 import { createMuiTheme } from "@material-ui/core";
 
 const theme = createMuiTheme({
+    palette: {
+        primary: {
+            main: '#A62A22',
+            dark: '#A62A22',
+            // dark: '#4EA23A'
+        },
+        secondary: {
+            main: '#fff',
+            dark: '#000',
+            gray: '#ECECEC'
+        }
+    },
     overrides: {
         MuiTab: {
             root: {

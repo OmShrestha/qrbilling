@@ -1,36 +1,36 @@
-import { Grid, Typography } from '@material-ui/core';
-import React, { useState } from 'react';
-import QRScanner from './QRScanner';
-import { makeStyles } from '@material-ui/core/styles';
+import { Grid, Typography } from "@material-ui/core";
+import React, { useState } from "react";
+import QRScanner from "./QRScanner";
+import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
-    backgroundColor: 'rgba(0,0,0,0.8)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100vh',
-    flexDirection: 'column',
+    display: "flex",
+    backgroundColor: "rgba(0,0,0,0.8)",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100vh",
+    flexDirection: "column",
   },
   scanOrder: {
-    justifyContent: 'center',
-    display: 'flex',
-    flexDirection: 'column',
-    textAlign: 'center',
-    marginBottom: 8
+    justifyContent: "center",
+    display: "flex",
+    flexDirection: "column",
+    textAlign: "center",
+    marginBottom: 8,
   },
   scan: {
-    color: 'white',
-    fontSize: '22pt',
+    color: theme.palette.secondary.main,
+    fontSize: "22pt",
   },
   order: {
-    color: 'white',
-    fontSize: '15pt',
+    color: theme.palette.secondary.main,
+    fontSize: "15pt",
   },
   qr: {
-    alignItems: 'center',
+    alignItems: "center",
   },
-});
+}));
 
 const Layout = (props) => {
   const [QRScannerSelected, setQRScannerSelected] = useState(true);

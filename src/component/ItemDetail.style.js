@@ -3,11 +3,11 @@ import { makeStyles } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
     root: {
         backgroundImage: `url("https://www.scandichotels.com/imagevault/publishedmedia/qn6infvg30381stkubky/scandic-sundsvall-city-restaurant-verket-10.jpg")`,
-        backgroundColor: "#ECECEC",
+        backgroundColor: theme.palette.secondary.gray,
     },
     secondRoot: {
         padding: "18px 0",
-        backgroundColor: "#fff",
+        backgroundColor: theme.palette.secondary.main,
         height: "73vh",
         display: "flex",
         flexDirection: "column",
@@ -18,13 +18,13 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 700
     },
     tabs: {
-        backgroundColor: "#fff",
+        backgroundColor: theme.palette.secondary.main,
         "&.MuiTab-textColorInherit.Mui-selected": {
-            color: "#a62a22",
+            color: theme.palette.primary.main
         },
     },
     tab: {
-        backgroundColor: '#ECECEC',
+        backgroundColor: theme.palette.secondary.gray,
         borderRadius: 40,
         margin: '0px 10px',
         padding: '14px 18px'
@@ -33,17 +33,17 @@ const useStyles = makeStyles((theme) => ({
         padding: "none",
     },
     orderBtn: {
-        color: "white",
-        backgroundColor: "#A62A22",
+        color: theme.palette.secondary.main,
+        backgroundColor: theme.palette.primary.main,
         borderRadius: "10px",
         padding: "8px 16px",
         "&:hover, &:focus": {
             outline: "none",
-            backgroundColor: "#A62A22",
+            backgroundColor: theme.palette.primary.main,
         },
     },
     accordian: {
-        backgroundColor: '#ECECEC',
+        backgroundColor: theme.palette.secondary.gray,
         '& .MuiAccordionDetails-root': {
             padding: 0
         }

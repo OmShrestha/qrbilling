@@ -4,7 +4,7 @@ const styles = makeStyles(theme => ({
     root: {
         '& .MuiTabs-indicator': {
             display: 'none',
-            color: '#fff'
+            color: theme.palette.secondary.main
         }
     }
 }))

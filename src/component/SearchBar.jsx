@@ -9,7 +9,7 @@ const styles = makeStyles((theme) => ({
   input: {
     outline: "none",
     border: "none",
-    backgroundColor: "#ECECEC",
+    backgroundColor: theme.palette.secondary.gray,
     padding: 5,
     paddingLeft: 15,
     borderRadius: 40,
@@ -20,9 +20,9 @@ const styles = makeStyles((theme) => ({
   searchButton: {
     height: 30,
     borderRadius: 40,
-    backgroundColor: "#A62A22",
+    backgroundColor: theme.palette.primary.main,
     padding: (0, 5),
-    color: "#fff",
+    color: theme.palette.secondary.main,
     position: "absolute",
     top: 0,
     right: 20,

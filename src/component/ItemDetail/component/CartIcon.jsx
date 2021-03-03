@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import { ShoppingCart as ShoppingCartIcon } from "@material-ui/icons";
 
-const styles = makeStyles({
+const styles = makeStyles((theme) => ({
   orderBtnContainer: {
     zIndex: 999,
     position: "fixed",
@@ -17,7 +17,7 @@ const styles = makeStyles({
     borderRadius: "50%",
     display: "flex",
     alignItems: "center",
-    backgroundColor: "#A62A22",
+    backgroundColor: theme.palette.primary.main,
     justifyContent: "center",
     bottom: 50,
     left: 10,
@@ -26,9 +26,9 @@ const styles = makeStyles({
     },
   },
   cartIcon: {
-    color: "#fff",
+    color: theme.palette.secondary.main,
   },
-});
+}));
 
 function CartIcon({ itemTotal, totalPrice, proceedToRedeem }) {
   const classes = styles();

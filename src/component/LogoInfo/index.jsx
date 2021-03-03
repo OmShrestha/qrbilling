@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
   info: {
     marginTop: 12,
-    backgroundColor: "#F8F9F9",
+    backgroundColor: theme.palette.secondary.main,
   },
   cardContent: {
     padding: "6px 12px",
@@ -36,18 +36,18 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "10pt",
     lineHeight: "15px",
     marginBottom: "3px",
-    color: "grey",
+    color: theme.palette.secondary.gray,
   },
   buttons: {
     fontWeight: 700,
     fontSize: 10,
-    borderColor: "#000",
+    borderColor: theme.palette.secondary.dark,
     marginRight: 10,
     padding: "5px 20px",
   },
   filledButton: {
-    color: "white",
-    backgroundColor: "#A62A22",
+    color: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.main,
   },
   lockIcon: {
     fontSize: 15,

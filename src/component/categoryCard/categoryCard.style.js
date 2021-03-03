@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/core";
 
 const styles = makeStyles(theme => ({
     categoryCardContainer: {
-        backgroundColor: "#ECECEC",
+        backgroundColor: theme.palette.secondary.gray,
     },
     categoryCard: {
         margin: 10,
@@ -21,7 +21,7 @@ const styles = makeStyles(theme => ({
         width: '100%',
         height: '100%',
         opacity: 0.65,
-        backgroundColor: '#000',
+        backgroundColor: theme.palette.secondary.dark,
         zIndex: 10,
         borderRadius: 20,
     },
@@ -34,7 +34,7 @@ const styles = makeStyles(theme => ({
     },
     categoryName: {
         position: 'absolute',
-        color: '#fff',
+        color: theme.palette.secondary.main,
         fontSize: 20,
         fontWeight: 'bold',
         zIndex: 10,

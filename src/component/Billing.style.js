@@ -10,14 +10,14 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         height: 'auto',
         justifyContent: 'space-between',
-        backgroundColor: '#ECECEC',
+        backgroundColor: theme.palette.secondary.gray,
     },
     third: {
         borderRadius: '20px 20px 0px 0px',
-        backgroundColor: '#ECECEC',
+        backgroundColor: theme.palette.secondary.gray,
     },
     stepper: {
-        backgroundColor: '#ECECEC',
+        backgroundColor: theme.palette.secondary.gray,
         borderRadius: '20px 20px 0px 0px',
         padding: '10px 8px',
         '& .MuiStepIcon-root.MuiSvgIcon-root': {
@@ -25,10 +25,10 @@ const useStyles = makeStyles(theme => ({
             width: '0.7em',
         },
         '& .MuiStepIcon-root.MuiStepIcon-completed': {
-            color: 'green',
+            color: theme.palette.primary.dark,
         },
         '& .MuiStepIcon-root.MuiStepIcon-active': {
-            color: '#CECECE',
+            color: theme.palette.secondary.gray,
         },
     },
     steps: {
@@ -45,8 +45,8 @@ const useStyles = makeStyles(theme => ({
         },
     },
     itemCart: {
-        backgroundColor: '#a62a22',
-        color: 'white',
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.secondary.main,
         display: 'flex',
         justifyContent: 'space-between',
         padding: '16px',
@@ -96,23 +96,23 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'space-between',
         alignItems: 'center',
         width: '100%',
-        backgroundColor: 'white',
+        backgroundColor: theme.palette.secondary.main,
         padding: '13px 16px',
     },
     buttons: {
-        border: '1px solid black',
+        border: `1px solid ${theme.palette.secondary.dark}`,
         borderRadius: '10px',
         '& .MuiButton-root': {
             minWidth: '45px',
         },
     },
     divider: {
-        border: '1px solid #D6D6D6',
+        border: `1px solid ${theme.palette.secondary.gray}`,
         width: '99%',
         height: '0px',
     },
     bottomContainer: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: theme.palette.secondary.main,
         padding: '16px',
         marginTop: '16px',
         display: 'flex',
@@ -124,7 +124,7 @@ const useStyles = makeStyles(theme => ({
         marginBottom: 8,
     },
     inputField: {
-        border: '1px solid #707070',
+        border: '1px solid ',
         borderRadius: '10px',
         height: 30,
         margin: '6px 0',
@@ -164,43 +164,43 @@ const useStyles = makeStyles(theme => ({
         },
     },
     errorText: {
-        color: '#A62A22',
+        color: theme.palette.primary.main,
         fontSize: 13,
     },
     btnGreen: {
-        backgroundColor: '#4EA23A',
-        color: 'white',
+        backgroundColor: theme.palette.primary.dark,
+        color: theme.palette.secondary.main,
         borderRadius: '5px',
         padding: '3px 14px',
         margin: '6px 0',
         '&:hover, &:focus': {
             outline: 'none',
-            backgroundColor: '#4EA23A',
+            backgroundColor: theme.palette.primary.dark,
         },
     },
     btnGrid: {
         width: '100%',
         textAlign: 'center',
         padding: '16px',
-        backgroundColor: '#ECECEC',
+        backgroundColor: theme.palette.secondary.gray,
     },
     btnRed: {
-        backgroundColor: '#a62a22',
-        color: 'white',
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.secondary.main,
         width: '100%',
         borderRadius: '5px',
         '&:hover, &:focus': {
             outline: 'none',
-            backgroundColor: '#a62a22',
+            backgroundColor: theme.palette.primary.main,
         },
     },
 
     second: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: theme.palette.secondary.dark,
     },
     select: {
         width: '75%',
-        border: '1px solid #D0D3D5',
+        border: `1px solid ${theme.palette.secondary.gray}`,
         borderRadius: '10px',
         '&.MuiInput-underline:after': {
             borderBottom: 'none',

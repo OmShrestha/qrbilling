@@ -1,8 +1,8 @@
 import { makeStyles } from "@material-ui/core";
 
-export const useStyles = makeStyles({
+export const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: "#fff",
+    backgroundColor: theme.palette.secondary.main,
     display: "flex",
     justifyContent: "space-between",
     padding: "9px 20px",
@@ -10,7 +10,7 @@ export const useStyles = makeStyles({
     width: "100%",
   },
   buttons: {
-    border: "1px solid black",
+    border: `1px solid ${theme.palette.secondary.dark}`,
     borderRadius: "10px",
     fontFamily: "SF Pro Display",
     "& .MuiButton-root": {
@@ -18,18 +18,18 @@ export const useStyles = makeStyles({
     },
   },
   addOrder: {
-    border: "0.5px solid #707070",
+    border: `0.5px solid ${theme.palette.secondary.gray}`,
     borderRadius: "10px",
     fontSize: "12px",
     fontWeight: 400,
-    backgroundColor: "#A62A22",
+    backgroundColor: theme.palette.primary.main,
     fontFamily: "SF Pro Display",
-    color: "#fff",
+    color: theme.palette.secondary.main,
     padding: "4px 8px",
   },
   productName: {
     fontSize: "16px",
-    color: "#0D0D0D",
+    color: theme.palette.secondary.dark,
     fontFamily: "SF Pro Display",
     textTransform: "capitalize",
     opacity: 0.4,
@@ -37,7 +37,7 @@ export const useStyles = makeStyles({
   productPrice: {
     fontFamily: "SF Pro Display",
     fontSize: "16px",
-    color: "#707070",
+    color: theme.palette.secondary.gray,
   },
   viewImg: {
     display: "flex",
@@ -51,7 +51,7 @@ export const useStyles = makeStyles({
     marginLeft: "5px",
     padding: "2px 5px",
     fontSize: "11px",
-    backgroundColor: "#D6D6D6",
+    backgroundColor: theme.palette.secondary.gray,
   },
   imgView: {
     position: "fixed" /* Stay in place */,
@@ -66,7 +66,7 @@ export const useStyles = makeStyles({
     backgroundColor: "rgba(0,0,0,0.9)" /* Black w/ opacity */,
   },
   dividerColor: {
-    background: "#ECECEC",
+    background: theme.palette.secondary.gray,
     width: "90%",
   },
-});
+}));

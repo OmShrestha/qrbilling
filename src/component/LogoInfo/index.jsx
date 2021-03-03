@@ -1,4 +1,4 @@
-import { Badge, Card, CardContent, Typography } from "@material-ui/core";
+import { Card, CardContent, Typography } from "@material-ui/core";
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import DummyLogo from "../../assets/Image 1.png";

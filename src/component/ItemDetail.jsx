@@ -4,22 +4,15 @@ import React, { useState, useEffect } from "react";
 // material
 import PropTypes from "prop-types";
 import {
-  Button,
   Tabs,
   Tab,
-  Collapse,
   Grid,
   Accordion,
   AccordionSummary,
   Typography,
   AccordionDetails,
-  Badge,
-  IconButton,
 } from "@material-ui/core";
-import {
-  ExpandMore as ExpandMoreIcon,
-  ShoppingCart as ShoppingCartIcon,
-} from "@material-ui/icons";
+import { ExpandMore as ExpandMoreIcon } from "@material-ui/icons";
 
 //Local
 import LogoInfo from "./LogoInfo";
@@ -31,6 +24,7 @@ import CategoryCard from "./categoryCard/categoryCard";
 import { fetchAllProduct, fetchProduct } from "../services/fetchProductService";
 import { fetchCategory } from "../services/categoryService";
 import { fetchCompanyData } from "../services/logoService";
+import CartIcon from "./ItemDetail/component/CartIcon";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -145,50 +139,67 @@ const ItemDetails = (props) => {
     child.length > 0 ? setChild(child) : fetchProductsHandler(id);
   };
 
-  const addItem = (menuIndex, index, price, itemName, id, productCode) => {
+  const addItem = (
+    product,
+    menuIndex,
+    index,
+    price,
+    itemName,
+    id,
+    productCode
+  ) => {
     let newData = {
       ...itemTotal,
-      [menuIndex + index]: {
+      [id]: {
         id: id,
         productCode: productCode,
         name: itemName,
         perPlate: price,
         number:
-          itemTotal[menuIndex + index] && itemTotal[menuIndex + index].number
-            ? itemTotal[menuIndex + index].number + 1
+          itemTotal[id] && itemTotal[id].number
+            ? itemTotal[id].number + 1
             : 0 + 1,
         total:
-          itemTotal[menuIndex + index] && itemTotal[menuIndex + index].number
-            ? (itemTotal[menuIndex + index].number + 1) * price
+          itemTotal[id] && itemTotal[id].number
+            ? (itemTotal[id].number + 1) * price
             : (0 + 1) * price,
       },
     };
     setItemTotal(newData);
+    console.log(newData);
   };
 
-  const removeItem = (menuIndex, index, price, itemName, id, productCode) => {
-    if (
-      itemTotal[menuIndex + index] &&
-      itemTotal[menuIndex + index].number > 0
-    ) {
+  const removeItem = ({ price, itemName, id, productCode }) => {
+    if (itemTotal[id]?.number === 0) {
+      let newData = itemTotal?.filter(
+        (item) => item.toString() === id.toString()
+      );
+      console.log(newData);
+      // if (itemTotal[id].number - 1 === 0) {
+      //   setItemTotal(newData);
+      // } else {
+      //   setItemTotal(newData);
+      // }
+    }
+    if (itemTotal[id]?.number > 0) {
       let newData = {
         ...itemTotal,
-        [menuIndex + index]: {
+        [id]: {
           id: id,
           productCode: productCode,
           name: itemName,
           perPlate: price,
           number:
-            itemTotal[menuIndex + index] && itemTotal[menuIndex + index].number
-              ? itemTotal[menuIndex + index].number - 1
+            itemTotal[id] && itemTotal[id].number
+              ? itemTotal[id].number - 1
               : 0 - 1,
           total:
-            itemTotal[menuIndex + index] && itemTotal[menuIndex + index].number
-              ? (itemTotal[menuIndex + index].number - 1) * price
+            itemTotal[id] && itemTotal[id].number
+              ? (itemTotal[id].number - 1) * price
               : (0 - 1) * price,
         },
       };
-      if (itemTotal[menuIndex + index].number - 1 === 0) {
+      if (itemTotal[id].number - 1 === 0) {
         setItemTotal(newData);
       } else {
         setItemTotal(newData);
@@ -201,9 +212,10 @@ const ItemDetails = (props) => {
       <Grid container direction="column" justify="center" key={index}>
         <Grid item xs={12}>
           <ProductList
+            id={product.id}
+            product={product}
             key={index}
             className={classes.product}
-            product={product}
             menuIndex={index}
             index={index}
             itemTotal={itemTotal}
@@ -283,17 +295,17 @@ const ItemDetails = (props) => {
                   ))}
                 </Tabs>
 
-                {/* Category Card should render in 'all' tab */}
+                {/* Category Card should render in 'all' tab || in index 0*/}
                 {value === 0 ? (
                   filteredProducts === null ? (
                     <CategoryCard
                       category={mainCategory}
                       click={(id, index, child) => {
                         fetchSubCategoryHandler(id, index, child);
-                        // setCategoryID(id);
                       }}
                     />
                   ) : (
+                    //if index 0 and isSearching then render filtered product
                     filteredProducts?.map((product, index) => {
                       return (
                         <Grid
@@ -304,9 +316,10 @@ const ItemDetails = (props) => {
                         >
                           <Grid item xs={12}>
                             <ProductList
+                              id={product.id}
+                              product={product}
                               key={index}
                               className={classes.product}
-                              product={product}
                               menuIndex={index}
                               index={index}
                               itemTotal={itemTotal}
@@ -353,25 +366,11 @@ const ItemDetails = (props) => {
               </div>
 
               {/* Checkout Button if order is added */}
-              <Grid
-                container
-                style={{
-                  display: Object.keys(itemTotal).length > 0 ? "block" : "none",
-                }}
-                className={classes.orderBtnContainer}
-              >
-                <Collapse in={totalPrice > 0}>
-                  <IconButton onClick={proceedToRedeem}>
-                    <Badge
-                      badgeContent={Object.keys(itemTotal).length}
-                      color="primary"
-                    >
-                      <ShoppingCartIcon className={classes.cartIcon} />
-                    </Badge>
-                  </IconButton>
-                </Collapse>
-              </Grid>
-              {/* Checkout Button ends here */}
+              <CartIcon
+                itemTotal={itemTotal}
+                totalPrice={totalPrice}
+                proceedToRedeem={proceedToRedeem}
+              />
             </div>
           )}
         </div>

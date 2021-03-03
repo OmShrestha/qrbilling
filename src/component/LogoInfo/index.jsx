@@ -72,10 +72,10 @@ const LogoInfo = ({ menuList, tableNumber, cartItems, goToCart }) => {
               {/* Restaurant, Table Info */}
               <div className={classes.info}>
                 <Typography className={classes.resName}>
-                  {menuList.data.name}{" "}
+                  {menuList.data.name}
                 </Typography>
                 <Typography variant="caption" className={classes.tableNumber}>
-                  {menuList.data.asset.name}{" "}
+                  {menuList.data.asset.name}
                 </Typography>
               </div>
 
@@ -87,13 +87,7 @@ const LogoInfo = ({ menuList, tableNumber, cartItems, goToCart }) => {
                   variant="outlined"
                   className={classes.buttons}
                 >
-                  <Badge
-                    style={{ marginRight: 15 }}
-                    badgeContent={cartItems}
-                    color="primary"
-                  >
-                    <LockIcon className={classes.lockIcon} />
-                  </Badge>
+                  <LockIcon className={classes.lockIcon} />
                   Your Cart
                 </Button>
                 <Button

@@ -42,31 +42,13 @@ const useStyles = makeStyles((theme) => ({
             backgroundColor: "#A62A22",
         },
     },
-    orderBtnContainer: {
-        zIndex: 999,
-        position: "fixed",
-        width: '50px',
-        height: '50px',
-        borderRadius: '50%',
-        display: 'flex',
-        alignItems: 'center',
-        backgroundColor: '#A62A22',
-        justifyContent: "center",
-        bottom: 50,
-        left: 10,
-        "& .MuiCollapse-container": {
-            flex: "1 0 auto",
-        },
-    },
     accordian: {
         backgroundColor: '#ECECEC',
         '& .MuiAccordionDetails-root': {
             padding: 0
         }
     },
-    cartIcon: {
-        color: '#fff'
-    }
+
 }));
 
 export default useStyles;

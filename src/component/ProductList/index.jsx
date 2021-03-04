@@ -5,7 +5,6 @@ import RemoveIcon from "@material-ui/icons/Remove";
 import { useStyles } from "./index.style";
 
 const ProductList = ({
-  id,
   open,
   product,
   menuIndex,
@@ -49,31 +48,30 @@ const ProductList = ({
             ) : null}
           </div>
         </div>
-
         <div>
-          {itemTotal[id] ? (
+          {itemTotal[menuIndex.toString() + index.toString()] ? (
             <div className={classes.buttons}>
               <Button
                 onClick={() =>
                   removeItem(
-                    // price, itemName, id, productCode
+                    menuIndex.toString(),
+                    index.toString(),
                     product.selling_price,
                     product.name,
                     product.id,
-                    product,
-                    menuIndex.toString(),
-                    index.toString(),
                     product.product_code
                   )
                 }
               >
                 <RemoveIcon />
               </Button>
-              <span>{(itemTotal[id] && itemTotal[id].number) || 0}</span>
+              {/* <span>{(itemTotal[id] && itemTotal[id].number) || 0}</span> */}
+              {(itemTotal[menuIndex.toString() + index.toString()] &&
+                itemTotal[menuIndex.toString() + index.toString()].number) ||
+                0}
               <Button
                 onClick={() =>
                   addItem(
-                    product,
                     menuIndex.toString(),
                     index.toString(),
                     product.selling_price,
@@ -91,7 +89,6 @@ const ProductList = ({
               className={classes.addOrder}
               onClick={() =>
                 addItem(
-                  product,
                   menuIndex.toString(),
                   index.toString(),
                   product.selling_price,

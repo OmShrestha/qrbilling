@@ -25,7 +25,7 @@ import { fetchAllProduct, fetchProduct } from "../services/fetchProductService";
 import { fetchCategory } from "../services/categoryService";
 import { fetchCompanyData } from "../services/logoService";
 import CartIcon from "./ItemDetail/component/CartIcon";
-import { DashSquareFill } from "react-bootstrap-icons";
+import { fetchAllOrders } from "../services/orderServices";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -63,6 +63,7 @@ const ItemDetails = (props) => {
   const [products, setProducts] = useState(null);
   const [hasError, setErrors] = useState(false);
   const [menuList, setMenuList] = useState({});
+  // const [orderSaved, setOrderSaved] = useState(false);
   const [orderList, setOrderList] = useState({});
   const [itemTotal, setItemTotal] = useState({});
   const [redeem, setRedeem] = useState(false);
@@ -123,6 +124,49 @@ const ItemDetails = (props) => {
       .catch((err) => setErrors(err));
   };
 
+  //Save Orders
+  // async function saveOrder() {
+  //   const requestOptions = {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify(itemTotal),
+  //   };
+  //   saveAllOrder(requestOptions).then((res) =>
+  //     setOrderSaved({ postId: res.data.id })
+  //   );
+  // }
+
+  // Get All Previous Orders
+  async function fetchOrders() {
+    let orderListOrderLines = [];
+    const res = await fetchAllOrders(query.get("table_no"));
+    const status = res.data.status;
+
+    res.data.order_lines.map((order) =>
+      orderListOrderLines.push({
+        company: props.match.params.id,
+        id: null,
+        product: order.product.id,
+        product_code: order.product.product_code,
+        product_name: order.product.name,
+        quantity: order.quantity,
+        status: order.status,
+        rate: order.rate,
+        total: order.total,
+      })
+    );
+
+    const orders = {
+      order_id: res.data.id,
+      order_lines: orderListOrderLines,
+      price_details: res.data.price_details,
+    };
+
+    status !== "COMPLETED" && status !== "CANCELLED"
+      ? setOrderList(orders)
+      : setOrderList({});
+  }
+
   //Get All The Main Category
   useEffect(() => {
     const getMainCategory = async () => {
@@ -131,6 +175,7 @@ const ItemDetails = (props) => {
         .catch((res) => alert(res));
     };
     getMainCategory();
+    fetchOrders();
   }, [props.match.params.id]);
 
   //Fetch Sub Category when category card is clicked
@@ -141,84 +186,93 @@ const ItemDetails = (props) => {
   };
 
   const addItem = (
-    product,
     menuIndex,
     index,
-    price,
+    selling_price,
     itemName,
     id,
     productCode
   ) => {
     let newData = {
       ...itemTotal,
-      [id]: {
+      [menuIndex + index]: {
         id: id,
         productCode: productCode,
         name: itemName,
-        perPlate: price,
+        perPlate: selling_price,
         number:
-          itemTotal[id] && itemTotal[id].number
-            ? itemTotal[id].number + 1
+          itemTotal[menuIndex + index] && itemTotal[menuIndex + index].number
+            ? itemTotal[menuIndex + index].number + 1
             : 0 + 1,
         total:
-          itemTotal[id] && itemTotal[id].number
-            ? (itemTotal[id].number + 1) * price
-            : (0 + 1) * price,
+          itemTotal[menuIndex + index] && itemTotal[menuIndex + index].number
+            ? (itemTotal[menuIndex + index].number + 1) * selling_price
+            : (0 + 1) * selling_price,
       },
     };
     setItemTotal(newData);
   };
 
-  console.log(itemTotal, "mu");
-  const removeItem = (price, itemName, id, productCode, menuIndex, index) => {
-    // console.log(price);
-
-    if (itemTotal[id]?.number === 1) {
-      const newData = Object.keys(itemTotal).map((item) => {
-        const obj = {
-          [itemTotal[item].id]: itemTotal[item],
-        };
-        console.log(obj, ["Obj"]);
-        return itemTotal[item].id !== id && obj;
-      });
-      setItemTotal(...newData);
-    }
-
-    if (itemTotal[id]?.number > 1) {
+  const removeItem = (
+    menuIndex,
+    index,
+    selling_price,
+    itemName,
+    id,
+    productCode
+  ) => {
+    if (
+      itemTotal[menuIndex + index] &&
+      itemTotal[menuIndex + index].number > 0
+    ) {
       let newData = {
         ...itemTotal,
-        [id]: {
+        [menuIndex + index]: {
           id: id,
           productCode: productCode,
           name: itemName,
-          perPlate: price,
-          number: itemTotal[id]?.number > 0 && itemTotal[id]?.number - 1,
+          perPlate: selling_price,
+          number:
+            itemTotal[menuIndex + index] && itemTotal[menuIndex + index].number
+              ? itemTotal[menuIndex + index].number - 1
+              : 0 - 1,
           total:
-            itemTotal[id] && itemTotal[id].number
-              ? (itemTotal[id].number - 1) * price
-              : (0 - 1) * price,
+            itemTotal[menuIndex + index] && itemTotal[menuIndex + index].number
+              ? (itemTotal[menuIndex + index].number - 1) * selling_price
+              : (0 - 1) * selling_price,
         },
       };
-      if (itemTotal[id].number - 1 === 0) {
+      if (itemTotal[menuIndex + index].number - 1 === 0) {
         setItemTotal(newData);
-        // console.log(Object.keys(newData).length);
       } else {
-        // console.log(Object.keys(newData).length);
         setItemTotal(newData);
       }
+    } else if (
+      itemTotal[menuIndex + index] &&
+      itemTotal[menuIndex + index].number === 0
+    ) {
+      const allItem = itemTotal;
+      let key;
+      for (key in allItem) {
+        if (allItem[key] == [menuIndex + index]) {
+          delete allItem[key];
+        }
+      }
+      setItemTotal(allItem);
     }
   };
+
+  console.log(itemTotal);
 
   const productList = products?.map((product, index) => {
     return (
       <Grid container direction="column" justify="center" key={index}>
         <Grid item xs={12}>
           <ProductList
-            id={product.id}
-            product={product}
             key={index}
             className={classes.product}
-            menuIndex={index}
+            product={product}
+            menuIndex={value}
             index={index}
             itemTotal={itemTotal}
             addItem={addItem}
@@ -235,7 +289,6 @@ const ItemDetails = (props) => {
       totalPrice += itemTotal[key]?.total;
     }
   }
-
   return (
     <div>
       {hasError ? (
@@ -318,11 +371,10 @@ const ItemDetails = (props) => {
                         >
                           <Grid item xs={12}>
                             <ProductList
-                              id={product.id}
-                              product={product}
                               key={index}
                               className={classes.product}
-                              menuIndex={index}
+                              product={product}
+                              menuIndex={value}
                               index={index}
                               itemTotal={itemTotal}
                               addItem={addItem}

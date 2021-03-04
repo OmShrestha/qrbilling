@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "10pt",
     lineHeight: "15px",
     marginBottom: "3px",
-    color: theme.palette.secondary.gray,
+    opacity: 0.5,
   },
   buttons: {
     fontWeight: 700,

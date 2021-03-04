@@ -25,6 +25,7 @@ import { fetchAllProduct, fetchProduct } from "../services/fetchProductService";
 import { fetchCategory } from "../services/categoryService";
 import { fetchCompanyData } from "../services/logoService";
 import CartIcon from "./ItemDetail/component/CartIcon";
+import { DashSquareFill } from "react-bootstrap-icons";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -168,9 +169,22 @@ const ItemDetails = (props) => {
     setItemTotal(newData);
   };
 
+  console.log(itemTotal, "mu");
   const removeItem = (price, itemName, id, productCode, menuIndex, index) => {
-    console.log(price);
-    if (itemTotal[id]?.number > 0) {
+    // console.log(price);
+
+    if (itemTotal[id]?.number === 1) {
+      const newData = Object.keys(itemTotal).map((item) => {
+        const obj = {
+          [itemTotal[item].id]: itemTotal[item],
+        };
+        console.log(obj, ["Obj"]);
+        return itemTotal[item].id !== id && obj;
+      });
+      setItemTotal(...newData);
+    }
+
+    if (itemTotal[id]?.number > 1) {
       let newData = {
         ...itemTotal,
         [id]: {
@@ -183,15 +197,13 @@ const ItemDetails = (props) => {
             itemTotal[id] && itemTotal[id].number
               ? (itemTotal[id].number - 1) * price
               : (0 - 1) * price,
-          // total:
-          //   itemTotal[id] && itemTotal[id].number
-          //     ? (itemTotal[id].number - 1) * price
-          //     : (0 - 1) * price,
         },
       };
       if (itemTotal[id].number - 1 === 0) {
         setItemTotal(newData);
+        // console.log(Object.keys(newData).length);
       } else {
+        // console.log(Object.keys(newData).length);
         setItemTotal(newData);
       }
     }
@@ -220,7 +232,7 @@ const ItemDetails = (props) => {
   let totalPrice = 0;
   for (var key in itemTotal) {
     if (itemTotal.hasOwnProperty(key)) {
-      totalPrice += itemTotal[key].total;
+      totalPrice += itemTotal[key]?.total;
     }
   }
 

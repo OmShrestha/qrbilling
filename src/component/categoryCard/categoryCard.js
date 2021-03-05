@@ -16,7 +16,7 @@ function CategoryCard({ category, click }) {
                         {/* <CardContent> */}
 
                         <img
-                            src={DummyLogo}
+                            src={data.image || DummyLogo}
                             alt={data.id}
                             className={classes.categoryImage}
                         />

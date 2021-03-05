@@ -141,7 +141,7 @@ const ItemDetails = (props) => {
     let orderListOrderLines = [];
     const res = await fetchAllOrders(query.get("table_no"));
     const status = res.data.status;
-
+    console.log(res);
     res.data.order_lines.map((order) =>
       orderListOrderLines.push({
         company: props.match.params.id,

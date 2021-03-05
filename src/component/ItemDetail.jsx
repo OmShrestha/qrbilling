@@ -221,7 +221,6 @@ const ItemDetails = (props) => {
     id,
     productCode
   ) => {
-    const nItems = [];
     if (
       itemTotal[menuIndex + index] &&
       itemTotal[menuIndex + index].number > 0

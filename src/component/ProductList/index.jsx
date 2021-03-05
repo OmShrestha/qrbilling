@@ -65,7 +65,6 @@ const ProductList = ({
               >
                 <RemoveIcon />
               </Button>
-              {/* <span>{(itemTotal[id] && itemTotal[id].number) || 0}</span> */}
               {(itemTotal[menuIndex.toString() + index.toString()] &&
                 itemTotal[menuIndex.toString() + index.toString()].number) ||
                 0}

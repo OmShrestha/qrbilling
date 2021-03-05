@@ -49,7 +49,7 @@ const ProductList = ({
           </div>
         </div>
         <div>
-          {itemTotal[menuIndex.toString() + index.toString()] ? (
+          {itemTotal[menuIndex.toString() + index.toString()]?.number > 0 ? (
             <div className={classes.buttons}>
               <Button
                 onClick={() =>

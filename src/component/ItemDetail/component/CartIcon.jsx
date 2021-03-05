@@ -31,6 +31,10 @@ const styles = makeStyles((theme) => ({
 }));
 
 function CartIcon({ itemTotal, totalPrice, proceedToRedeem }) {
+  let totalItemsInCart = 0;
+  Object.keys(itemTotal).forEach((item) => {
+    totalItemsInCart += itemTotal[item].number;
+  });
   const classes = styles();
   return (
     <Grid
@@ -42,7 +46,7 @@ function CartIcon({ itemTotal, totalPrice, proceedToRedeem }) {
     >
       <Collapse in={totalPrice > 0}>
         <IconButton onClick={proceedToRedeem}>
-          <Badge badgeContent={Object.keys(itemTotal).length} color="secondary">
+          <Badge badgeContent={totalItemsInCart} color="secondary">
             <ShoppingCartIcon className={classes.cartIcon} />
           </Badge>
         </IconButton>

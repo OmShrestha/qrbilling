@@ -221,6 +221,7 @@ const ItemDetails = (props) => {
     id,
     productCode
   ) => {
+    const nItems = [];
     if (
       itemTotal[menuIndex + index] &&
       itemTotal[menuIndex + index].number > 0
@@ -247,22 +248,17 @@ const ItemDetails = (props) => {
       } else {
         setItemTotal(newData);
       }
-    } else if (
-      itemTotal[menuIndex + index] &&
-      itemTotal[menuIndex + index].number === 0
-    ) {
+    } else {
       const allItem = itemTotal;
       let key;
       for (key in allItem) {
-        if (allItem[key] == [menuIndex + index]) {
+        if (allItem[key] === [menuIndex + index]) {
           delete allItem[key];
         }
       }
       setItemTotal(allItem);
     }
   };
-
-  console.log(itemTotal);
 
   const productList = products?.map((product, index) => {
     return (

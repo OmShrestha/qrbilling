@@ -2,7 +2,7 @@ import axios from "axios";
 import { API_BASE, API_BASE_V2 } from "../Constant"
 
 const fetchAllOrders = async (table_no) => {
-    const res = axios.get(API_BASE_V2 + `order/latest-asset-order/${table_no}`);
+    const res = await axios.get(API_BASE_V2 + `order/latest-asset-order/${table_no}`);
     return res
 }
 

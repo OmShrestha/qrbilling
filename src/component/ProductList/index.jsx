@@ -12,13 +12,17 @@ const ProductList = ({
   itemTotal,
   addItem,
   removeItem,
+  previousOrder,
 }) => {
   const classes = useStyles();
-
   const [display, setDisplay] = useState(false);
   const handleViewImage = () => {
     setDisplay(!display);
   };
+  // console.log(product.id);
+  const prevOrder = previousOrder?.map((item) => item.product === product.id);
+
+  // console.log(prevOrder);
   return (
     <>
       <div className={classes.root}>
@@ -49,7 +53,8 @@ const ProductList = ({
           </div>
         </div>
         <div>
-          {itemTotal[menuIndex.toString() + index.toString()]?.number > 0 ? (
+          {itemTotal[menuIndex.toString() + index.toString()]?.number > 0 ||
+          (prevOrder && !prevOrder[index] && previousOrder[index]?.quantity) ? (
             <div className={classes.buttons}>
               <Button
                 onClick={() =>
@@ -67,6 +72,9 @@ const ProductList = ({
               </Button>
               {(itemTotal[menuIndex.toString() + index.toString()] &&
                 itemTotal[menuIndex.toString() + index.toString()].number) ||
+                (prevOrder &&
+                  !prevOrder[index] &&
+                  previousOrder[index]?.quantity) ||
                 0}
               <Button
                 onClick={() =>

@@ -25,7 +25,9 @@ import { fetchAllProduct, fetchProduct } from "../services/fetchProductService";
 import { fetchCategory } from "../services/categoryService";
 import { fetchCompanyData } from "../services/logoService";
 import CartIcon from "./ItemDetail/component/CartIcon";
-import { fetchAllOrders } from "../services/orderServices";
+import { fetchAllOrders, saveAllOrder } from "../services/orderServices";
+import { API_BASE_V2 } from "../Constant";
+import axios from "axios";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -124,7 +126,7 @@ const ItemDetails = (props) => {
       .catch((err) => setErrors(err));
   };
 
-  //Save Orders
+  // Save Orders
   // async function saveOrder() {
   //   const requestOptions = {
   //     method: "POST",
@@ -138,23 +140,26 @@ const ItemDetails = (props) => {
 
   // Get All Previous Orders
   async function fetchOrders() {
-    let orderListOrderLines = [];
-    const res = await fetchAllOrders(query.get("table_no"));
-    const status = res.data.status;
-    console.log(res);
-    res.data.order_lines.map((order) =>
-      orderListOrderLines.push({
-        company: props.match.params.id,
-        id: null,
-        product: order.product.id,
-        product_code: order.product.product_code,
-        product_name: order.product.name,
-        quantity: order.quantity,
-        status: order.status,
-        rate: order.rate,
-        total: order.total,
-      })
+    const res = await axios.get(
+      API_BASE_V2 + `order/latest-asset-order/${query.get("table_no")}`
     );
+    const status = res.data.status;
+    let orderListOrderLines = [];
+    res.data &&
+      res.data.order_lines &&
+      res.data.order_lines.map((order) =>
+        orderListOrderLines.push({
+          company: props.match.params.id,
+          id: null,
+          product: order.product.id,
+          product_code: order.product.product_code,
+          product_name: order.product.name,
+          quantity: order.quantity,
+          status: order.status,
+          rate: order.rate,
+          total: order.total,
+        })
+      );
 
     const orders = {
       order_id: res.data.id,
@@ -166,6 +171,8 @@ const ItemDetails = (props) => {
       ? setOrderList(orders)
       : setOrderList({});
   }
+
+  const previousOrder = orderList.order_lines;
 
   //Get All The Main Category
   useEffect(() => {
@@ -203,11 +210,11 @@ const ItemDetails = (props) => {
         number:
           itemTotal[menuIndex + index] && itemTotal[menuIndex + index].number
             ? itemTotal[menuIndex + index].number + 1
-            : 0 + 1,
+            : +1,
         total:
           itemTotal[menuIndex + index] && itemTotal[menuIndex + index].number
             ? (itemTotal[menuIndex + index].number + 1) * selling_price
-            : (0 + 1) * selling_price,
+            : +1 * selling_price,
       },
     };
     setItemTotal(newData);
@@ -264,6 +271,7 @@ const ItemDetails = (props) => {
       <Grid container direction="column" justify="center" key={index}>
         <Grid item xs={12}>
           <ProductList
+            previousOrder={previousOrder}
             key={index}
             className={classes.product}
             product={product}
@@ -309,7 +317,7 @@ const ItemDetails = (props) => {
               tableNumber={query.get("table_no")}
               companyId={props.match.params.id}
               orderToken={query.get("token")}
-            ></BillingForm>
+            />
           ) : (
             <div>
               <div className={classes.secondRoot}>
@@ -366,6 +374,7 @@ const ItemDetails = (props) => {
                         >
                           <Grid item xs={12}>
                             <ProductList
+                              previousOrder={previousOrder}
                               key={index}
                               className={classes.product}
                               product={product}

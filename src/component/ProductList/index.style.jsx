@@ -36,7 +36,8 @@ export const useStyles = makeStyles((theme) => ({
   productPrice: {
     fontFamily: "SF Pro Display",
     fontSize: "16px",
-    color: "#9e9e9e",
+    color: theme.palette.secondary.dark,
+    opacity: 0.65,
   },
   viewImg: {
     display: "flex",

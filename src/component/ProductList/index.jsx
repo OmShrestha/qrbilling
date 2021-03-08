@@ -22,7 +22,7 @@ const ProductList = ({
   // console.log(product.id);
   const prevOrder = previousOrder?.map((item) => item.product === product.id);
 
-  // console.log(prevOrder);
+  console.log(prevOrder);
   return (
     <>
       <div className={classes.root}>

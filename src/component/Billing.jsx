@@ -1027,12 +1027,11 @@ const Billing = (props) => {
   //   orderList.order_lines.order_id,
   //   "Billing Orders"
   // );
-  console.log(orderList);
 
   async function createOrder() {
     setLoading(true);
 
-    if (orderList && orderList.order_lines?.id) {
+    if (orderList && orderList.order_id) {
       let billingData = billingInfo.data;
       billingData.order_lines = orderList.order_lines.concat(
         billingData.order_lines

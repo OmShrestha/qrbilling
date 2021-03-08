@@ -19,24 +19,18 @@ const ProductList = ({
   const handleViewImage = () => {
     setDisplay(!display);
   };
-  // console.log(product.id);
-  const prevOrder = previousOrder?.map((item) => item.product === product.id);
 
-  console.log(prevOrder);
   return (
     <>
       <div className={classes.root}>
         <div className={classes.textBox}>
-          {/* Name */}
           <Typography className={classes.productName}>
             {`${product.name}`}
           </Typography>
           <div className={classes.viewImg}>
-            {/* Price */}
             <Typography className={classes.productPrice}>
               {`Rs ${product.selling_price}`}
             </Typography>
-            {/* Image */}
             {product.images.length > 0 && (
               <Typography className={classes.viewTxt} onClick={handleViewImage}>
                 View Image
@@ -54,7 +48,7 @@ const ProductList = ({
         </div>
         <div>
           {itemTotal[menuIndex.toString() + index.toString()]?.number > 0 ||
-          (prevOrder && !prevOrder[index] && previousOrder[index]?.quantity) ? (
+          previousOrder.length > 0 ? (
             <div className={classes.buttons}>
               <Button
                 onClick={() =>
@@ -72,9 +66,7 @@ const ProductList = ({
               </Button>
               {(itemTotal[menuIndex.toString() + index.toString()] &&
                 itemTotal[menuIndex.toString() + index.toString()].number) ||
-                (prevOrder &&
-                  !prevOrder[index] &&
-                  previousOrder[index]?.quantity) ||
+                (previousOrder.length > 0 && previousOrder[0].quantity) ||
                 0}
               <Button
                 onClick={() =>

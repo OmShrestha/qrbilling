@@ -271,7 +271,9 @@ const ItemDetails = (props) => {
       <Grid container direction="column" justify="center" key={index}>
         <Grid item xs={12}>
           <ProductList
-            previousOrder={previousOrder}
+            previousOrder={previousOrder.filter((item) =>
+              item.product === product.id ? item : null
+            )}
             key={index}
             className={classes.product}
             product={product}
@@ -374,7 +376,9 @@ const ItemDetails = (props) => {
                         >
                           <Grid item xs={12}>
                             <ProductList
-                              previousOrder={previousOrder}
+                              previousOrder={previousOrder.filter((item) =>
+                                item.product === product.id ? item : null
+                              )}
                               key={index}
                               className={classes.product}
                               product={product}

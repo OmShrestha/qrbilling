@@ -15,18 +15,21 @@ import {
 import { ExpandMore as ExpandMoreIcon } from "@material-ui/icons";
 
 //Local
-import LogoInfo from "./LogoInfo";
-import CustomSearchBar from "./SearchBar";
-import BillingForm from "./Billing";
-import styles from "./ItemDetail.style";
-import ProductList from "./ProductList";
-import CategoryCard from "./categoryCard/categoryCard";
-import { fetchAllProduct, fetchProduct } from "../services/fetchProductService";
-import { fetchCategory } from "../services/categoryService";
-import { fetchCompanyData } from "../services/logoService";
-import CartIcon from "./ItemDetail/component/CartIcon";
-import { fetchAllOrders, saveAllOrder } from "../services/orderServices";
-import { API_BASE_V2 } from "../Constant";
+import LogoInfo from "../../component/LogoInfo";
+import CustomSearchBar from "../../component/SearchBar";
+import BillingForm from "../Billing/Billing";
+import styles from "./Homepage.style";
+import ProductList from "../../component/ProductList";
+import CategoryCard from "../../component/categoryCard/categoryCard";
+import {
+  fetchAllProduct,
+  fetchProduct,
+} from "../../services/fetchProductService";
+import { fetchCategory } from "../../services/categoryService";
+import { fetchCompanyData } from "../../services/logoService";
+import CartIcon from "../../component/ItemDetail/CartIcon";
+import { fetchAllOrders, saveAllOrder } from "../../services/orderServices";
+import { API_BASE_V2 } from "../../Constant";
 import axios from "axios";
 
 function TabPanel(props) {
@@ -57,7 +60,7 @@ function a11yProps(index) {
   };
 }
 
-const ItemDetails = (props) => {
+const Homepage = (props) => {
   const classes = styles();
 
   const [value, setValue] = useState(0);
@@ -76,6 +79,7 @@ const ItemDetails = (props) => {
   const [filteredProducts, setfilteredProducts] = useState(null);
 
   const query = new URLSearchParams(props.location.search);
+
   const proceedToRedeem = () => {
     setRedeem(!redeem);
   };
@@ -126,18 +130,6 @@ const ItemDetails = (props) => {
       .catch((err) => setErrors(err));
   };
 
-  // Save Orders
-  // async function saveOrder() {
-  //   const requestOptions = {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify(itemTotal),
-  //   };
-  //   saveAllOrder(requestOptions).then((res) =>
-  //     setOrderSaved({ postId: res.data.id })
-  //   );
-  // }
-
   // Get All Previous Orders
   async function fetchOrders() {
     const res = await axios.get(
@@ -185,7 +177,7 @@ const ItemDetails = (props) => {
     fetchOrders();
   }, [props.match.params.id]);
 
-  //Fetch Sub Category when category card is clicked
+  //Fetch Sub Category when category card or Tab is toggle is clicked
   const fetchSubCategoryHandler = async (id, index, child) => {
     setChild(null);
     setValue(index);
@@ -441,4 +433,4 @@ const ItemDetails = (props) => {
   );
 };
 
-export default ItemDetails;
+export default Homepage;

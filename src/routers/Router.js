@@ -2,21 +2,18 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import NotFound from '../component/NotFound';
 import Home from '../component/Home';
-import ItemDetail from '../component/ItemDetail';
-import Navbar from '../component/Navbar';
-import Billing from '../component/Billing';
-import Success from '../component/Success';
+import Homepage from '../pages/Homepage/Homepage';
+import Billing from '../pages/Billing/Billing';
+import Success from '../component/SuccessMessage/Success';
 
 const AppRouter = () => (
-  <Navbar>
-    <Switch>
-      <Route path="/" exact component={Home} />
-      <Route path="/success" exact component={Success} />
-      <Route path="/:id" exact component={ItemDetail} />
-      <Route path="/:id/billing" exact component={Billing} />
-      <Route component={NotFound} />
-    </Switch>
-  </Navbar>
+  <Switch>
+    <Route path="/" exact component={Home} />
+    <Route path="/success" exact component={Success} />
+    <Route path="/:id" exact component={Homepage} />
+    <Route path="/:id/billing" exact component={Billing} />
+    <Route component={NotFound} />
+  </Switch>
 );
 
 export default AppRouter;

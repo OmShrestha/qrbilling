@@ -39,9 +39,7 @@ function CartIcon({ itemTotal, totalPrice, proceedToRedeem }) {
   return (
     <Grid
       container
-      style={{
-        display: totalPrice > 0 ? "block" : "none",
-      }}
+      style={{ display: totalPrice > 0 ? "block" : "none" }}
       className={classes.orderBtnContainer}
     >
       <Collapse in={totalPrice > 0}>

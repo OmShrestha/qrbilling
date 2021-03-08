@@ -13,8 +13,6 @@ function CategoryCard({ category, click }) {
             {category?.map((data, index) => (
                 <Grid item xs={6} key={index}>
                     <Card onClick={() => click(data.id, index + 1, data.child)} elevation={0} className={classes.categoryCard}>
-                        {/* <CardContent> */}
-
                         <img
                             src={data.image || DummyLogo}
                             alt={data.id}
@@ -27,7 +25,6 @@ function CategoryCard({ category, click }) {
                         >
                             {data.name}
                         </Typography>
-                        {/* </CardContent> */}
                     </Card>
                 </Grid>
             ))

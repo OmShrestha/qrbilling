@@ -130,6 +130,7 @@ const Homepage = (props) => {
   // Get All Previous Orders
   async function fetchOrders() {
     const res = await fetchAllOrders(query.get("table_no"));
+    console.log(res);
     const status = res.data.status;
     let orderListOrderLines = [];
     res.data &&
@@ -253,13 +254,17 @@ const Homepage = (props) => {
     }
   };
 
+  console.log(orderList);
+
   const productList = products?.map((product, index) => {
     return (
       <Grid container direction="column" justify="center" key={index}>
         <Grid item xs={12}>
           <ProductList
             previousOrder={previousOrder.filter((item) =>
-              item.product === product.id ? item : null
+              item.status !== "SERVED" && item.product === product.id
+                ? item
+                : null
             )}
             key={index}
             className={classes.product}
@@ -364,7 +369,10 @@ const Homepage = (props) => {
                           <Grid item xs={12}>
                             <ProductList
                               previousOrder={previousOrder.filter((item) =>
-                                item.product === product.id ? item : null
+                                item.status !== "SERVED" &&
+                                item.product === product.id
+                                  ? item
+                                  : null
                               )}
                               key={index}
                               className={classes.product}

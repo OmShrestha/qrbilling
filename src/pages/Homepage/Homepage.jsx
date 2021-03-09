@@ -28,9 +28,7 @@ import {
 import { fetchCategory } from "../../services/categoryService";
 import { fetchCompanyData } from "../../services/logoService";
 import CartIcon from "../../component/ItemDetail/CartIcon";
-import { fetchAllOrders, saveAllOrder } from "../../services/orderServices";
-import { API_BASE_V2 } from "../../Constant";
-import axios from "axios";
+import { fetchAllOrders } from "../../services/orderServices";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -68,7 +66,6 @@ const Homepage = (props) => {
   const [products, setProducts] = useState(null);
   const [hasError, setErrors] = useState(false);
   const [menuList, setMenuList] = useState({});
-  // const [orderSaved, setOrderSaved] = useState(false);
   const [orderList, setOrderList] = useState({});
   const [itemTotal, setItemTotal] = useState({});
   const [redeem, setRedeem] = useState(false);
@@ -132,9 +129,7 @@ const Homepage = (props) => {
 
   // Get All Previous Orders
   async function fetchOrders() {
-    const res = await axios.get(
-      API_BASE_V2 + `order/latest-asset-order/${query.get("table_no")}`
-    );
+    const res = await fetchAllOrders(query.get("table_no"));
     const status = res.data.status;
     let orderListOrderLines = [];
     res.data &&

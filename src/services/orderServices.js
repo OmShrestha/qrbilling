@@ -6,6 +6,7 @@ const fetchAllOrders = async (table_no) => {
     return res
 }
 
+//Not used
 async function saveAllOrder(requestOptions) {
     const res = axios.post(API_BASE + "company/asset/order/create", requestOptions)
     return res

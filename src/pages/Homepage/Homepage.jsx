@@ -130,7 +130,6 @@ const Homepage = (props) => {
   // Get All Previous Orders
   async function fetchOrders() {
     const res = await fetchAllOrders(query.get("table_no"));
-    console.log(res);
     const status = res.data.status;
     let orderListOrderLines = [];
     res.data &&
@@ -253,8 +252,6 @@ const Homepage = (props) => {
       setItemTotal(allItem);
     }
   };
-
-  console.log(orderList);
 
   const productList = products?.map((product, index) => {
     return (

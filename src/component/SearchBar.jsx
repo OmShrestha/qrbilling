@@ -16,6 +16,7 @@ const styles = makeStyles((theme) => ({
     width: "80vw",
     fontSize: 12,
     height: 30,
+    opacity: 0.8,
   },
   searchButton: {
     height: 30,

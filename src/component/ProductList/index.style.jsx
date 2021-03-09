@@ -18,6 +18,7 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   addOrder: {
+    maxHeight: 200,
     border: `0.5px solid ${theme.palette.secondary.gray}`,
     borderRadius: "10px",
     fontSize: "12px",
@@ -30,14 +31,16 @@ export const useStyles = makeStyles((theme) => ({
   productName: {
     fontSize: "16px",
     color: theme.palette.secondary.dark,
-    fontFamily: "SF Pro Display",
     textTransform: "capitalize",
+    fontWeight: 700,
+    opacity: 0.5,
   },
   productPrice: {
     fontFamily: "SF Pro Display",
     fontSize: "16px",
     color: theme.palette.secondary.dark,
-    opacity: 0.65,
+    opacity: 0.75,
+    fontWeight: 600,
   },
   viewImg: {
     display: "flex",

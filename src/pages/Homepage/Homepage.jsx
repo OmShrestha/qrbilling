@@ -408,7 +408,7 @@ const Homepage = (props) => {
                         <AccordionDetails
                           style={{ display: "flex", flexDirection: "column" }}
                         >
-                          {productList}
+                          {productList || "Loading..."}
                         </AccordionDetails>
                       </Accordion>
                     );

@@ -15,19 +15,22 @@ const useStyles = makeStyles((theme) => ({
     searchBarTitle: {
         textAlign: "center",
         fontSize: 18,
-        fontWeight: 700
+        fontWeight: 550,
+        opacity: 0.7
     },
     tabs: {
         backgroundColor: theme.palette.secondary.main,
         "&.MuiTab-textColorInherit.Mui-selected": {
-            color: theme.palette.primary.main
+            color: theme.palette.primary.main,
         },
     },
     tab: {
         backgroundColor: theme.palette.secondary.gray,
         borderRadius: 40,
         margin: '0px 10px',
-        padding: '14px 18px'
+        padding: '14px 18px',
+        fontWeight: 600,
+        fontSize: 12,
     },
     product: {
         padding: "none",
@@ -48,6 +51,10 @@ const useStyles = makeStyles((theme) => ({
             padding: 0
         }
     },
+    heading: {
+        opacity: 0.75,
+        fontWeight: 600,
+    }
 
 }));
 

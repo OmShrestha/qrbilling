@@ -56,8 +56,26 @@ const useStyles = makeStyles((theme) => ({
     heading: {
         opacity: 0.75,
         fontWeight: 500,
+    },
+    orderBtnContainer: {
+        position: "fixed",
+        width: 150,
+        justifyContent: "center",
+        margin: '0px auto',
+        bottom: 20,
+        "& .MuiCollapse-container": {
+            flex: "1 0 auto",
+        },
+        zIndex: 999,
+        left: 0,
+        right: 0
+    },
+    spinner: {
+        justifyContent: "center",
+        margin: '0px auto',
+        left: 0,
+        right: 0
     }
-
 }));
 
 export default useStyles;

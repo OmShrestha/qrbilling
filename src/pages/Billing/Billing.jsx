@@ -77,7 +77,6 @@ const Billing = (props) => {
         }
       });
   }
-  console.log(orderList.order_lines);
   async function createOrder() {
     setLoading(true);
 
@@ -568,13 +567,7 @@ const Billing = (props) => {
               className={classes.btnRed}
               onClick={loading ? () => {} : () => createOrder()}
             >
-              {loading ? (
-                <CircularProgress />
-              ) : activeStep === steps.length - 1 ? (
-                "Finish"
-              ) : (
-                "Confirm Order"
-              )}
+              {loading ? <CircularProgress /> : "Confirm Order"}
             </Button>
           </Grid>
         )}

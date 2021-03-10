@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 // material
 import PropTypes from "prop-types";
 import {
+  Button,
   Tabs,
   Tab,
   Grid,
@@ -11,6 +12,7 @@ import {
   AccordionSummary,
   Typography,
   AccordionDetails,
+  CircularProgress,
 } from "@material-ui/core";
 import { ExpandMore as ExpandMoreIcon } from "@material-ui/icons";
 
@@ -401,20 +403,35 @@ const Homepage = (props) => {
                           id="panel1a-header"
                         >
                           <Typography className={classes.heading}>
-                            {children.name}
+                            {children.name || (
+                              <CircularProgress
+                                className={classes.spinner}
+                                color="primary"
+                              />
+                            )}
                           </Typography>
                         </AccordionSummary>
                         <AccordionDetails
                           style={{ display: "flex", flexDirection: "column" }}
                         >
-                          {productList || "Loading..."}
+                          {productList || (
+                            <CircularProgress
+                              className={classes.spinner}
+                              color="primary"
+                            />
+                          )}
                         </AccordionDetails>
                       </Accordion>
                     );
                   })
                 ) : (
                   // If no child then directly render product List
-                  productList
+                  productList || (
+                    <CircularProgress
+                      className={classes.spinner}
+                      color="primary"
+                    />
+                  )
                 )}
               </div>
 
@@ -422,8 +439,19 @@ const Homepage = (props) => {
               <CartIcon
                 itemTotal={itemTotal}
                 totalPrice={totalPrice}
-                proceedToRedeem={proceedToRedeem}
+                proceedToRedeem={() => proceedToRedeem()}
               />
+
+              <Grid container className={classes.orderBtnContainer}>
+                {orderList && orderList.hasOwnProperty("order_lines") && (
+                  <Button
+                    className={classes.orderBtn}
+                    onClick={() => proceedToRedeem()}
+                  >
+                    View Order
+                  </Button>
+                )}
+              </Grid>
             </div>
           )}
         </div>

@@ -1,33 +1,33 @@
-import React, { Component } from 'react';
-import QrReader from 'react-qr-reader';
-import './style/qrStyle.css';
-import { API_BASE } from '../Constant';
-import history from '../history';
+import React, { Component } from "react";
+import QrReader from "react-qr-reader";
+import "./style/qrStyle.css";
+import { API_BASE } from "../Constant";
+import history from "../history";
 
 class ScannerQR extends Component {
   constructor(props) {
     super(props);
     this.state = {
       delay: 1000,
-      result: 'No result',
-      facingMode: 'rear',
+      result: "No result",
+      facingMode: "rear",
     };
     this.handleScan = this.handleScan.bind(this);
   }
   handleValidation(qrResponse, url) {
     if (qrResponse) {
-      let newUrl = url.replace('https://mastarqr.com/', '');
+      let newUrl = url.replace("https://mastarqr.com/", "");
       history.push(newUrl);
-    } 
+    }
   }
   getParameters(url) {
     var params = {};
-    var parser = document.createElement('a');
+    var parser = document.createElement("a");
     parser.href = url;
     var query = parser.search.substring(1);
-    var vars = query.split('&');
+    var vars = query.split("&");
     for (var i = 0; i < vars.length; i++) {
-      var pair = vars[i].split('=');
+      var pair = vars[i].split("=");
       params[pair[0]] = decodeURIComponent(pair[1]);
     }
     return params;
@@ -40,13 +40,13 @@ class ScannerQR extends Component {
         result: url,
       });
       const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ asset: jsonData.table_no }),
       };
-      fetch(API_BASE + 'order/validate-qr-scan/', requestOptions)
-        .then(response => response.json())
-        .then(qrResponse => this.handleValidation(qrResponse, url));
+      fetch(API_BASE + "order/validate-qr-scan/", requestOptions)
+        .then((response) => response.json())
+        .then((qrResponse) => this.handleValidation(qrResponse, url));
     }
   }
   handleError(err) {
@@ -55,7 +55,7 @@ class ScannerQR extends Component {
 
   handleCameraSwitch() {
     this.setState({
-      facingMode: this.state.facingMode === 'rear' ? 'front' : 'rear',
+      facingMode: this.state.facingMode === "rear" ? "front" : "rear",
     });
   }
 
@@ -63,9 +63,9 @@ class ScannerQR extends Component {
     const previewStyle = {
       height: 300,
       width: 300,
-      position: 'relative',
-      borderStyle: 'solid',
-      borderColor: 'red',
+      position: "relative",
+      border: "5px solid #BCBCBC",
+      padding: 20,
     };
     return (
       <>

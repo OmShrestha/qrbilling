@@ -1,13 +1,17 @@
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography, Button } from "@material-ui/core";
 import React, { useState } from "react";
 import QRScanner from "./QRScanner";
 import { makeStyles } from "@material-ui/core/styles";
 
+import mainAd from "../assets/Ad.png";
+
 const useStyles = makeStyles((theme) => ({
   root: {
+    paddingTop: 20,
+    paddingBottom: 20,
     display: "flex",
-    backgroundColor: "rgba(0,0,0,0.8)",
-    justifyContent: "center",
+    backgroundColor: "#fff",
+    justifyContent: "space-between",
     alignItems: "center",
     height: "100vh",
     flexDirection: "column",
@@ -19,38 +23,67 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     marginBottom: 8,
   },
-  scan: {
-    color: theme.palette.secondary.main,
-    fontSize: "22pt",
+  title: {
+    color: "#707070",
+    fontSize: 40,
+    fontWeight: 1000,
   },
-  order: {
-    color: theme.palette.secondary.main,
-    fontSize: "15pt",
+  paragraph: {
+    color: "#C4C4C4",
+    fontWeight: 700,
+    fontSize: "16px",
+    marginBottom: 20,
+  },
+  mainAdd: {
+    width: "100%",
+    heigth: "200px",
+  },
+  secondAdd: {
+    width: "100%",
+    heigth: "100px",
   },
   qr: {
     alignItems: "center",
   },
+  scanButton: {
+    fontWeight: 700,
+    fontSize: "24px",
+    textTransform: "none",
+    padding: "4px 8px",
+  },
+  scanContainer: {
+    marginTop: 20,
+  },
 }));
 
 const Layout = (props) => {
-  const [QRScannerSelected, setQRScannerSelected] = useState(true);
+  const [scan, setScan] = useState(false);
   const classes = useStyles(props);
 
   return (
     <Grid container className={classes.root}>
-      <div className={classes.scanOrder}>
-        <Typography className={classes.scan}> Scan The QR CODE</Typography>
-        <Typography className={classes.order}>And Order Food</Typography>
+      <div>
+        <img src={mainAd} alt="this is advertisement" className="mainAdd" />
       </div>
-      {QRScannerSelected ? (
-        <QRScanner className={classes.qr} />
-      ) : (
-        <img
-          src="https://i.pinimg.com/originals/9b/56/2c/9b562ca0be290e80f201486a4fbcf849.png"
-          alt="QR"
-          onClick={() => setQRScannerSelected(!QRScannerSelected)}
-        />
-      )}
+      <div className={classes.scanOrder}>
+        <Typography className={classes.title}> Scan The QR</Typography>
+        <Typography className={classes.paragraph}>And Order Food</Typography>
+        {scan ? (
+          <QRScanner className={classes.qr} />
+        ) : (
+          <Button
+            className={classes.scanButton}
+            variant="contained"
+            color="primary"
+            onClick={() => setScan(!scan)}
+          >
+            Scan
+          </Button>
+        )}
+      </div>
+      <div>
+        <img src={mainAd} alt="this is advertisement" className="secondAdd" />
+      </div>
     </Grid>
   );
 };

@@ -48,7 +48,7 @@ const ProductList = ({
         </div>
         <div>
           {itemTotal[menuIndex.toString() + index.toString()]?.number > 0 ||
-          previousOrder.length > 0 ? (
+          previousOrder?.length > 0 ? (
             <div className={classes.buttons}>
               <Button
                 onClick={() =>

@@ -17,6 +17,7 @@ const styles = makeStyles((theme) => ({
     fontSize: 12,
     height: 30,
     opacity: 0.8,
+    fontFamily: "Poppins",
   },
   searchButton: {
     height: 30,
@@ -29,6 +30,8 @@ const styles = makeStyles((theme) => ({
     right: 20,
     marginTop: 20,
     width: 100,
+    textTransform: "none",
+    fontFamily: "SF Pro display",
   },
 }));
 

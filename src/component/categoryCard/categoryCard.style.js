@@ -38,6 +38,7 @@ const styles = makeStyles(theme => ({
         fontSize: 20,
         fontWeight: 'bold',
         zIndex: 10,
+        fontFamily: "SF Pro Display",
     },
 }))
 

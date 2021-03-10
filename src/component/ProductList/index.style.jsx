@@ -32,8 +32,9 @@ export const useStyles = makeStyles((theme) => ({
     fontSize: "16px",
     color: theme.palette.secondary.dark,
     textTransform: "capitalize",
-    fontWeight: 700,
+    fontWeight: 600,
     opacity: 0.5,
+    fontFamily: "SF Pro Display",
   },
   productPrice: {
     fontFamily: "SF Pro Display",

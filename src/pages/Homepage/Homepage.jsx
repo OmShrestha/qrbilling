@@ -258,10 +258,9 @@ const Homepage = (props) => {
       <Grid container direction="column" justify="center" key={index}>
         <Grid item xs={12}>
           <ProductList
-            previousOrder={previousOrder.filter((item) =>
-              item.status !== "SERVED" && item.product === product.id
-                ? item
-                : null
+            previousOrder={previousOrder?.filter(
+              (item) =>
+                item.status !== "SERVED" && item.product === product.id && item
             )}
             key={index}
             className={classes.product}
@@ -293,7 +292,7 @@ const Homepage = (props) => {
         <div className={classes.root}>
           <LogoInfo
             goToCart={proceedToRedeem}
-            cartItems={Object.keys(itemTotal).length}
+            cartItems={Object.keys(itemTotal)?.length}
             menuList={menuList}
             tableNumber={query.get("table_no")}
           />
@@ -365,7 +364,7 @@ const Homepage = (props) => {
                         >
                           <Grid item xs={12}>
                             <ProductList
-                              previousOrder={previousOrder.filter((item) =>
+                              previousOrder={previousOrder?.filter((item) =>
                                 item.status !== "SERVED" &&
                                 item.product === product.id
                                   ? item

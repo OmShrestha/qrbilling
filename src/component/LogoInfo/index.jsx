@@ -16,9 +16,11 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
   },
   img: {
-    width: "106px",
-    height: "106px",
+    width: "128px",
+    height: "128px",
     objectFit: "cover",
+    borderRadius: 12,
+    marginTop: 20,
   },
   info: {
     marginTop: 12,
@@ -31,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "14pt",
     fontWeight: 900,
     lineHeight: "22px",
+    fontFamily: "Poppins",
   },
   tableNumber: {
     fontSize: "10pt",
@@ -38,13 +41,17 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "3px",
     opacity: 0.5,
     fontWeight: 500,
+    fontFamily: "Poppins",
   },
   buttons: {
-    fontWeight: 700,
-    fontSize: 10,
+    fontFamily: "Poppins",
+    marginTop: 10,
+    fontWeight: 500,
+    fontSize: 12,
     borderColor: theme.palette.secondary.dark,
     marginRight: 10,
     padding: "5px 20px",
+    textTransform: "none",
   },
   filledButton: {
     color: theme.palette.secondary.main,

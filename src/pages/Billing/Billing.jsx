@@ -77,11 +77,11 @@ const Billing = (props) => {
         }
       });
   }
-
+  console.log(orderList.order_lines);
   async function createOrder() {
     setLoading(true);
 
-    if (orderList && orderList.order_lines?.id) {
+    if (orderList && orderList.order_lines?.length > 0) {
       let billingData = billingInfo.data;
       billingData.order_lines = orderList.order_lines.concat(
         billingData.order_lines
@@ -559,7 +559,6 @@ const Billing = (props) => {
                 </Button>
               </>
             )}
-
           </Grid>
         )}
         {Object.keys(billingInfo).length !== 0 && (

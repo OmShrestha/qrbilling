@@ -15,8 +15,9 @@ const useStyles = makeStyles((theme) => ({
     searchBarTitle: {
         textAlign: "center",
         fontSize: 18,
-        fontWeight: 550,
-        opacity: 0.7
+        fontWeight: 500,
+        opacity: 0.7,
+        fontFamily: 'SF Pro Display'
     },
     tabs: {
         backgroundColor: theme.palette.secondary.main,
@@ -31,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
         padding: '14px 18px',
         fontWeight: 600,
         fontSize: 12,
+        fontFamily: "Poppins",
     },
     product: {
         padding: "none",
@@ -53,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
     },
     heading: {
         opacity: 0.75,
-        fontWeight: 600,
+        fontWeight: 500,
     }
 
 }));

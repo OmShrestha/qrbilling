@@ -76,7 +76,6 @@ const Homepage = (props) => {
   const [expanded, setExpanded] = useState(false);
   const [allProducts, setAllProducts] = useState(null);
   const [filteredProducts, setfilteredProducts] = useState(null);
-
   const query = new URLSearchParams(props.location.search);
 
   const proceedToRedeem = () => {
@@ -147,6 +146,10 @@ const Homepage = (props) => {
           status: order.status,
           rate: order.rate,
           total: order.total,
+          cancelled: order.cancelled,
+          cooking: order.cooking,
+          new: order.new,
+          served: order.served,
         })
       );
 

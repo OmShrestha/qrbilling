@@ -79,18 +79,34 @@ const Billing = (props) => {
   }
   async function createOrder() {
     setLoading(true);
+    let newOrders = [];
 
     if (orderList && orderList.order_lines?.length > 0) {
       let billingData = billingInfo.data;
-      billingData.order_lines = orderList.order_lines.concat(
-        billingData.order_lines
-      );
+      // billingData.order_lines = orderList.order_lines.concat(
+      //   billingData.order_lines
+      // );
+      billingData.order_lines = orderList.order_lines.map((item) => {
+        billingData.order_lines.forEach(
+          (newItem) =>
+            newItem.product === item.product && (item.new += newItem.quantity)
+        );
+        return orderList.order_lines;
+      });
+      // newOrders = orderList.order_lines.map((item) => {
+      //   return billingData.order_lines.map(
+      //     (newItem) => newItem.product !== item.product && newItem
+      //   );
+      // });
+
+      console.log(billingData.order_lines.flat(2));
+      console.log(newOrders);
 
       const id = orderList.order_id;
 
       const requestOptions = {
         asset: billingData.asset,
-        order_lines: billingData.order_lines,
+        order_lines: billingData.order_lines.flat(2).concat(newOrders),
         voucher: null,
       };
 
@@ -567,7 +583,13 @@ const Billing = (props) => {
               className={classes.btnRed}
               onClick={loading ? () => {} : () => createOrder()}
             >
-              {loading ? <CircularProgress /> : "Confirm Order"}
+              {loading ? (
+                <CircularProgress />
+              ) : activeStep === steps.length - 1 ? (
+                "Finish"
+              ) : (
+                "Confirm Order"
+              )}
             </Button>
           </Grid>
         )}

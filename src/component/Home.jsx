@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import QRScanner from "./QRScanner";
 import { makeStyles } from "@material-ui/core/styles";
 
-import mainAd from "../assets/Ad.png";
+import mainAd from "../assets/Ad.jpg";
+import SecondAd from "../assets/Ad.png";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 8,
   },
   title: {
-    color: "#707070",
     fontSize: 40,
     fontWeight: 1000,
   },
@@ -35,12 +35,14 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 20,
   },
   mainAdd: {
-    width: "100%",
-    heigth: "200px",
+    borderRadius: 10,
+    width: "300px",
+    height: "150px",
+    objectFit: "cover",
   },
   secondAdd: {
-    width: "100%",
-    heigth: "100px",
+    width: "300px",
+    height: "100px",
   },
   qr: {
     alignItems: "center",
@@ -63,10 +65,20 @@ const Layout = (props) => {
   return (
     <Grid container className={classes.root}>
       <div>
-        <img src={mainAd} alt="this is advertisement" className="mainAdd" />
+        <img
+          src={mainAd}
+          alt="this is advertisement"
+          className={classes.mainAdd}
+        />
       </div>
       <div className={classes.scanOrder}>
-        <Typography className={classes.title}> Scan The QR</Typography>
+        <Typography
+          style={{ color: scan ? "#707070" : "#000" }}
+          className={classes.title}
+        >
+          {" "}
+          Scan The QR
+        </Typography>
         <Typography className={classes.paragraph}>And Order Food</Typography>
         {scan ? (
           <QRScanner className={classes.qr} />
@@ -82,7 +94,11 @@ const Layout = (props) => {
         )}
       </div>
       <div>
-        <img src={mainAd} alt="this is advertisement" className="secondAdd" />
+        <img
+          src={SecondAd}
+          alt="this is advertisement"
+          className={classes.secondAdd}
+        />
       </div>
     </Grid>
   );

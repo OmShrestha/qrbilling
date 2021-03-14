@@ -1,10 +1,11 @@
 import { Grid, Typography, Button } from "@material-ui/core";
 import React, { useState } from "react";
-import QRScanner from "./QRScanner";
-import { makeStyles } from "@material-ui/core/styles";
+import Carousel from "react-material-ui-carousel";
 
+import QRScanner from "./QRScanner";
 import mainAd from "../assets/Ad.jpg";
 import SecondAd from "../assets/Ad.png";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,6 +42,8 @@ const useStyles = makeStyles((theme) => ({
     objectFit: "cover",
   },
   secondAdd: {
+    objectFit: "cover",
+    borderRadius: 10,
     width: "300px",
     height: "100px",
   },
@@ -65,11 +68,16 @@ const Layout = (props) => {
   return (
     <Grid container className={classes.root}>
       <div>
-        <img
-          src={mainAd}
-          alt="this is advertisement"
-          className={classes.mainAdd}
-        />
+        <Carousel animation="slide" indicators={false}>
+          <img src={mainAd} alt="advertisement" className={classes.mainAdd} />
+          <img src={SecondAd} alt="advertisement" className={classes.mainAdd} />
+          <img src={mainAd} alt="advertisement" className={classes.mainAdd} />
+          <img src={SecondAd} alt="advertisement" className={classes.mainAdd} />
+          <img src={mainAd} alt="advertisement" className={classes.mainAdd} />
+          <img src={SecondAd} alt="advertisement" className={classes.mainAdd} />
+          <img src={mainAd} alt="advertisement" className={classes.mainAdd} />
+          <img src={SecondAd} alt="advertisement" className={classes.mainAdd} />
+        </Carousel>
       </div>
       <div className={classes.scanOrder}>
         <Typography
@@ -94,11 +102,32 @@ const Layout = (props) => {
         )}
       </div>
       <div>
-        <img
-          src={SecondAd}
-          alt="this is advertisement"
-          className={classes.secondAdd}
-        />
+        <Carousel animation="slide" indicators={false}>
+          <img src={mainAd} alt="advertisement" className={classes.secondAdd} />
+          <img
+            src={SecondAd}
+            alt="advertisement"
+            className={classes.secondAdd}
+          />
+          <img src={mainAd} alt="advertisement" className={classes.secondAdd} />
+          <img
+            src={SecondAd}
+            alt="advertisement"
+            className={classes.secondAdd}
+          />
+          <img src={mainAd} alt="advertisement" className={classes.secondAdd} />
+          <img
+            src={SecondAd}
+            alt="advertisement"
+            className={classes.secondAdd}
+          />
+          <img src={mainAd} alt="advertisement" className={classes.secondAdd} />
+          <img
+            src={SecondAd}
+            alt="advertisement"
+            className={classes.secondAdd}
+          />
+        </Carousel>
       </div>
     </Grid>
   );

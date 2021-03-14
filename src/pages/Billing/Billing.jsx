@@ -79,34 +79,38 @@ const Billing = (props) => {
   }
   async function createOrder() {
     setLoading(true);
-    let newOrders = [];
 
     if (orderList && orderList.order_lines?.length > 0) {
       let billingData = billingInfo.data;
-      // billingData.order_lines = orderList.order_lines.concat(
-      //   billingData.order_lines
-      // );
-      billingData.order_lines = orderList.order_lines.map((item) => {
-        billingData.order_lines.forEach(
-          (newItem) =>
-            newItem.product === item.product && (item.new += newItem.quantity)
-        );
-        return orderList.order_lines;
+      const existingProductIds = orderList.order_lines.map(
+        (item) => item.product
+      );
+      billingData.order_lines.forEach((item) => {
+        if (existingProductIds.includes(item.product)) {
+          const oldItemIndex = existingProductIds.indexOf(item.product);
+          const oldItem = orderList.order_lines[oldItemIndex];
+          orderList.order_lines[oldItemIndex] = {
+            ...oldItem,
+            quantity: parseInt(oldItem.quantity) + parseInt(item.quantity),
+            new: parseInt(oldItem.new) + parseInt(item.quantity),
+            cooking: parseInt(oldItem.cooking),
+            served: parseInt(oldItem.served),
+          };
+        } else {
+          orderList.order_lines.push({
+            ...item,
+            quantity: parseInt(item.quantity),
+            new: parseInt(item.quantity),
+            cooking: 0,
+            served: 0,
+            cancelled: 0,
+          });
+        }
       });
-      // newOrders = orderList.order_lines.map((item) => {
-      //   return billingData.order_lines.map(
-      //     (newItem) => newItem.product !== item.product && newItem
-      //   );
-      // });
-
-      console.log(billingData.order_lines.flat(2));
-      console.log(newOrders);
-
       const id = orderList.order_id;
-
       const requestOptions = {
         asset: billingData.asset,
-        order_lines: billingData.order_lines.flat(2).concat(newOrders),
+        order_lines: orderList.order_lines,
         voucher: null,
       };
 
@@ -131,8 +135,19 @@ const Billing = (props) => {
         });
     } else {
       setLoading(true);
-      const billingData = billingInfo.data;
+      let billingData = billingInfo.data;
+      billingData.order_lines = billingData.order_lines.map((item) => {
+        return {
+          ...item,
+          quantity: parseInt(item.quantity),
+          new: parseInt(item.quantity),
+          cooking: 0,
+          served: 0,
+          cancelled: 0,
+        };
+      });
 
+      // ...item,
       const requestOptions = {
         asset: billingData.asset,
         order_lines: billingData.order_lines,

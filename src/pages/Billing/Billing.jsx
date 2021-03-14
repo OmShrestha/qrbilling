@@ -409,14 +409,17 @@ const Billing = (props) => {
             </AccordionSummary>
             <AccordionDetails className={classes.detailList}>
               {orderList.order_lines && orderList.order_lines.length > 0 ? (
-                orderList.order_lines.map((order, index) => (
-                  <div className={classes.detailListItem} key={index}>
-                    <Typography className={classes.productName} key={index}>
-                      {order.product_name}
-                    </Typography>
-                    <span>{`${order.status} ${order.quantity} * ${order.rate}`}</span>
-                  </div>
-                ))
+                orderList.order_lines.map(
+                  (order, index) =>
+                    order.status !== "CANCELLED" && (
+                      <div className={classes.detailListItem} key={index}>
+                        <Typography className={classes.productName} key={index}>
+                          {order.product_name}
+                        </Typography>
+                        <span>{`${order.quantity} * ${order.rate}`}</span>
+                      </div>
+                    )
+                )
               ) : (
                 <div className={classes.detailListItem}>
                   <Typography>No previous order</Typography>

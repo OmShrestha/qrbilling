@@ -58,25 +58,6 @@ const Billing = (props) => {
       .catch((err) => setErrors(err));
   }
 
-  async function refreshToken(tableNo) {
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ asset: tableNo }),
-    };
-    fetch(API_BASE + "order/validate-qr-scan/", requestOptions)
-      .then((response) => response.json())
-      .then((tokenResponse) => {
-        if (tokenResponse.token === null) {
-          alert("Session Expired. Please try again!!!");
-          setTimeout(() => window.location.assign("/"), 1000);
-        } else {
-          return tokenResponse.token
-            ? createOrder(tokenResponse.token)
-            : () => {};
-        }
-      });
-  }
   async function createOrder() {
     setLoading(true);
 

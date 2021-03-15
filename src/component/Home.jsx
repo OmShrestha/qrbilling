@@ -37,14 +37,14 @@ const useStyles = makeStyles((theme) => ({
   mainAdd: {
     borderRadius: 10,
     width: "300px",
-    height: "150px",
+    height: "250px",
     objectFit: "cover",
   },
   secondAdd: {
     objectFit: "cover",
     borderRadius: 10,
     width: "300px",
-    height: "100px",
+    height: "150px",
   },
   qr: {
     alignItems: "center",
@@ -57,12 +57,6 @@ const useStyles = makeStyles((theme) => ({
   },
   scanContainer: {
     marginTop: 20,
-  },
-  imageTitle: {
-    textAlign: "center",
-    fontSize: 20,
-    fontWeight: 700,
-    color: "#707070",
   },
 }));
 
@@ -93,12 +87,22 @@ const Layout = (props) => {
             },
           }}
         >
-          {topAd?.map(({ id, image, title }) => (
-            <div key={id}>
-              <img src={image} alt={title} className={classes.mainAdd} />
-              <p className={classes.imageTitle}>{title}</p>
-            </div>
-          ))}
+          {topAd?.map(
+            ({
+              id,
+              image,
+              title,
+              link = "https://www.facebook.com/coupponpro",
+            }) => (
+              <img
+                onClick={() => window.open(link, "_blank")}
+                key={id}
+                src={image}
+                alt={title}
+                className={classes.mainAdd}
+              />
+            )
+          )}
         </Carousel>
       </div>
       <div className={classes.scanOrder}>
@@ -122,25 +126,37 @@ const Layout = (props) => {
           </Button>
         )}
       </div>
-      <div>
-        <Carousel
-          animation="slide"
-          indicators={false}
-          navButtonsProps={{
-            style: {
-              backgroundColor: "transparent",
-              color: "#000",
-            },
-          }}
-        >
-          {bottomAd?.map(({ id, image, title }) => (
-            <div key={id}>
-              <img src={image} alt={title} className={classes.secondAdd} />
-              <p className={classes.imageTitle}>{title}</p>
-            </div>
-          ))}
-        </Carousel>
-      </div>
+      {!scan && (
+        <div>
+          <Carousel
+            animation="slide"
+            indicators={false}
+            navButtonsProps={{
+              style: {
+                backgroundColor: "transparent",
+                color: "#000",
+              },
+            }}
+          >
+            {bottomAd?.map(
+              ({
+                id,
+                image,
+                title,
+                link = "https://www.facebook.com/coupponpro",
+              }) => (
+                <img
+                  onClick={() => window.open(link, "_blank")}
+                  key={id}
+                  src={image}
+                  alt={title}
+                  className={classes.secondAdd}
+                />
+              )
+            )}
+          </Carousel>
+        </div>
+      )}
     </Grid>
   );
 };

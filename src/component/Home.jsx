@@ -68,7 +68,16 @@ const Layout = (props) => {
   return (
     <Grid container className={classes.root}>
       <div>
-        <Carousel animation="slide" indicators={false}>
+        <Carousel
+          animation="slide"
+          indicators={false}
+          navButtonsProps={{
+            style: {
+              backgroundColor: "transparent",
+              color: "#000",
+            },
+          }}
+        >
           <img src={mainAd} alt="advertisement" className={classes.mainAdd} />
           <img src={SecondAd} alt="advertisement" className={classes.mainAdd} />
           <img src={mainAd} alt="advertisement" className={classes.mainAdd} />
@@ -102,8 +111,16 @@ const Layout = (props) => {
         )}
       </div>
       <div>
-        <Carousel animation="slide" indicators={false}>
-          <img src={mainAd} alt="advertisement" className={classes.secondAdd} />
+        <Carousel
+          animation="slide"
+          indicators={false}
+          navButtonsProps={{
+            style: {
+              backgroundColor: "transparent",
+              color: "#000",
+            },
+          }}
+        >
           <img
             src={SecondAd}
             alt="advertisement"
@@ -127,6 +144,7 @@ const Layout = (props) => {
             alt="advertisement"
             className={classes.secondAdd}
           />
+          <img src={mainAd} alt="advertisement" className={classes.secondAdd} />
         </Carousel>
       </div>
     </Grid>

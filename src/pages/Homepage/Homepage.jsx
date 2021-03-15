@@ -444,17 +444,18 @@ const Homepage = (props) => {
                 totalPrice={totalPrice}
                 proceedToRedeem={() => proceedToRedeem()}
               />
-
-              <Grid container className={classes.orderBtnContainer}>
-                {orderList && orderList.hasOwnProperty("order_lines") && (
-                  <Button
-                    className={classes.orderBtn}
-                    onClick={() => proceedToRedeem()}
-                  >
-                    View Order
-                  </Button>
-                )}
-              </Grid>
+              {totalPrice <= 0 && (
+                <Grid container className={classes.orderBtnContainer}>
+                  {orderList && orderList.hasOwnProperty("order_lines") && (
+                    <Button
+                      className={classes.orderBtn}
+                      onClick={() => proceedToRedeem()}
+                    >
+                      View Order
+                    </Button>
+                  )}
+                </Grid>
+              )}
             </div>
           )}
         </div>

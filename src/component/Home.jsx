@@ -1,11 +1,10 @@
 import { Grid, Typography, Button } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Carousel from "react-material-ui-carousel";
 
 import QRScanner from "./QRScanner";
-import mainAd from "../assets/Ad.jpg";
-import SecondAd from "../assets/Ad.png";
 import { makeStyles } from "@material-ui/core/styles";
+import { fetchAdvertisement } from "../services/advertisementService";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,11 +58,27 @@ const useStyles = makeStyles((theme) => ({
   scanContainer: {
     marginTop: 20,
   },
+  imageTitle: {
+    textAlign: "center",
+    fontSize: 20,
+    fontWeight: 700,
+    color: "#707070",
+  },
 }));
 
 const Layout = (props) => {
   const [scan, setScan] = useState(false);
+  const [ad, setAd] = useState(null);
   const classes = useStyles(props);
+
+  const topAd = ad?.filter((item) => item.position === "TOP");
+  const bottomAd = ad?.filter((item) => item.position === "BOTTOM");
+
+  useEffect(() => {
+    fetchAdvertisement()
+      .then((res) => setAd(res.data.records))
+      .catch((err) => alert(err));
+  }, []);
 
   return (
     <Grid container className={classes.root}>
@@ -78,14 +93,12 @@ const Layout = (props) => {
             },
           }}
         >
-          <img src={mainAd} alt="advertisement" className={classes.mainAdd} />
-          <img src={SecondAd} alt="advertisement" className={classes.mainAdd} />
-          <img src={mainAd} alt="advertisement" className={classes.mainAdd} />
-          <img src={SecondAd} alt="advertisement" className={classes.mainAdd} />
-          <img src={mainAd} alt="advertisement" className={classes.mainAdd} />
-          <img src={SecondAd} alt="advertisement" className={classes.mainAdd} />
-          <img src={mainAd} alt="advertisement" className={classes.mainAdd} />
-          <img src={SecondAd} alt="advertisement" className={classes.mainAdd} />
+          {topAd?.map(({ id, image, title }) => (
+            <div key={id}>
+              <img src={image} alt={title} className={classes.mainAdd} />
+              <p className={classes.imageTitle}>{title}</p>
+            </div>
+          ))}
         </Carousel>
       </div>
       <div className={classes.scanOrder}>
@@ -93,7 +106,6 @@ const Layout = (props) => {
           style={{ color: scan ? "#707070" : "#000" }}
           className={classes.title}
         >
-          {" "}
           Scan The QR
         </Typography>
         <Typography className={classes.paragraph}>And Order Food</Typography>
@@ -121,30 +133,12 @@ const Layout = (props) => {
             },
           }}
         >
-          <img
-            src={SecondAd}
-            alt="advertisement"
-            className={classes.secondAdd}
-          />
-          <img src={mainAd} alt="advertisement" className={classes.secondAdd} />
-          <img
-            src={SecondAd}
-            alt="advertisement"
-            className={classes.secondAdd}
-          />
-          <img src={mainAd} alt="advertisement" className={classes.secondAdd} />
-          <img
-            src={SecondAd}
-            alt="advertisement"
-            className={classes.secondAdd}
-          />
-          <img src={mainAd} alt="advertisement" className={classes.secondAdd} />
-          <img
-            src={SecondAd}
-            alt="advertisement"
-            className={classes.secondAdd}
-          />
-          <img src={mainAd} alt="advertisement" className={classes.secondAdd} />
+          {bottomAd?.map(({ id, image, title }) => (
+            <div key={id}>
+              <img src={image} alt={title} className={classes.secondAdd} />
+              <p className={classes.imageTitle}>{title}</p>
+            </div>
+          ))}
         </Carousel>
       </div>
     </Grid>

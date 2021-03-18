@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import BillingForm from './Billing';
-import { API_BASE } from '../Constant';
+import { API_BASE, API_BASE_V2 } from '../Constant';
 import { useHistory } from 'react-router-dom';
 
 // material
@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import { Button } from '@material-ui/core';
 import ProductList from './ItemDetail/component/ProductList';
 import LogoInfo from './LogoInfo';
+import axios from 'axios';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -126,6 +127,7 @@ const ItemDetails = props => {
   const [hasError, setErrors] = useState(false);
   const [orderSaved, setOrderSaved] = useState(false);
   const [menuList, setMenuList] = useState({});
+  const [orderList, setOrderList] = useState({});
   const [itemTotal, setItemTotal] = useState({});
   const [redeem, setRedeem] = useState(false);
   const [open, setOpen] = useState(false);
@@ -199,6 +201,7 @@ const ItemDetails = props => {
       }
     }
   };
+
   async function fetchData() {
     const res = await fetch(API_BASE + `company/${props.match.params.id}/menu?asset=` + query.get('table_no'));
     res
@@ -206,8 +209,38 @@ const ItemDetails = props => {
       .then(res => setMenuList(res))
       .catch(err => setErrors(err));
   }
+  
+  async function fetchOrders(){
+    const res = await axios.get(API_BASE_V2 + `order/latest-asset-order/${query.get('table_no')}`);
 
-  function getParameters(url) {
+    const status = res.data.status;
+    let orderListOrderLines = [];
+
+    res.data.order_lines.map(order => orderListOrderLines.push(
+      {
+        company: props.match.params.id,
+        id: null,
+        product: order.product.id,
+        product_code: order.product.product_code,
+        product_name: order.product.name,
+        quantity: order.quantity,
+        status: order.status,
+        rate: order.rate,
+        total: order.total,
+        id: null,
+      }
+    ));
+
+    const orders = {
+      order_id: res.data.id,
+      order_lines: orderListOrderLines,
+      price_details: res.data.price_details
+    };
+
+    status !== "COMPLETED" && status !== "CANCELLED" ? setOrderList(orders) : setOrderList({});
+  }
+
+  /* function getParameters(url) {
     var params = {};
     var parser = document.createElement('a');
     parser.href = url;
@@ -220,18 +253,17 @@ const ItemDetails = props => {
     return params;
   }
 
-  function handleTokenValidation(tokenResponse, url) {
-    if (tokenResponse.token) {
+  function handleValidation(qrResponse, url) {
+    if (qrResponse) {
       window.location.assign(
-        window.location.href + '&expire=' + tokenResponse.scan_cooldown + '&token=' + tokenResponse.token,
+        window.location.href,
       );
     } else {
       window.location.assign('/');
     }
   }
+
   function handleScan(url) {
-    // let newData =
-    //   'https://mastarqr.com/56221fc3-dece-45b3-b2bd-cc2343702d1c?table_no=7e3f1595-d659-49f2-93f4-45b8d0a39366';
     const jsonData = getParameters(url);
     if (url) {
       const requestOptions = {
@@ -241,25 +273,35 @@ const ItemDetails = props => {
       };
       fetch(API_BASE + 'order/validate-qr-scan/', requestOptions)
         .then(response => response.json())
-        .then(tokenResponse => handleTokenValidation(tokenResponse, url));
+        .then(qrResponse => handleValidation(qrResponse, url));
     }
-  }
+  } */
 
   useEffect(() => {
-    if (query.get('token')) {
-      fetchData();
+    fetchData();
+    fetchOrders();
+    /* if (query.get('token')) {
     } else {
       handleScan(window.location.href);
-    }
+    } */
 
-    // fetchData();
   }, []);
+
+ /*  if (menuList.data !== undefined) {
+    console.log(orderList);
+
+    //menuList.data.order = orderList;
+    //console.log(menuList);
+  } */
+
   let totalPrice = 0;
   for (var key in itemTotal) {
     if (itemTotal.hasOwnProperty(key)) {
       totalPrice += itemTotal[key].total;
     }
   }
+
+  console.log(orderList);
   return (
     <div>
       {hasError ? (
@@ -268,7 +310,7 @@ const ItemDetails = props => {
         </div>
       ) : (
         <div className={classes.root}>
-          <LogoInfo menuList={menuList} tableNumber={query.get('table_no')} expireTime={query.get('expire')} />
+          <LogoInfo menuList={menuList} tableNumber={query.get('table_no')} />
           {redeem ? (
             <BillingForm
               itemTotal={itemTotal}
@@ -276,6 +318,7 @@ const ItemDetails = props => {
               removeItem={removeItem}
               proceedToRedeem={proceedToRedeem}
               menuList={menuList}
+              orderList={orderList}
               tableNumber={query.get('table_no')}
               companyId={props.match.params.id}
               orderToken={query.get('token')}
@@ -316,10 +359,8 @@ const ItemDetails = props => {
                     </TabPanel>
                   ))}
               </div>
-              <Grid container className={classes.orderBtnContainer}>
-                {menuList.data &&
-                  menuList.data.order &&
-                  menuList.data.order.order_lines.length > 0 &&
+                  <Grid container className={classes.orderBtnContainer}>
+                {orderList && orderList.hasOwnProperty('order_lines') &&
                   (totalPrice < 0 || totalPrice == 0) && (
                     <Button className={classes.orderBtn} onClick={() => proceedToRedeem()}>
                       View Order

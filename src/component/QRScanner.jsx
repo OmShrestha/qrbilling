@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import QrReader from 'react-qr-reader';
 import './style/qrStyle.css';
 import { API_BASE } from '../Constant';
-import { Typography } from '@material-ui/core';
 import history from '../history';
 
 class ScannerQR extends Component {
@@ -15,15 +14,16 @@ class ScannerQR extends Component {
     };
     this.handleScan = this.handleScan.bind(this);
   }
-  handleTokenValidation(tokenResponse, url) {
-    if (tokenResponse.token) {
+  handleValidation(qrResponse, url) {
+    if (qrResponse) {
       let newUrl = url.replace('https://mastarqr.com/', '');
-      history.push(newUrl + '&expire=' + tokenResponse.scan_cooldown + '&token=' + tokenResponse.token);
-    } else {
+      history.push(newUrl);
+      //history.push(newUrl + '&expire=' + tokenResponse.scan_cooldown + '&token=' + tokenResponse.token);
+    } /* else {
       this.setState({
         waitMessage: 'Please try after a while. Another order is being processed...',
       });
-    }
+    } */
   }
   getParameters(url) {
     var params = {};
@@ -53,7 +53,7 @@ class ScannerQR extends Component {
       };
       fetch(API_BASE + 'order/validate-qr-scan/', requestOptions)
         .then(response => response.json())
-        .then(tokenResponse => this.handleTokenValidation(tokenResponse, url));
+        .then(qrResponse => this.handleValidation(qrResponse, url));
     }
   }
   handleError(err) {
@@ -62,12 +62,12 @@ class ScannerQR extends Component {
 
   handleCameraSwitch() {
     this.setState({
-      facingMode: this.state.facingMode == 'rear' ? 'front' : 'rear',
+      facingMode: this.state.facingMode === 'rear' ? 'front' : 'rear',
     });
   }
 
   render() {
-    const { waitMessage } = this.state;
+    //const { waitMessage } = this.state;
     const previewStyle = {
       height: 300,
       width: 300,
@@ -75,10 +75,10 @@ class ScannerQR extends Component {
       borderStyle: 'solid',
       borderColor: 'red',
     };
-    const messageStyle = {
+    /* const messageStyle = {
       color: 'red',
       fontSize: '15pt',
-    };
+    }; */
     return (
       <>
         {/* <Typography
@@ -92,10 +92,11 @@ class ScannerQR extends Component {
           delay={this.state.delay}
           style={previewStyle}
           onError={this.handleError}
-          onScan={!waitMessage ? this.handleScan : () => {}}
+          onScan={this.handleScan}
+          //onScan={!waitMessage ? this.handleScan : () => {}}
           // facingMode={this.state.facingMode}
         />
-        {waitMessage && <p style={messageStyle}>{waitMessage}</p>}
+       {/*  {waitMessage && <p style={messageStyle}>{waitMessage}</p>} */}
       </>
     );
   }

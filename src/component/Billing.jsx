@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import LogoInfo from './LogoInfo';
 
-import { API_BASE } from '../Constant';
+import { API_BASE, API_BASE_V2 } from '../Constant';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Button,
@@ -23,6 +22,7 @@ import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Bill from '../component/ItemDetail/component/Bill';
+import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -237,13 +237,12 @@ function getSteps() {
 }
 
 const Billing = props => {
-  const { itemTotal, menuList, tableNumber, companyId, orderToken } = props;
+  const { itemTotal, menuList, orderList, tableNumber, companyId } = props;
   const classes = useStyles();
   const [couponeList, setCouponeList] = useState({});
   const [billingInfo, setBillingInfo] = useState({});
   const [hasError, setErrors] = useState(false);
   const [userDataError, setUserDataError] = useState({});
-  // const [orderSaved, setOrderSaved] = useState(false);
   const [activeStep, setActiveStep] = useState(+3);
   const steps = getSteps();
   const [expanded, setExpanded] = useState('panel1');
@@ -255,9 +254,29 @@ const Billing = props => {
   };
 
   async function fetchCouponeList() {
-    const error = validatePhoneNumber();
-    setUserDataError(error);
-    if (Object.keys(error).length > 0) {
+    //const error = validatePhoneNumber();
+    //setUserDataError(error);
+    setLoading(true);
+    const phone_number = userData && userData.phoneNumber || '';
+   
+
+    fetch(API_BASE_V2 + `company/${companyId}/user-vouchers/?phone_number=${phone_number}`).then(response => response.json())
+        .then(resCoupone => setCouponeList(resCoupone))
+      .catch(err => setErrors(err));
+    
+      /* const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          phone_number: userData && userData.phoneNumber || '',
+          email: (userData && userData.email) || '',
+        }),
+      };
+      fetch(API_BASE + `order-user-detail?company=${companyId}`, requestOptions)
+        .then(response => response.json())
+        .then(resCoupone => setCouponeList(resCoupone))
+        .catch(err => setErrors(err)); */
+    /* if (Object.keys(error).length > 0) {
     } else {
       setLoading(true);
       const requestOptions = {
@@ -272,8 +291,10 @@ const Billing = props => {
         .then(response => response.json())
         .then(resCoupone => setCouponeList(resCoupone))
         .catch(err => setErrors(err));
-    }
+    } */
   }
+
+  console.log(couponeList, 'couponeList');
 
   async function refreshToken(tableNo) {
     const requestOptions = {
@@ -293,56 +314,102 @@ const Billing = props => {
       });
   }
 
-  async function createOrder(newToken) {
-    setLoading(true);
-    if (menuList.data.order && menuList.data.order.order_lines) {
+  async function createOrder() {
+    setLoading(true);    
+     
+    if (orderList && orderList.order_lines) {
       let billingData = billingInfo.data;
-      billingData.order_lines = menuList.data.order.order_lines.concat(billingData.order_lines);
+      billingData.order_lines = orderList.order_lines.concat(billingData.order_lines);
+      
+      const id = orderList.order_id;
+
       const requestOptions = {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...billingData,
-          company: companyId,
-          asset: tableNumber,
-          id: menuList.data.order.id,
-        }),
-      };
-      fetch(API_BASE + `company/${companyId}/order/${menuList.data.order.id}`, requestOptions)
-        .then(response => response.json())
-        .then(resCoupone => (resCoupone.success ? history.push('/Success') : () => {}))
-        .catch(err => setErrors(err));
-    } else {
-      const billingData = billingInfo.data;
-      const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...billingData,
-          company: companyId,
-          asset: tableNumber,
-        }),
-      };
-      fetch(API_BASE + `company/${companyId}/order?session=${newToken || orderToken}`, requestOptions)
-        .then(response => {
-          if (response.status == 400) {
-            alert('Session Expired. Please try again!!!');
-            setTimeout(() => window.location.assign('/'), 1000);
-          } else {
-            return response.json();
+        asset: billingData.asset,
+        order_lines: billingData.order_lines,
+        voucher: null
+      }
+
+      axios.put(API_BASE_V2 + `order/${companyId}/master-qr-order/${id}/`, requestOptions)
+        .then(response => (response.status === 200 ? history.push('/Success') : () => {}))
+        .catch(error => {
+          if (error.response.status === 400) {
+            const errors = error.response.data.non_field_errors;
+            
+            errors.forEach(message => {
+              alert(message);
+              setTimeout(() => window.location.assign('/'), 1000);
+            });
           }
-        })
-        .then(resCoupone => {
-          resCoupone.success ? history.push('/Success') : refreshToken(tableNumber);
-        })
-        .catch(err => setErrors(err));
+          setErrors(error);
+        });  
+
+    } else {
+      setLoading(true);    
+      const billingData = billingInfo.data;
+  
+      const requestOptions = {
+        asset: billingData.asset,
+        order_lines: billingData.order_lines,
+        voucher: null
+      }
+  
+      axios.post(API_BASE_V2 + `order/${companyId}/master-qr-order/`, requestOptions)
+        .then(response => (response.status === 201 ? history.push('/Success') : () => {}))
+        .catch(error => {
+          if (error.response.status === 400) {
+            const errors = error.response.data.non_field_errors;
+  
+            errors.forEach(message => {
+              alert(message);
+              setTimeout(() => window.location.assign('/'), 1000);
+            });
+          }
+          setErrors(error);
+        });    
     }
   }
 
   async function verifyOrder(skip) {
-    const error = validateUserInfo();
-    setUserDataError(error);
-    if (!skip && Object.keys(error).length > 0) {
+    setLoading(true);
+      let orderLine = [];
+      Object.keys(itemTotal).map(data => {
+        let newObj = {
+          id: null,
+          product: itemTotal[data].id,
+          product_name: itemTotal[data].name,
+          product_code: itemTotal[data].productCode,
+          quantity: itemTotal[data].number,
+          rate: itemTotal[data].perPlate,
+          status: 'NEW',
+          total: itemTotal[data].total,
+          company: companyId,
+          order: (menuList.data.order && menuList.data.order.id) || null,
+        };
+        orderLine.push(newObj);
+      });
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          company: companyId,
+          asset: tableNumber,
+          user: couponeList.records.user || null,
+          name: (userData && userData.fullName) || couponeList.records.name || '',
+          phone_number: userData && userData.phoneNumber,
+          email: (userData && userData.email) || couponeList.records.email || '',
+          voucher: (userData && userData.couponeId) || null,
+          tax: menuList.data.tax,
+          bill: null,
+          order_lines: orderLine,
+        }),
+      };
+      fetch(API_BASE + `company/${companyId}/order/verify`, requestOptions)
+        .then(response => response.json())
+        .then(resCoupone => setBillingInfo(resCoupone))
+        .catch(err => setErrors(err));
+    //const error = validateUserInfo();
+    //setUserDataError(error);
+    /* if (!skip && Object.keys(error).length > 0) {
     } else {
       setLoading(true);
       let orderLine = [];
@@ -380,7 +447,7 @@ const Billing = props => {
         .then(response => response.json())
         .then(resCoupone => setBillingInfo(resCoupone))
         .catch(err => setErrors(err));
-    }
+    } */
   }
 
   async function verifyOrderApply(skip) {
@@ -410,10 +477,10 @@ const Billing = props => {
         body: JSON.stringify({
           company: companyId,
           asset: tableNumber,
-          user: couponeList.data.user || null,
-          name: (userData && userData.fullName) || couponeList.data.name || '',
+          user: couponeList.records.user || null,
+          name: (userData && userData.fullName) || couponeList.records.name || '',
           phone_number: userData && userData.phoneNumber,
-          email: (userData && userData.email) || couponeList.data.email || '',
+          email: (userData && userData.email) || couponeList.records.email || '',
           voucher: (userData && userData.couponeId) || null,
           tax: 13.0,
           bill: null,
@@ -468,7 +535,7 @@ const Billing = props => {
 
   useEffect(() => {
     setLoading(false);
-    if (couponeList && couponeList.data && couponeList.data.voucher && couponeList.data.voucher.length == 0) {
+    if (couponeList && couponeList.records && couponeList.records.voucher && couponeList.records.voucher.length == 0) {
       verifyOrder(true);
     }
   }, [couponeList]);
@@ -516,6 +583,9 @@ const Billing = props => {
 
   console.log(loading, 'loading');
 
+  console.log(menuList, 'menulist');
+  console.log(orderList, 'orderlist');
+
   return (
     <div className={classes.root}>
       {/* <LogoInfo menuList={menuList} props={props} /> */}
@@ -553,11 +623,21 @@ const Billing = props => {
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <div className={classes.processingTxt}>
                 <Typography>Previous Order</Typography>
-                <Typography>Processing</Typography>
               </div>
             </AccordionSummary>
             <AccordionDetails className={classes.detailList}>
-              {menuList.data.order &&
+            {orderList.order_lines && orderList.order_lines.length > 0 ?  
+              orderList.order_lines.map((order, index) => (
+                  <div className={classes.detailListItem} key={index}>
+                    <Typography className={classes.productName} key={index}>
+                      {order.product_name}
+                    </Typography>
+                  <span>{`${order.status} ${order.quantity} * ${order.rate}`}</span>
+                  </div>
+              )) : <div className={classes.detailListItem}>
+                  <Typography>No previous order</Typography>
+                </div>}
+              {/* {menuList.data.order &&
                 menuList.data.order.order_lines.map((item, index) => (
                   <div className={classes.detailListItem} key={index}>
                     <Typography className={classes.productName} key={index}>
@@ -565,7 +645,7 @@ const Billing = props => {
                     </Typography>
                     <span>{item.state}</span>
                   </div>
-                ))}
+                ))} */}
             </AccordionDetails>
           </Accordion>
 
@@ -624,7 +704,7 @@ const Billing = props => {
             serviceCharge={serviceCharge}
             taxCharge={taxCharge}
             grandTotal={grandTotal}
-            previousGrandTotal={(menuList.data && menuList.data.order && menuList.data.order.grand_total) || 0}
+            previousGrandTotal={(orderList && orderList.price_details && orderList.price_details.grand_total) || 0}
             tax={menuList.data.tax}
             service={menuList.data.service_charge}
           />
@@ -648,9 +728,9 @@ const Billing = props => {
                       onChange={e => handleChange(e, userData)}
                     />
                   ))}
-                {userDataError && userDataError.phoneNumber && (
+                {/* {userDataError && userDataError.phoneNumber && (
                   <p className={classes.errorText}>{userDataError.phoneNumber}</p>
-                )}
+                )} */}
                 {(menuList.data.order && menuList.data.order.order_lines.length == 0) ||
                   (!menuList.data.order && Object.keys(couponeList).length == 0 && (
                     <Button
@@ -672,9 +752,9 @@ const Billing = props => {
                 )}
               </>
             )}
-            {couponeList && couponeList.data && !couponeList.data.voucher && (
+            {couponeList && couponeList.records && !couponeList.records.voucher && (
               <>
-                <Typography component="h5" className={classes.bottomContainerTitle}>
+               {/*  <Typography component="h5" className={classes.bottomContainerTitle}>
                   Register For Coupon
                 </Typography>
                 <TextField
@@ -700,7 +780,7 @@ const Billing = props => {
                   <p className="danger" style={{ color: 'red' }}>
                     {userDataError.email}
                   </p>
-                )}
+                )} */}
                 <Button
                   variant="contained"
                   onClick={loading ? () => {} : () => verifyOrder()}

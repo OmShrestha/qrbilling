@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {
+/* import {
   Collapse,
   Navbar,
   NavbarToggler,
@@ -12,7 +12,7 @@ import {
   DropdownMenu,
   DropdownItem,
   NavbarText,
-} from 'reactstrap';
+} from 'reactstrap'; */
 
 const Example = props => {
   const [isOpen, setIsOpen] = useState(false);

@@ -87,22 +87,20 @@ const Layout = (props) => {
             },
           }}
         >
-          {topAd?.map(
-            ({
-              id,
-              image,
-              title,
-              link = "https://www.facebook.com/coupponpro",
-            }) => (
-              <img
-                onClick={() => window.open(link, "_blank")}
-                key={id}
-                src={image}
-                alt={title}
-                className={classes.mainAdd}
-              />
-            )
-          )}
+          {topAd?.map(({ id, image, title, link }) => (
+            <img
+              onClick={() =>
+                window.open(
+                  link || "https://www.facebook.com/coupponpro",
+                  "_blank"
+                )
+              }
+              key={id}
+              src={image}
+              alt={title}
+              className={classes.mainAdd}
+            />
+          ))}
         </Carousel>
       </div>
       <div className={classes.scanOrder}>

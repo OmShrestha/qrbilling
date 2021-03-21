@@ -14,7 +14,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#fff",
     justifyContent: "space-between",
     alignItems: "center",
-    height: "100vh",
     flexDirection: "column",
   },
   scanOrder: {
@@ -39,12 +38,14 @@ const useStyles = makeStyles((theme) => ({
     width: "300px",
     height: "250px",
     objectFit: "cover",
+    marginBottom: 20,
   },
   secondAdd: {
     objectFit: "cover",
     borderRadius: 10,
     width: "300px",
     height: "150px",
+    marginTop: 20,
   },
   qr: {
     alignItems: "center",

@@ -14,7 +14,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#fff",
     justifyContent: "space-between",
     alignItems: "center",
-    height: "100vh",
     flexDirection: "column",
   },
   scanOrder: {
@@ -39,12 +38,14 @@ const useStyles = makeStyles((theme) => ({
     width: "300px",
     height: "250px",
     objectFit: "cover",
+    marginBottom: 20,
   },
   secondAdd: {
     objectFit: "cover",
     borderRadius: 10,
     width: "300px",
     height: "150px",
+    marginTop: 20,
   },
   qr: {
     alignItems: "center",
@@ -87,22 +88,20 @@ const Layout = (props) => {
             },
           }}
         >
-          {topAd?.map(
-            ({
-              id,
-              image,
-              title,
-              link = "https://www.facebook.com/coupponpro",
-            }) => (
-              <img
-                onClick={() => window.open(link, "_blank")}
-                key={id}
-                src={image}
-                alt={title}
-                className={classes.mainAdd}
-              />
-            )
-          )}
+          {topAd?.map(({ id, image, title, link }) => (
+            <img
+              onClick={() =>
+                window.open(
+                  link || "https://www.facebook.com/coupponpro",
+                  "_blank"
+                )
+              }
+              key={id}
+              src={image}
+              alt={title}
+              className={classes.mainAdd}
+            />
+          ))}
         </Carousel>
       </div>
       <div className={classes.scanOrder}>

@@ -314,7 +314,7 @@ const Homepage = (props) => {
               orderToken={query.get("token")}
             />
           ) : (
-            <div>
+            <div> 
               <div className={classes.secondRoot}>
                 <Typography className={classes.searchBarTitle}>
                   What do you want to eat today?

@@ -5,6 +5,7 @@ const styles = makeStyles((theme) => ({
   root: {
     position: "relative",
     padding: 20,
+    width: "100vw",
   },
   input: {
     outline: "none",
@@ -29,7 +30,7 @@ const styles = makeStyles((theme) => ({
     top: 0,
     right: 20,
     marginTop: 20,
-    width: 100,
+    width: "20vw",
     textTransform: "none",
     fontFamily: "SF Pro display",
   },

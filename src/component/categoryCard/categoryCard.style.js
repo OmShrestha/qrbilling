@@ -3,6 +3,8 @@ import { makeStyles } from "@material-ui/core";
 const styles = makeStyles(theme => ({
     categoryCardContainer: {
         backgroundColor: theme.palette.secondary.gray,
+        display: 'flex',
+        justifyContent: 'center'
     },
     categoryCard: {
         margin: 10,

@@ -29,8 +29,8 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
-    "build": "PUBLIC_URL=https://mastarqr.com/ GENERATE_SOURCEMAP=false react-scripts build",
-    "build:dev": "PUBLIC_URL=https://dev.mastarqr.com/ GENERATE_SOURCEMAP=false react-scripts build",
+    "build": "NODE_ENV=production PUBLIC_URL=https://mastarqr.com/ GENERATE_SOURCEMAP=false react-scripts build",
+    "build:dev": "NODE_ENV=development PUBLIC_URL=https://dev.mastarqr.com/ GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

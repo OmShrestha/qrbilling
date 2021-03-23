@@ -76,6 +76,7 @@ const Billing = (props) => {
             new: parseInt(oldItem.new) + parseInt(item.quantity),
             cooking: parseInt(oldItem.cooking),
             served: parseInt(oldItem.served),
+            status: "NEW",
           };
         } else {
           orderList.order_lines.push({

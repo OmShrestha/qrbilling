@@ -9,6 +9,23 @@ export const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     width: "100%",
   },
+
+    '@media (min-width:320px) and (max-width:375px)':{
+        root :{
+         display:'flex',
+         alignItems:'center',
+         width:'100%',
+         background:'green'
+        },
+    },
+    '@media(min-width:376px) and (max-width: 425px)' : {
+        root : {
+          display:'flex',
+          alignItems:'center',
+          width:'100%',
+          background:'yellow',
+        },
+    },
   buttons: {
     border: `1px solid ${theme.palette.secondary.dark}`,
     borderRadius: "10px",

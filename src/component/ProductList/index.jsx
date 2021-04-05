@@ -1,4 +1,4 @@
-import { Button, Divider, Typography } from "@material-ui/core";
+import { Button, Divider, Grid, Typography } from "@material-ui/core";
 import React, { useState } from "react";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
@@ -22,12 +22,12 @@ const ProductList = ({
 
   return (
     <>
-      <div className={classes.root}>
-        <div className={classes.textBox}>
+      <Grid className={classes.root}>
+        <Grid className={classes.textBox}>
           <Typography className={classes.productName}>
             {`${product.name}`}
           </Typography>
-          <div className={classes.viewImg}>
+          <Grid className={classes.viewImg}>
             <Typography className={classes.productPrice}>
               {`Rs ${product.selling_price}`}
             </Typography>
@@ -44,12 +44,12 @@ const ProductList = ({
                 onClick={() => setDisplay(!display)}
               />
             ) : null}
-          </div>
-        </div>
-        <div>
+          </Grid>
+        </Grid>
+        <Grid>
           {itemTotal[menuIndex.toString() + index.toString()]?.number > 0 ||
           previousOrder?.length > 0 ? (
-            <div className={classes.buttons}>
+            <Grid className={classes.buttons}>
               <Button
                 onClick={() =>
                   removeItem(
@@ -82,7 +82,7 @@ const ProductList = ({
               >
                 <AddIcon />
               </Button>
-            </div>
+            </Grid>
           ) : (
             <Button
               className={classes.addOrder}
@@ -101,8 +101,8 @@ const ProductList = ({
               Place Order
             </Button>
           )}
-        </div>
-      </div>
+        </Grid>
+      </Grid>
       <Divider
         variant="middle"
         orientation="horizontal"

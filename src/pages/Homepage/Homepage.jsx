@@ -260,7 +260,7 @@ const Homepage = (props) => {
 
   const productList = products?.map((product, index) => {
     return (
-      <Grid container direction="column" justify="center" key={index}>
+      <Grid container className={classes.list_item} direction="column" justify="center"  key={index} >
         <Grid item xs={12}>
           <ProductList
             previousOrder={previousOrder?.filter(
@@ -363,9 +363,10 @@ const Homepage = (props) => {
                       return (
                         <Grid
                           container
+                          className={classes.jjjj}
                           direction="column"
                           justify="center"
-                          key={index}
+                          key={index} 
                         >
                           <Grid item xs={12}>
                             <ProductList

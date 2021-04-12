@@ -4,7 +4,8 @@ const styles = makeStyles(theme => ({
     categoryCardContainer: {
         backgroundColor: theme.palette.secondary.gray,
         display: 'flex',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        height:'auto',
     },
     categoryCard: {
         margin: 10,
@@ -66,4 +67,4 @@ const styles = makeStyles(theme => ({
 
 }))
 
-export default styles
+export default styles;

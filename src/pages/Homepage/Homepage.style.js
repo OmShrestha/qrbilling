@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
     },
     tabs: {
         backgroundColor: theme.palette.secondary.main,
+        height:'auto',
         "&.MuiTab-textColorInherit.Mui-selected": {
             color: theme.palette.primary.main,
         },
@@ -75,7 +76,11 @@ const useStyles = makeStyles((theme) => ({
         margin: '0px auto',
         left: 0,
         right: 0
+    },
+    list_item:{
+        minHeight:'67px',
     }
+
 }));
 
 export default useStyles;

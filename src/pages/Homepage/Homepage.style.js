@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
     secondRoot: {
         padding: "18px 0",
         backgroundColor: theme.palette.secondary.main,
-        height: "73vh",
+        height: "0vh",
         display: "flex",
         flexDirection: "column",
     },

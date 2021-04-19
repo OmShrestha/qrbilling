@@ -15,7 +15,7 @@ export const useStyles = makeStyles((theme) => ({
          display:'flex',
          alignItems:'center',
          width:'100%',
-         background:'green'
+        //  background:'green'
         },
     },
     '@media(min-width:376px) and (max-width: 425px)' : {
@@ -23,7 +23,7 @@ export const useStyles = makeStyles((theme) => ({
           display:'flex',
           alignItems:'center',
           width:'100%',
-          background:'yellow',
+          // background:'yellow',
         },
     },
   buttons: {
